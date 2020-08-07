@@ -2,9 +2,12 @@ import React from 'react';
 import MenuIcon from '@material-ui/icons/Menu';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {
-  AppBar, withStyles, IconButton, Box, Typography,
+  AppBar,
+  withStyles,
+  IconButton,
+  Box,
+  Typography,
 } from '@material-ui/core';
-
 
 import NGLogo from '../assets/img/logoWhite.png';
 
@@ -27,15 +30,17 @@ const styles = (theme) => ({
   },
 });
 
-const HeaderBar = ({ classes, theme }) => (
+const HeaderBar = ({ classes }) => (
   <AppBar position="sticky" className={classes.appBarContainer}>
     <IconButton edge="start" className={classes.menuButton} color="inherit">
       <MenuIcon />
     </IconButton>
     <Box className={classes.logoContainer}>
-      <img src={NGLogo} className={classes.logoImg} />
+      <img src={NGLogo} className={classes.logoImg} alt="NavGurukul Logo" />
       <Box className={classes.ngServiceNameContainer}>
-        <Typography variant="h6" style={{ fontWeight: 100 }}>Admissions</Typography>
+        <Typography variant="h6" style={{ fontWeight: 100 }}>
+          Admissions
+        </Typography>
       </Box>
     </Box>
     <IconButton color="inherit">

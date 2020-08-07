@@ -5,10 +5,17 @@ import { compose } from 'recompose';
 import { selectors } from '../../auth';
 
 const PrivateRoute = ({
-  isAuthorized, component: Component, location, ...rest
+  isAuthorized,
+  component: Component,
+  location,
+  ...rest
 }) => {
   if (!isAuthorized) {
-    return <Redirect to={{ pathname: '/login', state: { from: location.pathname } }} />;
+    return (
+      <Redirect
+        to={{ pathname: '/login', state: { from: location.pathname } }}
+      />
+    );
   }
   return <Route {...rest} component={(props) => <Component {...props} />} />;
 };

@@ -1,8 +1,8 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 
 import styles from './Example.css';
 
-class ExampleWithError extends PureComponent {
+class ExampleWithError extends React.PureComponent {
   render() {
     const { example } = this.props;
     const result = example && example.result ? example.result : null;

@@ -9,19 +9,20 @@ import { bindActionCreators } from 'redux';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import {
-  startAuthRequest, authFailure, selectors,
-} from '../../auth';
+import { startAuthRequest, authFailure, selectors } from '../../auth';
 
 import { googleAuthSuccess } from '../../auth/asyncActions';
-import { history } from '../../providers/routing/app-history';
+import history from '../../providers/routing/app-history';
 import Spacer from '../../components/Spacer';
-import HeaderBar from '../../components/HeaderBar';
 
-const styles = (theme) => ({});
+const styles = () => ({});
 
 const LoginPage = ({
-  isAuthorized, authError, authPending, actions, classes, theme,
+  isAuthorized,
+  authError,
+  authPending,
+  actions,
+  theme,
 }) => {
   const onGoogleLogin = (googleResponse) => actions.googleAuthSuccess(googleResponse);
 
@@ -33,24 +34,28 @@ const LoginPage = ({
     if (isAuthorized) {
       /* eslint-disable no-restricted-globals */
       const { state: locationState } = location;
-      const redirectTo = locationState && locationState.from !== null ? locationState.from : '/home';
+      const redirectTo = locationState && locationState.from !== null
+        ? locationState.from
+        : '/home';
       history.push(redirectTo);
     }
   });
 
   return (
     <React.Fragment>
-      <Box style={{
-        marginTop: '30vh',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-      }}
-      >
-        <Avatar style={{
-          backgroundColor: theme.palette.secondary.main,
-          margin: theme.spacing(2),
+      <Box
+        style={{
+          marginTop: '30vh',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
         }}
+      >
+        <Avatar
+          style={{
+            backgroundColor: theme.palette.secondary.main,
+            margin: theme.spacing(2),
+          }}
         >
           <LockOutlinedIcon />
         </Avatar>
@@ -93,11 +98,14 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators({ startAuthRequest, authFailure, googleAuthSuccess }, dispatch),
+  actions: bindActionCreators(
+    { startAuthRequest, authFailure, googleAuthSuccess },
+    dispatch,
+  ),
 });
 
 export default compose(
   withRouter,
   connect(mapStateToProps, mapDispatchToProps),
-  withStyles(styles, { withTheme: true })
+  withStyles(styles, { withTheme: true }),
 )(LoginPage);

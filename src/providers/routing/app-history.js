@@ -18,4 +18,5 @@ const history = createBrowserHistory();
 
 // Exposing history for deep integration needs
 // For example, saga and utilities
-export { history };
+export default history;
+// export { history };

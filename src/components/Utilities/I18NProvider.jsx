@@ -33,7 +33,7 @@ export default class I18NProvider extends React.PureComponent {
 
     return (
       <IntlProvider locale={language} messages={messages[locale]}>
-        { children }
+        {children}
       </IntlProvider>
     );
   }

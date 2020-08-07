@@ -34,18 +34,17 @@ const mapStateToProps = (state) => ({
   valueX: selectors.selectValueX(state),
   valueY: selectors.selectValueY(state),
   valueZ: selectors.selectValueZ(state),
-
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  moreActions: bindActionCreators({
-    updateValueX,
-    updateValueY,
-    incrementValueZ,
-  }, dispatch),
+  moreActions: bindActionCreators(
+    {
+      updateValueX,
+      updateValueY,
+      incrementValueZ,
+    },
+    dispatch,
+  ),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ExampleView);
+export default connect(mapStateToProps, mapDispatchToProps)(ExampleView);

@@ -9,5 +9,5 @@ export const selectAuthError = (state) => get(state, `${AuthSlice.name}.error`);
 
 export const selectIsAuthorized = createSelector(
   selectAuthToken,
-  (authToken) => (authToken !== null)
+  (authToken) => authToken !== null,
 );

@@ -5,18 +5,14 @@ import { createLogger } from 'redux-logger';
 import rootReducer from './rootReducers';
 
 // Redux DevTools Extension for Chrome and Firefox
-const reduxDevTool = () => {
-  return typeof window === 'object'
+const reduxDevTool = () => (typeof window === 'object'
     && typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined'
-    ? window.__REDUX_DEVTOOLS_EXTENSION__()
-    : (f) => f;
-};
+  ? window.__REDUX_DEVTOOLS_EXTENSION__()
+  : f => f);
 
-// history is passed here, for this example, we don't use history
-export default function configureStore(initialState, history) { // eslint-disable-line no-unused-vars, max-len
-  const middleware = [
-    thunk,
-  ];
+export default function configureStore(initialState) {
+  // eslint-disable-line no-unused-vars, max-len
+  const middleware = [thunk];
 
   if (process.env.NODE_ENV === 'development') {
     middleware.push(createLogger());
@@ -24,13 +20,14 @@ export default function configureStore(initialState, history) { // eslint-disabl
 
   const composedStoreEnhancer = compose(
     applyMiddleware(...middleware),
-    reduxDevTool()
+    reduxDevTool(),
   );
 
   const store = composedStoreEnhancer(createStore)(rootReducer, initialState);
 
   if (module.hot) {
     module.hot.accept('./rootReducers', () => {
+      // eslint-disable-next-line global-require
       store.replaceReducer(require('./rootReducers'));
     });
   }

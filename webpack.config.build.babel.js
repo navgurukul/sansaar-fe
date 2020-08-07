@@ -8,14 +8,15 @@ import precss from 'precss';
 import postcssPresetEnv from 'postcss-preset-env';
 import AWS from 'aws-sdk';
 
-
 import webpackConfig, { JS_SOURCE } from './webpack.config.common';
 
 // ----------------------------------------------------------
 //  CONSTANT DECLARATION
 // ----------------------------------------------------------
 const IS_S3_DEPLOY = Boolean(process.env.S3_DEPLOY);
-const PUBLIC_PATH = IS_S3_DEPLOY ? process.env.AWS_CDN_URL : config.get('publicPath');
+const PUBLIC_PATH = IS_S3_DEPLOY
+  ? process.env.AWS_CDN_URL
+  : config.get('publicPath');
 const APP_ENTRY_POINT = `${JS_SOURCE}/main`;
 
 // webpack 4 mode
@@ -45,7 +46,7 @@ const htmlPlugins = html.map(
       collapseWhitespace: true,
       conservativeCollapse: true,
     },
-  })
+  }),
 );
 
 // ----------------------------------------------------------
@@ -94,13 +95,16 @@ webpackConfig.entry = {
 };
 
 if (IS_S3_DEPLOY) {
+    // eslint-disable-next-line global-require
   const S3Plugin = require('webpack-s3-plugin');
 
   // Please read README if you have no idea where
   // `process.env.AWS_ACCESS_KEY` is coming from
   let s3Options = {};
   if (process.env.AWS_PROFILE) {
-    s3Options = new AWS.SharedIniFileCredentials({ profile: process.env.AWS_PROFILE });
+    s3Options = new AWS.SharedIniFileCredentials({
+      profile: process.env.AWS_PROFILE,
+    });
   }
   if (process.env.AWS_ACCESS_KEY) {
     s3Options.accessKeyId = process.env.AWS_ACCESS_KEY_ID;
@@ -126,6 +130,7 @@ if (IS_S3_DEPLOY) {
 }
 
 if (config.get('optimization.analyzeMode') === true) {
+  // eslint-disable-next-line global-require
   const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
   webpackConfig.plugins = webpackConfig.plugins.concat(
@@ -134,7 +139,7 @@ if (config.get('optimization.analyzeMode') === true) {
       analyzerHost: 'localhost',
       analyzerPort: config.get('optimization.analyze.port'),
       openAnalyzer: true,
-    })
+    }),
   );
 }
 
@@ -163,7 +168,7 @@ webpackConfig.plugins.push(
     // both options are optional
     filename: `${config.get('assetPath')}/[name]-[hash].css`,
     chunkFilename: `${config.get('assetPath')}/[id]-[hash].css`,
-  })
+  }),
 );
 
 webpackConfig.plugins = webpackConfig.plugins.concat(htmlPlugins);

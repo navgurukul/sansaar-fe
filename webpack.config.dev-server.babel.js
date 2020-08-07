@@ -57,7 +57,7 @@ const htmlPlugins = html.map(
     template: `src/assets/template/${page.template}`,
     inject: 'body',
     filename: page.filename,
-  })
+  }),
 );
 
 webpackConfig.plugins.push(
@@ -74,12 +74,13 @@ webpackConfig.plugins.push(
   // new webpack.HotModuleReplacementPlugin(),
   new webpack.DefinePlugin({
     __CONFIG__: JSON.stringify(config.get('app')),
-  })
+  }),
 );
 
 // We turn off browserSync by default
 // Turn that on if you want to include this use case
 if (config.get('browserSync.active') === true) {
+  // eslint-disable-next-line global-require
   const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
   webpackConfig.plugins.push(
     new BrowserSyncPlugin(
@@ -96,8 +97,8 @@ if (config.get('browserSync.active') === true) {
         // Disable BrowserSync's browser reload/asset injections feature because
         // Webpack Dev Server handles this for us already
         reload: false,
-      }
-    )
+      },
+    ),
   );
 }
 

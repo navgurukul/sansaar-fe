@@ -6,12 +6,6 @@ import history from '../routing/app-history';
 
 const store = configureStore({}, history);
 
-const StoreProvider = ({ children }) => {
-  return (
-    <Provider store={store}>
-      {children}
-    </Provider>
-  );
-};
+const StoreProvider = ({ children }) => <Provider store={store}>{children}</Provider>;
 
 export default StoreProvider;
