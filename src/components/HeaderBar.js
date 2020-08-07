@@ -7,14 +7,14 @@ import {
   IconButton,
   Box,
   Typography,
+  Toolbar,
 } from '@material-ui/core';
 
 import NGLogo from '../assets/img/logoWhite.png';
 
 const styles = (theme) => ({
-  appBarContainer: {
-    flexDirection: 'row',
-    padding: theme.spacing(1),
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
   },
   logoContainer: {
     flexGrow: 1,
@@ -30,22 +30,24 @@ const styles = (theme) => ({
   },
 });
 
-const HeaderBar = ({ classes }) => (
-  <AppBar position="sticky" className={classes.appBarContainer}>
-    <IconButton edge="start" className={classes.menuButton} color="inherit">
-      <MenuIcon />
-    </IconButton>
-    <Box className={classes.logoContainer}>
-      <img src={NGLogo} className={classes.logoImg} alt="NavGurukul Logo" />
-      <Box className={classes.ngServiceNameContainer}>
-        <Typography variant="h6" style={{ fontWeight: 100 }}>
-          Admissions
-        </Typography>
+const HeaderBar = ({ classes, toggleDrawer = () => {} }) => (
+  <AppBar position="sticky" className={classes.appBar}>
+    <Toolbar>
+      <IconButton edge="start" className={classes.menuButton} color="inherit" onClick={toggleDrawer}>
+        <MenuIcon />
+      </IconButton>
+      <Box className={classes.logoContainer}>
+        <img src={NGLogo} className={classes.logoImg} alt="NavGurukul Logo" />
+        <Box className={classes.ngServiceNameContainer}>
+          <Typography variant="h6" style={{ fontWeight: 100 }}>
+            Admissions
+          </Typography>
+        </Box>
       </Box>
-    </Box>
-    <IconButton color="inherit">
-      <ExitToAppIcon />
-    </IconButton>
+      <IconButton color="inherit">
+        <ExitToAppIcon />
+      </IconButton>
+    </Toolbar>
   </AppBar>
 );
 

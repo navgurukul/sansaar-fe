@@ -14,6 +14,9 @@ import { startAuthRequest, authFailure, selectors } from '../../auth';
 import { googleAuthSuccess } from '../../auth/asyncActions';
 import history from '../../providers/routing/app-history';
 import Spacer from '../../components/Spacer';
+import HeaderBar from '../../components/HeaderBar'
+
+import { Container } from '@material-ui/core';
 
 const styles = () => ({});
 
@@ -43,50 +46,53 @@ const LoginPage = ({
 
   return (
     <React.Fragment>
-      <Box
-        style={{
-          marginTop: '30vh',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <Avatar
+      <HeaderBar />
+      <Container maxWidth={false}>
+        <Box
           style={{
-            backgroundColor: theme.palette.secondary.main,
-            margin: theme.spacing(2),
+            marginTop: '30vh',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
           }}
         >
-          <LockOutlinedIcon />
-        </Avatar>
-        {authError && (
-          <Alert severity="error">
-            {'Google sign in error. Error code — '}
-            {authError}
-          </Alert>
-        )}
-        <Spacer height={theme.spacing(2)} />
-        <GoogleLogin
-          clientId="34917283366-b806koktimo2pod1cjas8kn2lcpn7bse.apps.googleusercontent.com"
-          buttonText="Login"
-          onSuccess={onGoogleLogin}
-          onFailure={onGoogleLoginError}
-          onRequest={onGoogleLoginRequest}
-          scope="profile email"
-          render={(renderProps) => (
-            <Button
-              onClick={renderProps.onClick}
-              variant="contained"
-              size="large"
-              color="primary"
-              disabled={authPending}
-            >
-              Login with NG ID
-            </Button>
+          <Avatar
+            style={{
+              backgroundColor: theme.palette.secondary.main,
+              margin: theme.spacing(2),
+            }}
+          >
+            <LockOutlinedIcon />
+          </Avatar>
+          {authError && (
+            <Alert severity="error">
+              {'Google sign in error. Error code — '}
+              {authError}
+            </Alert>
           )}
-          cookiePolicy="single_host_origin"
-        />
-      </Box>
+          <Spacer height={theme.spacing(2)} />
+          <GoogleLogin
+            clientId="34917283366-b806koktimo2pod1cjas8kn2lcpn7bse.apps.googleusercontent.com"
+            buttonText="Login"
+            onSuccess={onGoogleLogin}
+            onFailure={onGoogleLoginError}
+            onRequest={onGoogleLoginRequest}
+            scope="profile email"
+            render={(renderProps) => (
+              <Button
+                onClick={renderProps.onClick}
+                variant="contained"
+                size="large"
+                color="primary"
+                disabled={authPending}
+              >
+                Login with NG ID
+              </Button>
+            )}
+            cookiePolicy="single_host_origin"
+          />
+        </Box>
+      </Container>
     </React.Fragment>
   );
 };

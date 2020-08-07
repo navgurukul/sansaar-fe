@@ -17,7 +17,7 @@ switch (option) {
     shell.exec(`cross-env webpack-dev-server --config webpack.config.dev-server.babel.js --hot --progress --no-info --inline --colors`);
     break;
   case 'build':
-    shell.exec(`cross-env rimraf docroot && webpack --config webpack.config.build.babel.js --progress --display-error-details`);
+    shell.exec(`cross-env rimraf docroot && webpack --config webpack.config.build.babel.js --progress --display-error-details --debug --output-pathinfo`);
     break;
   default:
     // If the app type is invalid, stop execution of the file.
