@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 
-import withUserContext from '../UserAuth/withUserContext';
+import withUserContext from '../../UserAuth/withUserContext';
 import { compose } from 'recompose';
 import NGRoute from './NGRoute';
 
@@ -29,5 +29,3 @@ export default compose(
   withUserContext,
   withRouter,
 )(RoutesFromList);
-
-// {routes.map((route, i) => renderRouteFromObj({ ...route, WrapComponent }, i))}

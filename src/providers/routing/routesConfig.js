@@ -5,12 +5,18 @@ import UsersSection from '../../views/Users';
 
 const ROUTES = [
   {
+    path: '/',
+    exact: true,
+    component: LoginPage
+  },
+  {
     path: '/users',
     auth: true,
     component: UsersSection,
   },
   {
     path: '/login',
+    exact: true,
     component: LoginPage
   },
 ]

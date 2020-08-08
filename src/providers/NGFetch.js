@@ -1,14 +1,19 @@
 import React from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { selectors } from '../auth'
 import { API_HOST } from '../constants';
+import history from './routing/app-history';
+import logOutAction from '../auth';
 
 let ngAuthToken;
+let logout;
 const IS_URL_RE = /^https?:\/\//;
 
-const NGFetchProvider = ({ authToken, children }) => {
+const NGFetchProvider = ({ authToken, children, actions }) => {
   ngAuthToken = authToken;
+  logout = actions.logout;
   return (<React.Fragment>{children}</React.Fragment>);
 };
 
@@ -16,7 +21,11 @@ const mapStateToProps = (state) => ({
   authToken: selectors.selectAuthToken(state)
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators({ logout: logOutAction }, dispatch)  
+});
 
+export default connect(mapStateToProps, mapDispatchToProps)(NGFetchProvider)
 
 function createOptions(inputOptions = {}) {
   const options = { ...inputOptions };
@@ -86,7 +95,11 @@ export const ngFetch = async (path, options = {}) => {
 
   if (responseType && isResponseJson(responseType)) {
     const body = await response.json();
-    if (!response.ok) {
+    console.log("response", response);
+    if (response.status === 401) {
+      logout();
+      history.push('/login');
+    } else if (!response.ok) {
       throw Object.assign(new Error(), body);
     }
     return body;
@@ -98,5 +111,3 @@ export const ngFetch = async (path, options = {}) => {
 
   return null;
 };
-
-export default connect(mapStateToProps)(NGFetchProvider)

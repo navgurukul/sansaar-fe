@@ -26,6 +26,7 @@ const LoginPage = ({
   authPending,
   actions,
   theme,
+  location,
 }) => {
   const onGoogleLogin = (googleResponse) => actions.googleAuthSuccess(googleResponse);
 
@@ -42,7 +43,7 @@ const LoginPage = ({
         : '/home';
       history.push(redirectTo);
     }
-  });
+  }, [authToken]);
 
   return (
     <React.Fragment>

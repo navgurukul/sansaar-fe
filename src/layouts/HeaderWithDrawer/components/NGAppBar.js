@@ -16,7 +16,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import NGLogo from '../../../assets/img/logoWhite.png';
-import { selectors as authSelectors } from '../../../auth'
+import { logOutAction } from '../../../auth'
 import withUserContext from '../../../providers/UserAuth/withUserContext';
 import history from '../../../providers/routing/app-history';
 
@@ -66,7 +66,7 @@ const NGAppBar = ({
   const handleLogout = () => {
     handleProfileMenuClose();
     actions.logout();
-    history.push('/');
+    history.push('/login');
   }
 
   return (
@@ -117,7 +117,7 @@ const NGAppBar = ({
 
 
 const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators({ logout: () => ({type: 'USER_LOGOUT'}) }, dispatch)  
+  actions: bindActionCreators({ logout: logOutAction }, dispatch)  
 });
 
 export default compose(

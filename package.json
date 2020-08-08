@@ -123,32 +123,9 @@
     "reselect": "^4.0.0",
     "underscore": "^1.10.2"
   },
-  "jest": {
-    "testURL": "http://www.SomeAwesome.com",
-    "verbose": true,
-    "testPathIgnorePatterns": [
-      "<rootDir>/__tests__/setup/",
-      "<rootDir>/node_modules/"
-    ],
-    "setupTestFrameworkScriptFile": "<rootDir>/__tests__/setup/jestTestSetup.js",
-    "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
-      "\\.(css)$": "identity-obj-proxy"
-    },
-    "setupFiles": [
-      "raf/polyfill"
-    ],
-    "automock": false,
-    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(js|jsx|json)$",
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "jsx"
-    ]
-  },
   "husky": {
     "hooks": {
-      "pre-push": "npm test"
+      "pre-push": "npm run lint"
     }
   },
   "keywords": [
