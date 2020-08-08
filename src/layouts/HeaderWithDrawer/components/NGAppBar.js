@@ -10,7 +10,7 @@ import {
   Toolbar,
 } from '@material-ui/core';
 
-import NGLogo from '../assets/img/logoWhite.png';
+import NGLogo from '../../../assets/img/logoWhite.png';
 
 const styles = (theme) => ({
   appBar: {
@@ -30,7 +30,7 @@ const styles = (theme) => ({
   },
 });
 
-const HeaderBar = ({ classes, toggleDrawer = () => {} }) => (
+const NGAppBar = ({ classes, toggleDrawer = () => {} }) => (
   <AppBar position="sticky" className={classes.appBar}>
     <Toolbar>
       <IconButton edge="start" className={classes.menuButton} color="inherit" onClick={toggleDrawer}>
@@ -51,4 +51,4 @@ const HeaderBar = ({ classes, toggleDrawer = () => {} }) => (
   </AppBar>
 );
 
-export default withStyles(styles, { withTheme: true })(HeaderBar);
+export default withStyles(styles, { withTheme: true })(NGAppBar);

@@ -14,7 +14,7 @@ import { startAuthRequest, authFailure, selectors } from '../../auth';
 import { googleAuthSuccess } from '../../auth/asyncActions';
 import history from '../../providers/routing/app-history';
 import Spacer from '../../components/Spacer';
-import HeaderBar from '../../components/HeaderBar'
+
 
 import { Container } from '@material-ui/core';
 
@@ -46,7 +46,6 @@ const LoginPage = ({
 
   return (
     <React.Fragment>
-      <HeaderBar />
       <Container maxWidth={false}>
         <Box
           style={{

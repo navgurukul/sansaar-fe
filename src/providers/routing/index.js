@@ -1,21 +1,19 @@
 import React from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
-import { Container } from '@material-ui/core';
 
 import history from './app-history';
-import PrivateRoute from './PrivateRoute';
-
-import LoginPage from '../../views/Login';
-import LayoutPage from '../../views/Layout';
-
+import ROUTES from './routesConfig';
+// import LoggedInLayout from '../../layouts/LoggedIn';
+import HeaderWithDrawer from '../../layouts/HeaderWithDrawer';
+import { renderRoutes } from './helpers';
 
 const AppRouter = () => (
-  <Router history={history}>
-      <Switch>
-        <Route exact path="/" component={LayoutPage} />
-        <Route exact path="/login" component={LoginPage} />
-      </Switch>
-  </Router>
+  <React.Fragment>
+    <Router history={history}>
+      <HeaderWithDrawer />
+      { renderRoutes(ROUTES) }
+    </Router>
+  </React.Fragment>
 );
 
 export default AppRouter;

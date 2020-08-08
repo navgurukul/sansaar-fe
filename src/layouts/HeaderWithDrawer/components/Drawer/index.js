@@ -5,8 +5,8 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import { compose } from 'recompose';
 import { withRouter } from 'react-router';
-import { Box, Drawer, withStyles, Divider, List, ListItem, ListItemIcon, ListItemText, Collapse, Hidden } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import { Box, Drawer, withStyles, Divider, List, ListItem, ListItemIcon, ListItemText, Collapse, Hidden } from '@material-ui/core';
 
 import drawerItems from './items';
 

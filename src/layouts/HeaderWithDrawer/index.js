@@ -1,18 +1,17 @@
 import React from 'react';
-import HeaderBar from '../../components/HeaderBar';
-import NGDrawer from './components/drawer';
+import NGAppBar from './components/NGAppBar';
+import NGDrawer from './components/Drawer';
 
-const LayoutPage = () => {
-
+const HeaderWithDrawer = () => {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const toggleDrawer = () => setDrawerOpen(!drawerOpen);
 
   return (
     <React.Fragment>
-      <HeaderBar toggleDrawer={toggleDrawer} />
+      <NGAppBar toggleDrawer={toggleDrawer} />
       <NGDrawer open={drawerOpen} toggleDrawer={toggleDrawer} />
     </React.Fragment>
   );
 }
 
-export default LayoutPage;
+export default HeaderWithDrawer;
