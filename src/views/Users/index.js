@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Box, withStyles, Button } from '@material-ui/core';
 import { compose } from 'recompose';
@@ -7,7 +7,7 @@ import TwoColumnLayout from '../../layouts/TwoColumn';
 
 const styles = () => ({});
 
-const UsersSection = ({theme}) => {
+const UsersSection = ({ theme }) => {
 
   const userList = () => (
     <Box>
@@ -17,8 +17,6 @@ const UsersSection = ({theme}) => {
       <Link to="/users/add">Add a user</Link>
     </Box>
   );
-
-  console.log(theme);
 
   const mainPaneRoutes = [
     {

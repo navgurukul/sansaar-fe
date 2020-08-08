@@ -21,7 +21,7 @@ import { Container } from '@material-ui/core';
 const styles = () => ({});
 
 const LoginPage = ({
-  isAuthorized,
+  authToken,
   authError,
   authPending,
   actions,
@@ -34,7 +34,7 @@ const LoginPage = ({
   const onGoogleLoginRequest = () => actions.startAuthRequest();
 
   useEffect(() => {
-    if (isAuthorized) {
+    if (authToken) {
       /* eslint-disable no-restricted-globals */
       const { state: locationState } = location;
       const redirectTo = locationState && locationState.from !== null
@@ -97,7 +97,7 @@ const LoginPage = ({
 };
 
 const mapStateToProps = (state) => ({
-  isAuthorized: selectors.selectIsAuthorized(state),
+  authToken: selectors.selectAuthToken(state),
   authPending: selectors.selectAuthPending(state),
   authError: selectors.selectAuthError(state),
 });

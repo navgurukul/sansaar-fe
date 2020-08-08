@@ -2,7 +2,8 @@ import thunk from 'redux-thunk';
 import { applyMiddleware, compose, createStore } from 'redux';
 import { createLogger } from 'redux-logger';
 
-import rootReducer from './rootReducers';
+import appReducer from './rootReducers';
+import { LOCALSTORAGE_JWT_KEY } from '../../constants';
 
 // Redux DevTools Extension for Chrome and Firefox
 const reduxDevTool = () => (typeof window === 'object'
@@ -22,6 +23,14 @@ export default function configureStore(initialState) {
     applyMiddleware(...middleware),
     reduxDevTool(),
   );
+
+  const rootReducer = (state, action) => {
+    if (action.type === 'USER_LOGOUT') {
+      localStorage.removeItem(LOCALSTORAGE_JWT_KEY);
+      return initialState;
+    }
+    return appReducer(state, action);
+  };
 
   const store = composedStoreEnhancer(createStore)(rootReducer, initialState);
 

@@ -1,14 +1,11 @@
-import axios from 'axios';
-
+import { ngFetch } from '../providers/NGFetch';
 import { authSuccess } from './index';
 
 const googleAuthSuccess = (googleResponse) => async (dispatch) => {
-  const json = await axios.post(
-    'http://join.navgurukul.org/api/users/login/google',
-    { idToken: googleResponse.tokenObj.id_token },
-  );
-  const { userToken, user } = json.data;
-  dispatch(authSuccess({ token: userToken, user }));
+  const body = { idToken: googleResponse.tokenObj.id_token };
+  const json = await ngFetch('/users/auth/google', { method: 'POST', body });
+  const { token, user } = json;
+  dispatch(authSuccess({ token, user }));
 };
 
 module.exports = { googleAuthSuccess }

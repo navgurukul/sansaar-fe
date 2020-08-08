@@ -6,6 +6,7 @@ import UsersSection from '../../views/Users';
 const ROUTES = [
   {
     path: '/users',
+    auth: true,
     component: UsersSection,
   },
   {

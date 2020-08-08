@@ -1,6 +1,5 @@
 import React from 'react';
 import MenuIcon from '@material-ui/icons/Menu';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {
   AppBar,
   withStyles,
@@ -8,9 +7,18 @@ import {
   Box,
   Typography,
   Toolbar,
+  Avatar,
+  Menu,
+  MenuItem,
 } from '@material-ui/core';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import NGLogo from '../../../assets/img/logoWhite.png';
+import { selectors as authSelectors } from '../../../auth'
+import withUserContext from '../../../providers/UserAuth/withUserContext';
+import history from '../../../providers/routing/app-history';
 
 const styles = (theme) => ({
   appBar: {
@@ -30,25 +38,90 @@ const styles = (theme) => ({
   },
 });
 
-const NGAppBar = ({ classes, toggleDrawer = () => {} }) => (
-  <AppBar position="sticky" className={classes.appBar}>
-    <Toolbar>
-      <IconButton edge="start" className={classes.menuButton} color="inherit" onClick={toggleDrawer}>
-        <MenuIcon />
-      </IconButton>
-      <Box className={classes.logoContainer}>
-        <img src={NGLogo} className={classes.logoImg} alt="NavGurukul Logo" />
-        <Box className={classes.ngServiceNameContainer}>
-          <Typography variant="h6" style={{ fontWeight: 100 }}>
-            Admissions
-          </Typography>
-        </Box>
-      </Box>
-      <IconButton color="inherit">
-        <ExitToAppIcon />
-      </IconButton>
-    </Toolbar>
-  </AppBar>
-);
+const getInitials = (name) => {
+  let tokens = name.split(' ').map(t => t[0]);
+  return tokens.join('');
+}
 
-export default withStyles(styles, { withTheme: true })(NGAppBar);
+const NGAppBar = ({
+  classes,
+  userContext,
+  actions,
+  toggleDrawer = () => {},
+}) => {
+
+  const { user, authorized } = userContext;
+
+  const [profileMenuAnchorEl, setProfileMenuAnchorEl] = React.useState(null);
+  const profileMenuOpen = Boolean(profileMenuAnchorEl);
+
+  const handleProfileMenuClose = () => {
+    setProfileMenuAnchorEl(null);
+  };
+
+  const handleAvatarClick = (event) => {
+    setProfileMenuAnchorEl(event.target);
+  }
+
+  const handleLogout = () => {
+    handleProfileMenuClose();
+    actions.logout();
+    history.push('/');
+  }
+
+  return (
+    <AppBar position="sticky" className={classes.appBar}>
+      <Toolbar>
+        {userContext.authorized && <IconButton edge="start" color="inherit" onClick={toggleDrawer}>
+          <MenuIcon />
+        </IconButton>}
+        <Box className={classes.logoContainer}>
+          <img src={NGLogo} className={classes.logoImg} alt="NavGurukul Logo" />
+          <Box className={classes.ngServiceNameContainer}>
+            <Typography variant="h6" style={{ fontWeight: 100 }}>
+              Admissions
+            </Typography>
+          </Box>
+        </Box>
+        {userContext.authorized && (
+          <Box>
+            <IconButton color="inherit" onClick={handleAvatarClick}>
+              <Avatar src={user.profile_picture ? user.profile_picture : undefined}>
+                {!user.profile_picture && getInitials(user.name)}
+              </Avatar>
+            </IconButton>
+            <Menu
+              id="user-avatar-menu"
+              anchorEl={profileMenuAnchorEl}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={profileMenuOpen}
+              onClose={handleProfileMenuClose}
+            >
+              <MenuItem onClick={handleProfileMenuClose}>Profile</MenuItem>
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            </Menu>
+          </Box>
+        )}
+      </Toolbar>
+    </AppBar>
+  );
+}
+
+
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators({ logout: () => ({type: 'USER_LOGOUT'}) }, dispatch)  
+});
+
+export default compose(
+  withUserContext,
+  connect(null, mapDispatchToProps),
+  withStyles(styles, { withTheme: true }),
+)(NGAppBar);

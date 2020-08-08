@@ -4,6 +4,8 @@ import path from 'path';
 import webpack from 'webpack';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import config from 'config';
+import Dotenv from 'dotenv-webpack';
+
 
 // Please read the following link if
 // you have no idea how to use this feature
@@ -150,6 +152,7 @@ export default {
     ],
   },
   plugins: [
+    new Dotenv(),
     new webpack.IgnorePlugin(/vertx/), // https://github.com/webpack/webpack/issues/353
     new CaseSensitivePathsPlugin(),
   ],

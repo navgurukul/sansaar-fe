@@ -6,6 +6,7 @@ import AuthSlice from './slice';
 export const selectAuthToken = (state) => get(state, `${AuthSlice.name}.token`);
 export const selectAuthPending = (state) => get(state, `${AuthSlice.name}.pending`);
 export const selectAuthError = (state) => get(state, `${AuthSlice.name}.error`);
+export const selectUser = (state) => get(state, `${AuthSlice.name}.user`);
 
 export const selectIsAuthorized = createSelector(
   selectAuthToken,

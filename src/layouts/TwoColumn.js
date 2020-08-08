@@ -1,7 +1,7 @@
 import React from 'react';
 import { withStyles, Box } from '@material-ui/core';
 
-import { renderRoutes } from '../providers/routing/helpers';
+import RoutesFromList from '../providers/routing/RoutesFromList';
 
 const styles = (theme) => ({
   mainPane: {
@@ -38,10 +38,9 @@ const TwoColumnLayout = ({ classes, mainPaneRoutes, rightPaneRoutes}) => {
   return (
     <React.Fragment>
       <Box className={classes.mainPane}>
-        { renderRoutes(mainPaneRoutes) }
+        <RoutesFromList routes={mainPaneRoutes} />
       </Box>
-      { renderRoutes(rightPaneRoutes, RightPaneWrapper) }
-
+      <RoutesFromList routes={rightPaneRoutes} WrapComponent={RightPaneWrapper} />
     </React.Fragment>
   );
 };
