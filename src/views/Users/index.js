@@ -2,21 +2,16 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Box, withStyles } from '@material-ui/core';
 import { compose } from 'recompose';
-
 import TwoColumnLayout from '../../layouts/TwoColumn';
+// import { connect } from 'react-redux';
+// import { fetchServerData } from '../../auth/asyncActions';
+// import { bindActionCreators } from 'redux';
+// import { startFetchRequest, fetchFailure, selectors } from '../../auth';
+import UserList from './UserList';
 
 const styles = () => ({});
 
-const UsersSection = ({ theme }) => {
-
-  const userList = () => (
-    <Box>
-      List of users comes here.
-      <br />
-      <br />
-      <Link to="/users/add">Add a user</Link>
-    </Box>
-  );
+const UsersSection = ({theme}) => {
 
   const mainPaneRoutes = [
     {
@@ -28,8 +23,8 @@ const UsersSection = ({ theme }) => {
     {
       path: '/users',
       exact: false,
+      component: UserList
       key: 'USERS_LIST',
-      component: userList
     },
   ];
 
@@ -47,6 +42,25 @@ const UsersSection = ({ theme }) => {
   );
 };
 
+
+// const mapStateToProps = (state) => {
+//   console.log(state, 'state from users')
+//   return(
+//     {
+//       fetchData: selectors.selectFetchedData(state),
+//     }
+//   )
+  
+// };
+
+// const mapDispatchToProps = (dispatch) => ({
+//   actions: bindActionCreators(
+//     { startFetchRequest, fetchFailure, fetchServerData },
+//     dispatch,
+//   ),
+// });
+
 export default compose(
+  // connect(mapStateToProps, mapDispatchToProps),
   withStyles(styles, { withTheme: true })
 )(UsersSection);

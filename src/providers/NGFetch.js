@@ -90,6 +90,7 @@ const isResponseJson = responseType => {
 };
 
 export const ngFetch = async (path, options = {}) => {
+  console.log(path,'path');
   const response = await fetch(makeUrl(path, options.query), createOptions(options));
   const responseType = response.headers.get('Content-Type');
 
