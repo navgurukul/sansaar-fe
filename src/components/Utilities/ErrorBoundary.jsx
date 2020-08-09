@@ -18,6 +18,7 @@ class ErrorBoundary extends PureComponent {
     };
   }
 
+  // eslint-disable-next-line no-unused-vars
   componentDidCatch(error, info) {
     // you probably want to log it somewhere
     this.setState({

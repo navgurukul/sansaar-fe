@@ -17,20 +17,18 @@ const UserAuthProvider = ({ children, authToken }) => {
     const fetchUser = async () => {
       if (!authToken) {
         setState({
-          ...state,
           user: null,
           userFetched: false,
           authorized: false
         })
-        return null;
+      } else {
+        const response = await ngFetch('/users/me');
+        setState({
+          user: response.user,
+          userFetched: true,
+          authorized: true
+        });
       }
-      const response = await ngFetch('/users/me');
-      setState({
-        ...state,
-        user: response.user,
-        userFetched: true,
-        authorized: true
-      });
     }
     fetchUser();
   }, [authToken]);

@@ -1,11 +1,11 @@
 import React from 'react';
+import queryString from 'query-string';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { selectors } from '../auth'
+import { logOutAction, selectors } from '../auth'
 import { API_HOST } from '../constants';
 import history from './routing/app-history';
-import logOutAction from '../auth';
 
 let ngAuthToken;
 let logout;
@@ -13,7 +13,7 @@ const IS_URL_RE = /^https?:\/\//;
 
 const NGFetchProvider = ({ authToken, children, actions }) => {
   ngAuthToken = authToken;
-  logout = actions.logout;
+  ({ logout } = actions);
   return (<React.Fragment>{children}</React.Fragment>);
 };
 
@@ -95,7 +95,6 @@ export const ngFetch = async (path, options = {}) => {
 
   if (responseType && isResponseJson(responseType)) {
     const body = await response.json();
-    console.log("response", response);
     if (response.status === 401) {
       logout();
       history.push('/login');

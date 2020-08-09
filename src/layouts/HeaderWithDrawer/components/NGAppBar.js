@@ -39,7 +39,7 @@ const styles = (theme) => ({
 });
 
 const getInitials = (name) => {
-  let tokens = name.split(' ').map(t => t[0]);
+  const tokens = name.split(' ').map(t => t[0]);
   return tokens.join('');
 }
 
@@ -72,9 +72,11 @@ const NGAppBar = ({
   return (
     <AppBar position="sticky" className={classes.appBar}>
       <Toolbar>
-        {userContext.authorized && <IconButton edge="start" color="inherit" onClick={toggleDrawer}>
+        {authorized && (
+        <IconButton edge="start" color="inherit" onClick={toggleDrawer}>
           <MenuIcon />
-        </IconButton>}
+        </IconButton>
+)}
         <Box className={classes.logoContainer}>
           <img src={NGLogo} className={classes.logoImg} alt="NavGurukul Logo" />
           <Box className={classes.ngServiceNameContainer}>
@@ -83,7 +85,7 @@ const NGAppBar = ({
             </Typography>
           </Box>
         </Box>
-        {userContext.authorized && (
+        {authorized && (
           <Box>
             <IconButton color="inherit" onClick={handleAvatarClick}>
               <Avatar src={user.profile_picture ? user.profile_picture : undefined}>

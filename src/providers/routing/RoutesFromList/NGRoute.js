@@ -17,7 +17,7 @@ const NGRoute = ({
   }
   const props = { ...route };
   if (Component) {
-    props.component = WrapComponent ? () => <WrapComponent><Component/></WrapComponent> : Component;
+    props.component = WrapComponent ? () => <WrapComponent><Component /></WrapComponent> : Component;
   }
   return <Route {...props} />;
 }

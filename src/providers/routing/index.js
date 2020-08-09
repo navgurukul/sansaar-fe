@@ -14,7 +14,8 @@ const FullPageLoader = () => (
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
-  }}>
+  }}
+  >
     <CircularProgress size={100} />
   </Box>
 );

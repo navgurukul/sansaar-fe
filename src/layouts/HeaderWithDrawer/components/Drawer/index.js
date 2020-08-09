@@ -44,7 +44,7 @@ const NGDrawer = ({ classes, location, open, toggleDrawer }) => {
         })}
         component={!item.children ? Link : null}
         to={item.url}
-        onClick={item.children ? () => toggleListItem(item.text) : null} 
+        onClick={item.children ? () => toggleListItem(item.text) : toggleDrawer} 
         selected={item.url === location.pathname}
       >
         <ListItemIcon>{item.icon}</ListItemIcon>
@@ -55,7 +55,7 @@ const NGDrawer = ({ classes, location, open, toggleDrawer }) => {
       {item.children && (
         <Collapse in={listItemsOpenState[item.text]} timeout="auto" unmountOnExit>
           <List disablePadding>
-            {item.children.map((item) => renderDrawerItem(item, true))}
+            {item.children.map((childItem) => renderDrawerItem(childItem, true))}
           </List>
         </Collapse>
       )}
@@ -64,7 +64,7 @@ const NGDrawer = ({ classes, location, open, toggleDrawer }) => {
 
   const drawerContent = (
     <React.Fragment>
-      <Box className={ classes.toolbar } />
+      <Box className={classes.toolbar} />
       <Divider />
       <List>
         {drawerItems.map((item) => renderDrawerItem(item))}
