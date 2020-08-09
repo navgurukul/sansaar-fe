@@ -2,21 +2,20 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Box, withStyles, Button } from '@material-ui/core';
 import { compose } from 'recompose';
-
 import TwoColumnLayout from '../../layouts/TwoColumn';
+import { connect } from 'react-redux';
+import { fetchServerData } from '../../auth/asyncActions';
+import { bindActionCreators } from 'redux';
+import { startFetchRequest, fetchFailure, selectors } from '../../auth';
+import UserList from './UserList';
 
 const styles = () => ({});
 
-const UsersSection = ({ theme }) => {
-
-  const userList = () => (
-    <Box>
-      {'List of users comes here.'}
-      <br />
-      <br />
-      <Link to="/users/add">Add a user</Link>
-    </Box>
-  );
+const UsersSection = (props) => {
+  const {theme, actions , fetchData} = props;
+  // console.log(fetchData, "Pralhad")
+  const invookeData = (data) => actions.fetchServerData(data)
+  console.log(fetchData, "Pralhad")
 
   const mainPaneRoutes = [
     {
@@ -27,7 +26,7 @@ const UsersSection = ({ theme }) => {
     {
       path: '/users',
       exact: false,
-      component: userList
+      component: () => (<UserList invookeData={invookeData}/> ) 
     },
   ];
 
@@ -44,6 +43,25 @@ const UsersSection = ({ theme }) => {
   );
 };
 
+
+const mapStateToProps = (state) => {
+  console.log(state, 'state from users')
+  return(
+    {
+      fetchData: selectors.selectFetchedData(state),
+    }
+  )
+  
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators(
+    { startFetchRequest, fetchFailure, fetchServerData },
+    dispatch,
+  ),
+});
+
 export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
   withStyles(styles, { withTheme: true })
 )(UsersSection);
