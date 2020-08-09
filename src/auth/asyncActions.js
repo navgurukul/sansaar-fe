@@ -9,10 +9,10 @@ const googleAuthSuccess = (googleResponse) => async (dispatch) => {
   dispatch(authSuccess({ userToken, user }));
 };
 
-const fetchServerData = () => async(dispatch) => {
-  const data = await ngFetch('https://jsonplaceholder.typicode.com/posts', { method: 'GET' });
-  console.log(data, 'data');
-  dispatch(fetchedDatafromSlice(data));
-};
+// const fetchServerData = () => async(dispatch) => {
+//   const data = await ngFetch('https://jsonplaceholder.typicode.com/posts', { method: 'GET' });
+//   console.log(data, 'data');
+//   dispatch(fetchedDatafromSlice(data));
+// };
 
-module.exports = { googleAuthSuccess, fetchServerData }
+module.exports = { googleAuthSuccess }
