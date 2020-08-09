@@ -20,10 +20,10 @@ const AuthSlice = createSlice({
       state.error = action.payload;
     },
     authSuccess: (state, action) => {
-      const { userToken, user } = action.payload;
-      localStorage.setItem(LOCALSTORAGE_JWT_KEY, userToken);
+      const { token, user } = action.payload;
+      localStorage.setItem(LOCALSTORAGE_JWT_KEY, token);
       state.user = user;
-      state.token = userToken;
+      state.token = token;
       state.pending = false;
       state.error = null;
     },

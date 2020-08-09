@@ -28,7 +28,6 @@ const LoginPage = ({
   theme,
   location,
 }) => {
-console.log(authToken,'authToken')
   const onGoogleLogin = (googleResponse) => actions.googleAuthSuccess(googleResponse);
 
   const onGoogleLoginError = (error) => actions.authFailure(error.error);
@@ -99,14 +98,11 @@ console.log(authToken,'authToken')
 };
 
 
-const mapStateToProps = (state) => {
-  // console.log(state,'state');
-  return(
-    {authToken: selectors.selectAuthToken(state),
-    authPending: selectors.selectAuthPending(state),
-    authError: selectors.selectAuthError(state),}
-  )
-};
+const mapStateToProps = (state) => ({
+  authToken: selectors.selectAuthToken(state),
+  authPending: selectors.selectAuthPending(state),
+  authError: selectors.selectAuthError(state)
+});
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(

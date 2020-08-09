@@ -18,7 +18,6 @@ import Avatar from '@material-ui/core/Avatar';
 
 export default function Tables(props) {
   const { columns, data, WidthMatches }= props;
-  console.log(WidthMatches, 'width from withWidth');
   // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
@@ -50,15 +49,7 @@ export default function Tables(props) {
     
   );
   
-
-
-  // console.log(rows, 'rows');
-  // console.log(page, 'page');
-  // console.log(state, 'state');
-  // console.log(pageIndex, 'index of page')
-
   const handleChangePage = (event,newPage) => {
-    // console.log(newPage, 'newPage')
     if (newPage === pageIndex + 1) {
       nextPage()
     } else if (newPage === pageIndex - 1) {
@@ -74,54 +65,49 @@ export default function Tables(props) {
   };
 
 
-  // console.log(getTableProps(), 'gett');
   // Render the UI for your table
   return (
 
     <TableContainer style={{height: 500}}>
 
-    {
-      WidthMatches ?
-      <Table {...getTableProps()} stickyHeader  aria-label="sticky table">
-        <TableHead>
-          {headerGroups.map(headerGroup => (
-            <TableRow {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => {
-                {/* console.log("column", column.getSortByToggleProps()) */}
+      {
+      WidthMatches ? (
+        <Table {...getTableProps()} stickyHeader aria-label="sticky table">
+          <TableHead>
+            {headerGroups.map(headerGroup => (
+              <TableRow {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map(column => {
                 return (
                   <TableCell
-                  align="center"
-                  {...column.getHeaderProps(column.getSortByToggleProps())}
-                  style={{fontWeight:'bold'}}
-
-                >
-                  {column.render("Header")}
-                  <span>
-                    {column.isSorted
+                    align="center"
+                    {...column.getHeaderProps(column.getSortByToggleProps())}
+                    style={{fontWeight:'bold'}}
+                  >
+                    {column.render("Header")}
+                    <span>
+                      {column.isSorted
                       ? column.isSortedDesc
                         ? ' 🔽'
                         : ' 🔼'
                       : ''}
-                  </span>
+                    </span>
 
-                </TableCell> 
+                  </TableCell> 
                 
                 );
               })}
-            </TableRow>
+              </TableRow>
           ))}
-        </TableHead>
-        <TableBody {...getTableBodyProps()}>
-          {page.map((row, i) => {
+          </TableHead>
+          <TableBody {...getTableBodyProps()}>
+            {page.map((row, i) => {
             prepareRow(row);
-            {/* console.log(row.cells, 'valllll'); */}
             return (
               <TableRow {...row.getRowProps()} hover>
                 {row.cells.map(cell => {
-                  {/* console.log(cell,'cell'); */}
                   return (
                     <TableCell {...cell.getCellProps()} align="center">
-                    {cell.render("Cell")}
+                      {cell.render("Cell")}
                     
                     </TableCell>
                   );
@@ -129,59 +115,62 @@ export default function Tables(props) {
               </TableRow>
             );
           })}
-        </TableBody>
-      </Table>
+          </TableBody>
+        </Table>
+    )
 
-      :
- 
+      : (
         <Fragment>
           {page.map((row, i) => {
             prepareRow(row);
-            {/* console.log(row.cells, 'valllll'); */}
             return (
-              <Card  {...getTableProps()} variant="outlined" style={{margin:20, borderRadius:20}} key={i}> 
-                <CardContent {...getTableBodyProps()}  key={i}>
-                    <span {...row.getRowProps()}>
-                      {row.cells.map(cell => {
-                        console.log(cell.column.priority,cell.value, 'priority')
+              <Card {...getTableProps()} variant="outlined" style={{margin:20, borderRadius:20}} key={i}> 
+                <CardContent {...getTableBodyProps()} key={i}>
+                  <span {...row.getRowProps()}>
+                    {row.cells.map(cell => {
                       return(
-                          <Fragment>
+                        <Fragment>
                           {cell.column.priority === 2 || cell.column.priority === 3 || cell.column.priority === 4 || 
-                            cell.column.priority  === 5 || cell.column.priority === 6? 
-                            <div style={{marginLeft:20}}>
-                                {cell.column.Header} : {cell.value}
-                            </div>
-                           : cell.column.priority === 1 ? 
-                           <Fragment>
-                           <CardHeader avatar ={
-                            <Avatar>K</Avatar>
+                            cell.column.priority  === 5 || cell.column.priority === 6? (
+                              <div style={{marginLeft:20}}>
+                                {cell.column.Header}
+                                {' '}
+                                :
+                                {cell.value}
+                              </div>
+                          )
+                           : cell.column.priority === 1 ? (
+                             <Fragment>
+                               <CardHeader
+                                 avatar={
+                                   <Avatar>K</Avatar>
                            }
-                           titleTypographyProps={{variant:'h5' }}
-                           title={cell.value}
-                          />
-                          </Fragment> : ''
+                                 titleTypographyProps={{variant:'h5' }}
+                                 title={cell.value}
+                               />
+                             </Fragment>
+                         ) : ''
                         
                           }
-                          </Fragment>
+                        </Fragment>
                       )
                       })}
-                    </span>
-                    </CardContent>
+                  </span>
+                </CardContent>
               </Card>
             );
           })}
-          </Fragment>
-     
-    }
+        </Fragment>
+      )}
       <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={rowCount}
-          rowsPerPage={pageSize}
-          page={pageIndex}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
+        rowsPerPageOptions={[5, 10, 25]}
+        component="div"
+        count={rowCount}
+        rowsPerPage={pageSize}
+        page={pageIndex}
+        onChangePage={handleChangePage}
+        onChangeRowsPerPage={handleChangeRowsPerPage}
+      />
     </TableContainer>
   );
 }

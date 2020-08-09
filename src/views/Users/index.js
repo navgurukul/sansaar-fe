@@ -23,7 +23,7 @@ const UsersSection = ({theme}) => {
     {
       path: '/users',
       exact: false,
-      component: UserList
+      component: UserList,
       key: 'USERS_LIST',
     },
   ];
@@ -44,7 +44,6 @@ const UsersSection = ({theme}) => {
 
 
 // const mapStateToProps = (state) => {
-//   console.log(state, 'state from users')
 //   return(
 //     {
 //       fetchData: selectors.selectFetchedData(state),

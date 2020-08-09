@@ -9,12 +9,12 @@ export const selectAuthPending = (state) => get(state, `${AuthSlice.name}.pendin
 export const selectAuthError = (state) => get(state, `${AuthSlice.name}.error`);
 export const selectUser = (state) => get(state, `${AuthSlice.name}.user`);
 
+export const selectIsAuthorized = createSelector(
+  selectAuthToken,
+  (authToken) => authToken !== null,
+);
 
 // export const selectFetchedData = (state) => get(state, `${AuthSlice.name}.data`);
 // export const selectFetchPending = (state) => get(state, `${UserSlice.name}.pending`);
 // export const selectFetchError = (state) => get(state, `${UserSlice.name}.error`);
 
-export const selectIsAuthorized = createSelector(
-  selectAuthToken,
-  (authToken) => authToken !== null,
-);

@@ -1,9 +1,6 @@
 import React,{useState, useEffect, Fragment} from 'react';
-import Table from '../../components/Table/Table';
 import { Box, withStyles, Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import { ngFetch } from '../../providers/NGFetch';
-import columns from './TableData';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import Container from '@material-ui/core/Container';
@@ -12,7 +9,11 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Grid from '@material-ui/core/Grid';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import columns from './TableData';
+import { ngFetch } from '../../providers/NGFetch';
+import Table from '../../components/Table/Table';
 import HeaderWithDrawer from '../../layouts/HeaderWithDrawer';
+
 function UserList(props) {
 
     // useMediaquery as to standardize code
@@ -44,7 +45,7 @@ useEffect( () => {
         // in SeachableText you will get the combined string of all tabledata's
         return(
           {...each, 
-            SeachableText: SeachableText
+            SeachableText
           }
         )
       }
@@ -54,7 +55,6 @@ useEffect( () => {
 
   // called my createSearchableText here and memoized dependent is data when data is changed it will call agian
   let DataWithSearchableText = React.useMemo(() => createSearchableText(data), [data]) ;
-  console.log(DataWithSearchableText, 'newww');
 
   // state for seach box
   const [search, setSearch] = useState('')
@@ -151,40 +151,39 @@ useEffect( () => {
   // console.log(screenSize,'screen');
 
     return(
-        <Fragment>
+      <Fragment>
         {/* <HeaderWithDrawer /> */}
         <Link to="/users/add">Add a user</Link>
 
-    <Container xs={12}  style={{marginTop:20}}>
-      <Paper elevation={3}>
-      <Grid container>
-          <Grid item xs={8}>
-              <h1 style={{marginLeft:15}}>React-Table</h1>
-          </Grid>
-          <Grid item xs={2}>
+        <Container xs={12} style={{marginTop:20}}>
+          <Paper elevation={3}>
+            <Grid container>
+              <Grid item xs={8}>
+                <h1 style={{marginLeft:15}}>React-Table</h1>
+              </Grid>
+              <Grid item xs={2}>
           
-            <TextField
-                    defaultValue={search}
-                    onChange={handleFilterChange}
-                    placeholder={"Search"}
-                    style={{marginTop:20}}
-                    
-                  />
+                <TextField
+                  defaultValue={search}
+                  onChange={handleFilterChange}
+                  placeholder="Search"
+                  style={{marginTop:20}}
+                />
           
-          </Grid>
+              </Grid>
 
-      </Grid>
+            </Grid>
 
-      {/* here finalData list contains column data based on minWidth of Screen */}
-      {/* here columns list we are going to render on Cards so columns conatins all the column Data. */}
-      {
+            {/* here finalData list contains column data based on minWidth of Screen */}
+            {/* here columns list we are going to render on Cards so columns conatins all the column Data. */}
+            {
         WidthMatches ?
-        <Table columns={finalData} data={DataWithSearchableText} WidthMatches={WidthMatches}/>
-        : <Table columns={columns} data={DataWithSearchableText} WidthMatches={WidthMatches}/>
+          <Table columns={finalData} data={DataWithSearchableText} WidthMatches={WidthMatches} />
+        : <Table columns={columns} data={DataWithSearchableText} WidthMatches={WidthMatches} />
       }
       
-      </Paper>
-    </Container>
+          </Paper>
+        </Container>
       </Fragment>
     )
 }
