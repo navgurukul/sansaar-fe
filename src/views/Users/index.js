@@ -13,6 +13,8 @@ const styles = () => ({});
 
 const UsersSection = ({theme}) => {
 
+  console.log(theme);
+
   const mainPaneRoutes = [
     {
       path: '/users/detail/add',

@@ -2,7 +2,7 @@ import thunk from 'redux-thunk';
 import { applyMiddleware, compose, createStore } from 'redux';
 import { createLogger } from 'redux-logger';
 
-import appReducer from './rootReducers';
+import appReducer from './appReducers';
 import { LOCALSTORAGE_JWT_KEY } from '../../constants';
 
 // Redux DevTools Extension for Chrome and Firefox
@@ -35,9 +35,9 @@ export default function configureStore(initialState) {
   const store = composedStoreEnhancer(createStore)(rootReducer, initialState);
 
   if (module.hot) {
-    module.hot.accept('./rootReducers', () => {
+    module.hot.accept('./appReducers', () => {
       // eslint-disable-next-line global-require
-      store.replaceReducer(require('./rootReducers'));
+      store.replaceReducer(require('./appReducers'));
     });
   }
 

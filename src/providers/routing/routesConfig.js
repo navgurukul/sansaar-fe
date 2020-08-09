@@ -12,7 +12,7 @@ const ROUTES = [
   },
   {
     path: '/users',
-    auth: true,
+    auth: false,
     key: 'USERS_SECTION',
     component: UsersSection,
   },
