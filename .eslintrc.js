@@ -13,6 +13,7 @@ module.exports = {
     "prettier"
   ],
   plugins: [
+    "react-hooks",
     "react",
     "prettier"
   ],
@@ -34,6 +35,8 @@ module.exports = {
     'jsx-a11y/href-no-hash': 0,
     'react/prop-types': 0,
     'react/jsx-filename-extension': [1, { "extensions": [".js", ".jsx"] }],
+    'react-hooks/rules-of-hooks': "error", // Checks rules of Hooks
+    'react-hooks/exhaustive-deps': "warn", // Checks effect dependencies
     'jsx-a11y/anchor-is-valid': [ "error", {
         'components': [ "Link" ],
         'specialLink': [ "to", "hrefLeft", "hrefRight" ],

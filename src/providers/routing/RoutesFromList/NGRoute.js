@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Redirect, withRouter } from 'react-router';
 import { compose } from 'recompose';
 
-import withUserContext from '../UserAuth/withUserContext';
+import withUserContext from '../../UserAuth/withUserContext';
 
 const NGRoute = ({
   component: Component,
@@ -17,7 +17,7 @@ const NGRoute = ({
   }
   const props = { ...route };
   if (Component) {
-    props.component = WrapComponent ? () => <WrapComponent><Component/></WrapComponent> : Component;
+    props.component = WrapComponent ? () => <WrapComponent><Component /></WrapComponent> : Component;
   }
   return <Route {...props} />;
 }

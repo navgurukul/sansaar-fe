@@ -10,13 +10,8 @@
 // don't make changes in here.
 import { createBrowserHistory } from 'history';
 
-// import { createHashHistory } from 'history';
-
-// const history = createHashHistory();
-
 const history = createBrowserHistory();
 
 // Exposing history for deep integration needs
 // For example, saga and utilities
 export default history;
-// export { history };

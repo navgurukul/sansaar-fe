@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { Box, withStyles, Button } from '@material-ui/core';
+import { Box, withStyles } from '@material-ui/core';
 import { compose } from 'recompose';
 import TwoColumnLayout from '../../layouts/TwoColumn';
 // import { connect } from 'react-redux';
@@ -13,17 +13,18 @@ const styles = () => ({});
 
 const UsersSection = ({theme}) => {
 
-
   const mainPaneRoutes = [
     {
       path: '/users/detail/add',
-      component: () => (<Box style={{ padding: theme.spacing(2) }}>{'Detailed add'}</Box>),
+      component: () => (<Box style={{ padding: theme.spacing(2) }}>Detailed add</Box>),
+      key: 'DETAIL_USER_ADD',
       exact: false,
     },
     {
       path: '/users',
       exact: false,
       component: UserList
+      key: 'USERS_LIST',
     },
   ];
 
@@ -31,6 +32,7 @@ const UsersSection = ({theme}) => {
     {
       path: '/users/add',
       component: () => <Link to="/users">Close</Link>,
+      key: 'USERS_ADD',
       exact: true,
     }
   ];

@@ -16,7 +16,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import NGLogo from '../../../assets/img/logoWhite.png';
-import { selectors as authSelectors } from '../../../auth'
+import { logOutAction } from '../../../auth'
 import withUserContext from '../../../providers/UserAuth/withUserContext';
 import history from '../../../providers/routing/app-history';
 
@@ -39,7 +39,7 @@ const styles = (theme) => ({
 });
 
 const getInitials = (name) => {
-  let tokens = name.split(' ').map(t => t[0]);
+  const tokens = name.split(' ').map(t => t[0]);
   return tokens.join('');
 }
 
@@ -66,15 +66,17 @@ const NGAppBar = ({
   const handleLogout = () => {
     handleProfileMenuClose();
     actions.logout();
-    history.push('/');
+    history.push('/login');
   }
 
   return (
     <AppBar position="sticky" className={classes.appBar}>
       <Toolbar>
-        {userContext.authorized && <IconButton edge="start" color="inherit" onClick={toggleDrawer}>
+        {authorized && (
+        <IconButton edge="start" color="inherit" onClick={toggleDrawer}>
           <MenuIcon />
-        </IconButton>}
+        </IconButton>
+)}
         <Box className={classes.logoContainer}>
           <img src={NGLogo} className={classes.logoImg} alt="NavGurukul Logo" />
           <Box className={classes.ngServiceNameContainer}>
@@ -83,7 +85,7 @@ const NGAppBar = ({
             </Typography>
           </Box>
         </Box>
-        {userContext.authorized && (
+        {authorized && (
           <Box>
             <IconButton color="inherit" onClick={handleAvatarClick}>
               {/* <Avatar src={user.profile_picture ? user.profile_picture : undefined}>
@@ -117,7 +119,7 @@ const NGAppBar = ({
 
 
 const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators({ logout: () => ({type: 'USER_LOGOUT'}) }, dispatch)  
+  actions: bindActionCreators({ logout: logOutAction }, dispatch)  
 });
 
 export default compose(

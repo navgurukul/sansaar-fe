@@ -2,7 +2,8 @@ import AuthSlice from './slice';
 import UserSlice from './UserSlice';
 import * as selectors from './selectors';
 
-export const { startAuthRequest, authFailure, authSuccess, fetchedDatafromSlice } = AuthSlice.actions;
-// export const { startFetchRequest, fetchFailure, fetchSuccess} = UserSlice.actions;
+const logOutAction = () => ({type: 'USER_LOGOUT'});
 
-export { AuthSlice, selectors, UserSlice };
+export const { startAuthRequest, authFailure, authSuccess, fetchedDatafromSlice } = AuthSlice.actions;
+
+export { AuthSlice, selectors, logOutAction, UserSlice };

@@ -3,7 +3,7 @@ import GoogleLogin from 'react-google-login';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import {
   withStyles, Box, Avatar, Button,
-} from '@material-ui/core';
+ Container } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { bindActionCreators } from 'redux';
 import { compose } from 'recompose';
@@ -16,7 +16,7 @@ import history from '../../providers/routing/app-history';
 import Spacer from '../../components/Spacer';
 
 
-import { Container } from '@material-ui/core';
+
 
 const styles = () => ({});
 
@@ -26,6 +26,7 @@ const LoginPage = ({
   authPending,
   actions,
   theme,
+  location,
 }) => {
 console.log(authToken,'authToken')
   const onGoogleLogin = (googleResponse) => actions.googleAuthSuccess(googleResponse);
@@ -36,14 +37,14 @@ console.log(authToken,'authToken')
 
   useEffect(() => {
     if (authToken) {
-      /* eslint-disable no-restricted-globals */
       const { state: locationState } = location;
       const redirectTo = locationState && locationState.from !== null
         ? locationState.from
         : '/home';
       history.push(redirectTo);
     }
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authToken]);
 
   return (
     <React.Fragment>
