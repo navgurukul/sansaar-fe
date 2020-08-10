@@ -1,14 +1,12 @@
 import React,{useState, useEffect, Fragment} from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import TextField from '@material-ui/core/TextField';
-import { useTheme } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 import columns from './TableData';
 import { ngFetch } from '../../providers/NGFetch';
 import TableOrCardList from '../../components/TableOrCardList';
-
 import { selectors as layoutSelectors } from '../../layouts/TwoColumn/store';
-import { connect } from 'react-redux';
+
 
 function UserList({ mainPaneWidth }) {
   
@@ -32,13 +30,14 @@ function UserList({ mainPaneWidth }) {
   return(
     <Fragment>
       <Link to="/users/add">Add a user</Link>
-        
+      <br/>
+      <Link to="/users/edit/userid">Edit a user</Link>
       <TextField
         defaultValue={search}
         onChange={handleFilterChange}
         placeholder="Search"
         style={{marginTop:20}}
-      />
+       />
 
       <TableOrCardList
         columns={columns}
