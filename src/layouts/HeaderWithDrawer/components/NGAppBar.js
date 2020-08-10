@@ -19,6 +19,7 @@ import NGLogo from '../../../assets/img/logoWhite.png';
 import { logOutAction } from '../../../auth'
 import withUserContext from '../../../providers/UserAuth/withUserContext';
 import history from '../../../providers/routing/app-history';
+import { getInitialsFromName } from '../../../helpers';
 
 const styles = (theme) => ({
   appBar: {
@@ -37,11 +38,6 @@ const styles = (theme) => ({
     marginLeft: theme.spacing(1),
   },
 });
-
-const getInitials = (name) => {
-  const tokens = name.split(' ').map(t => t[0]);
-  return tokens.join('');
-}
 
 const NGAppBar = ({
   classes,
@@ -88,9 +84,9 @@ const NGAppBar = ({
         {authorized && (
           <Box>
             <IconButton color="inherit" onClick={handleAvatarClick}>
-              {/* <Avatar src={user.profile_picture ? user.profile_picture : undefined}>
+              <Avatar src={user.profile_picture ? user.profile_picture : undefined}>
                 {!user.profile_picture && getInitials(user.name)}
-              </Avatar> */}
+              </Avatar>
             </IconButton>
             <Menu
               id="user-avatar-menu"

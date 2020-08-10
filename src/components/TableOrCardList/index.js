@@ -1,26 +1,20 @@
 
-import React, {Fragment} from "react";
-import { useTable, useFilters, useSortBy, usePagination } from "react-table";
-import Table from '@material-ui/core/Table';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableBody from '@material-ui/core/TableBody'
-import TableCell from '@material-ui/core/TableCell'
-import TableHead from '@material-ui/core/TableHead'
-import TableRow from '@material-ui/core/TableRow';
-import TablePagination from '@material-ui/core/TablePagination';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import Avatar from '@material-ui/core/Avatar';
-import { Paper, withTheme } from "@material-ui/core";
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { compose } from "recompose";
-import { connect } from "react-redux";
+import React from "react";
 import get from 'lodash/get';
-import _ from 'underscore';
+import { useTable, useFilters, useSortBy, usePagination } from "react-table";
+import {
+  Table,
+  TableContainer,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow ,
+  TablePagination,
+  Paper,
+  withTheme,
+  useMediaQuery,
+  Box
+} from '@material-ui/core';
 
 const TableOrCardList = ({
   columns,
@@ -28,7 +22,7 @@ const TableOrCardList = ({
   theme,
   containerWidth,
   searchQuery,
-  realData,
+  renderCard,
 }) => {
 
   const visibleTableColumns = React.useMemo(() => {
@@ -36,8 +30,8 @@ const TableOrCardList = ({
       if (!numCols) {
         numCols = columns.length;
       }
-      const newColumns = _.filter(columns, h => h.priority <= numCols);
-      const tableWidth = _.reduce(newColumns, (sum, h) => sum + h.minWidth, 0);
+      const newColumns = columns.filter(h => h.priority <= numCols);
+      const tableWidth = newColumns.reduce((sum, h) => sum + h.minWidth, 0);
       if (tableWidth <= containerWidth) {
         return newColumns;
       } if (numCols <= 1) {
@@ -91,7 +85,6 @@ const TableOrCardList = ({
     useFilters,
     useSortBy,
     usePagination,
-    
   );
   
   const handleChangePage = (event,newPage) => {
@@ -114,101 +107,54 @@ const TableOrCardList = ({
       <TableHead>
         {headerGroups.map(headerGroup => (
           <TableRow {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map(column => {
-            return (
-              <TableCell
-                align="center"
-                {...column.getHeaderProps(column.getSortByToggleProps())}
-                style={{fontWeight:'bold'}}
-              >
+            {headerGroup.headers.map(column => (
+              <TableCell {...column.getHeaderProps(column.getSortByToggleProps())}>
                 {column.render("Header")}
                 <span>
-                  {column.isSorted
-                  ? column.isSortedDesc
-                    ? ' 🔽'
-                    : ' 🔼'
-                  : ''}
+                  {column.isSorted ? (column.isSortedDesc ? ' 🔽' : ' 🔼') : ''}
                 </span>
-
-              </TableCell> 
-            
-            );
-          })}
+              </TableCell>
+            ))}
           </TableRow>
       ))}
       </TableHead>
       <TableBody {...getTableBodyProps()}>
-        {page.map((row, i) => {
-        prepareRow(row);
-        return (
-          <TableRow {...row.getRowProps()} hover>
-            {row.cells.map(cell => {
-              return (
-                <TableCell {...cell.getCellProps()} align="center">
-                  {cell.render("Cell")}
-                
-                </TableCell>
-              );
-            })}
-          </TableRow>
-        );
-      })}
+        {page.map((row) => {
+          prepareRow(row);
+          return (
+            <TableRow {...row.getRowProps()} hover>
+              {row.cells.map(cell => {
+                return (
+                  <TableCell {...cell.getCellProps()}>
+                    {cell.render("Cell")}
+                  </TableCell>
+                );
+              })}
+            </TableRow>
+          );
+        })}
       </TableBody>
     </Table>
   );
 
   const renderCards = () => (
-    <Fragment>
-      {page.map((row, i) => {
-        prepareRow(row);
-        return (
-          <Card {...getTableProps()} variant="outlined" style={{margin:20, borderRadius:20}} key={i}> 
-            <CardContent {...getTableBodyProps()} key={i}>
-              <span {...row.getRowProps()}>
-                {row.cells.map(cell => {
-                  return(
-                    <Fragment>
-                      {cell.column.priority === 2 || cell.column.priority === 3 || cell.column.priority === 4 || 
-                        cell.column.priority  === 5 || cell.column.priority === 6? (
-                          <div style={{marginLeft:20}}>
-                            {cell.column.Header}
-                            {' '}
-                            :
-                            {cell.value}
-                          </div>
-                      )
-                      : cell.column.priority === 1 ? (
-                        <Fragment>
-                          <CardHeader
-                            avatar={
-                              <Avatar>K</Avatar>
-                      }
-                            titleTypographyProps={{variant:'h5' }}
-                            title={cell.value}
-                          />
-                        </Fragment>
-                    ) : ''
-                    
-                      }
-                    </Fragment>
-                  )
-                  })}
-              </span>
-            </CardContent>
-          </Card>
-        );
-      })}
-    </Fragment>
-  );
+    <React.Fragment>
+      {page.map((row, i) => (
+        <Box key={i}>
+          {renderCard(row.original, i)}
+        </Box>
+      ))}
+    </React.Fragment>
+  )
 
   const screenAboveSm = useMediaQuery(theme.breakpoints.up('sm'))
-
+ 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={screenAboveSm ? Paper : undefined}>
       { screenAboveSm ? renderTable() : renderCards() }
       <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
+        rowsPerPageOptions={[25, 50, 75, 100]}
+        component={screenAboveSm ? 'div' : Paper}
         count={rowCount}
         rowsPerPage={pageSize}
         page={pageIndex}

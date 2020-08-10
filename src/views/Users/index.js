@@ -7,7 +7,7 @@ import TwoColumnLayout from '../../layouts/TwoColumn';
 // import { fetchServerData } from '../../auth/asyncActions';
 // import { bindActionCreators } from 'redux';
 // import { startFetchRequest, fetchFailure, selectors } from '../../auth';
-import UserList from './UserList';
+import UsersList from './UsersList';
 
 const styles = () => ({});
 
@@ -25,7 +25,7 @@ const UsersSection = ({theme}) => {
     {
       path: '/users',
       exact: false,
-      component: UserList,
+      component: UsersList,
       key: 'USERS_LIST',
     },
   ];
