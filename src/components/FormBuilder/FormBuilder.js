@@ -1,6 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import React, {useEffect} from 'react';
 import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers';
 import {
   InputLabel,
   MenuItem,
@@ -26,32 +27,27 @@ import 'date-fns';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 
 export default function FormBuilder({
-  list, onClick, id, notes, slug, name, mobile, stage, partnerName,
+  list, onClick, id, firstName
 }) {
   const schema = yup.object().shape({});
-  function dictUpdate(value) {
+  function SchemUpdate(value) {
     schema.fields[value.name] = value.validation;
     schema._nodes.push(value.name);
     return null;
   }
+
   const {
-    register, handleSubmit, errors, control, getValues, setValue,
+    register, handleSubmit, errors, control, getValues, setValue, watch
   } = useForm({
     validationSchema: schema,
     mode: 'onBlur',
     submitFocusError: false,
+    resolver: yupResolver(schema),
     defaultValues: {
-      notes,
-      slug,
-      name,
-      mobile,
-      stage,
-      partnerName,
-      id,
+      firstName
     },
   });
 
-  console.log(errors, 'errors');
   const onSubmit = (values) => {
     alert(JSON.stringify(values, null, 2));
     onClick({ values, id });
@@ -62,10 +58,10 @@ export default function FormBuilder({
         {list.map((e) => (e.type === 'text'
           ? (
             <section key={e.name} style={{ marginTop: '20px' }}>
-              {dictUpdate(e)}
+              {SchemUpdate(e)}
               <TextField
                 {...e.customProps}
-                error={errors[e.name]}
+                error={!!errors[e.name]}
                 name={e.name}
                 inputRef={register}
                 helperText={errors[e.name] && errors[e.name].message}
@@ -76,7 +72,7 @@ export default function FormBuilder({
           : e.type === 'select'
             ? (
               <section key={e.name} style={{ marginTop: '20px' }}>
-                {dictUpdate(e)}
+                {SchemUpdate(e)}
                 <FormControl
                   error={Boolean(errors[e.name])}
                   variant={e.customProps.variant ? e.customProps.variant : 'standard'}
@@ -108,7 +104,7 @@ export default function FormBuilder({
             : e.type === 'date'
               ? (
                 <section>
-                  {dictUpdate(e)}
+                  {SchemUpdate(e)}
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <Grid container justify="space-around" style={{ marginTop: '20px' }}>
                       <FormControl
@@ -135,7 +131,7 @@ export default function FormBuilder({
                 ? (
                   <FormControl component="fieldset" error={Boolean(errors[e.name])} style={{ marginTop: '20px' }}>
                     <FormLabel component="legend" style={{ textAlign: 'left' }}>{e.labelText}</FormLabel>
-                    {dictUpdate(e)}
+                    {SchemUpdate(e)}
                     <Controller
                       as={(
                         <RadioGroup aria-label="gender">
@@ -157,7 +153,7 @@ export default function FormBuilder({
                 : e.type === 'checkbox'
                   ? (
                     <div>
-                      {dictUpdate(e)}
+                      {SchemUpdate(e)}
                       <FormControl error={Boolean(errors[e.name])}>
                         <FormLabel component="legend" style={{ marginTop: '10px', textAlign: 'left' }}>{e.labelText}</FormLabel>
                         <FormGroup>
@@ -183,7 +179,7 @@ export default function FormBuilder({
                   : e.type === 'slider'
                     ? (
                       <FormControl style={{ width: '200px' }} error={Boolean(errors[e.name])}>
-                        {dictUpdate(e)}
+                        {SchemUpdate(e)}
                         <FormLabel><Typography id="discrete-slider" gutterBottom>{e.name}</Typography></FormLabel>
                         <Controller
                           name={e.name}
@@ -197,7 +193,7 @@ export default function FormBuilder({
                     : e.type === 'switch'
                       ? (
                         <section name="switch">
-                          {dictUpdate(e)}
+                          {SchemUpdate(e)}
                           <FormControl error={Boolean(errors[e.name])}>
                             <Controller
                               as={(
