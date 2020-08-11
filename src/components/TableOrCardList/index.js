@@ -1,4 +1,3 @@
-
 import React from "react";
 import get from 'lodash/get';
 import { useTable, useFilters, useSortBy, usePagination } from "react-table";
@@ -24,45 +23,48 @@ const TableOrCardList = ({
   searchQuery,
   renderCard,
 }) => {
-
   const visibleTableColumns = React.useMemo(() => {
     const getVisibleColumns = (columns, numCols) => {
       if (!numCols) {
-        numCols = columns.length;
+        numCols = columns.length
       }
       const newColumns = columns.filter(h => h.priority <= numCols);
       const tableWidth = newColumns.reduce((sum, h) => sum + h.minWidth, 0);
+
       if (tableWidth <= containerWidth) {
-        return newColumns;
-      } if (numCols <= 1) {
-        return newColumns;
+        return newColumns
       }
-      return getVisibleColumns(newColumns, numCols - 1);
+      if (numCols <= 1) {
+        return newColumns
+      }
+      return getVisibleColumns(newColumns, numCols - 1)
     }
-    return getVisibleColumns(columns);
-  }, [containerWidth]);
+    return getVisibleColumns(columns)
+  }, [containerWidth])
 
   const searchableKeys = React.useMemo(() => {
-    return columns.filter(c => c.search).map(c => c.accessor);
-  }, [columns]);
+    return columns.filter(c => c.search).map(c => c.accessor)
+  }, [columns])
 
   const allData = React.useMemo(() => {
     return data.map(row => {
-      const searchableText = searchableKeys.map(key => get(row, key, ''))
+      const searchableText = searchableKeys
+        .map(key => get(row, key, ""))
         .filter(str => Boolean(str))
         .map(str => str.toString().toLowerCase())
-        .join(';');
-      return { ...row, searchableText };
-    });
-  }, [data, searchableKeys]);
-
+        .join(";")
+      return { ...row, searchableText }
+    })
+  }, [data, searchableKeys])
 
   const visibleData = React.useMemo(() => {
     if (!searchQuery) {
-      return allData;
-    }    
-    return allData.filter((row) => row.searchableText.indexOf(searchQuery.toLowerCase()) > -1)
-  }, [allData, searchQuery]);
+      return allData
+    }
+    return allData.filter(
+      row => row.searchableText.indexOf(searchQuery.toLowerCase()) > -1
+    )
+  }, [allData, searchQuery])
 
   const {
     getTableProps,
@@ -80,14 +82,14 @@ const TableOrCardList = ({
     {
       columns: visibleTableColumns,
       data: visibleData,
-      initialState: {pageSize : 25, pageIndex: 0 }
+      initialState: { pageSize: 25, pageIndex: 0 },
     },
     useFilters,
     useSortBy,
-    usePagination,
-  );
-  
-  const handleChangePage = (event,newPage) => {
+    usePagination
+  )
+
+  const handleChangePage = (event, newPage) => {
     if (newPage === pageIndex + 1) {
       nextPage()
     } else if (newPage === pageIndex - 1) {
@@ -95,12 +97,11 @@ const TableOrCardList = ({
     } else {
       gotoPage(newPage)
     }
-  };
+  }
 
-  const handleChangeRowsPerPage = (event) => {
-    setPageSize(event.target.value);
-  };
-  
+  const handleChangeRowsPerPage = event => {
+    setPageSize(event.target.value)
+  }
 
   const renderTable = () => (
     <Table {...getTableProps()} stickyHeader aria-label="sticky table">
@@ -135,7 +136,7 @@ const TableOrCardList = ({
         })}
       </TableBody>
     </Table>
-  );
+  )
 
   const renderCards = () => (
     <React.Fragment>
@@ -162,7 +163,7 @@ const TableOrCardList = ({
         onChangeRowsPerPage={handleChangeRowsPerPage}
       />
     </TableContainer>
-  );
+  )
 }
 
-export default withTheme(TableOrCardList);
+export default withTheme(TableOrCardList)
