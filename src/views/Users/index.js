@@ -5,6 +5,7 @@ import { compose } from 'recompose';
 import TwoColumnLayout from '../../layouts/TwoColumn';
 import UsersList from './UsersList';
 import UserEdit from './UserEdit';
+
 const styles = () => ({});
 
 const UsersSection = ({theme}) => {
