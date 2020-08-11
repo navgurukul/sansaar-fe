@@ -18,7 +18,7 @@ const styles = (theme) => ({
 const UserRoleChips = ({ rolesList, classes }) => (
   <Box className={classes.container}>
     {rolesList.length === 0 ? (
-      <Chip className={classes.chip} label={'No Roles'} disabled />
+      <Chip className={classes.chip} label={'No Roles Assigned'} disabled />
     ) : (
       rolesList.map(role => <Chip className={classes.chip} label={role} key={role} />)
     )}
