@@ -1,6 +1,5 @@
 import React from 'react';
 import moment from 'moment';
-import { Avatar, Chip } from '@material-ui/core';
 
 import { getInitialsFromName } from '../../../helpers'
 import UserRoleChips from '../components/UserCard/UserRoleChips';

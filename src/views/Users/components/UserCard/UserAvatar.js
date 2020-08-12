@@ -6,7 +6,7 @@ import { getInitialsFromName } from '../../../../helpers';
 const UserAvatar = ({ name, profilePicture, widthHeight }) => {
   const style = widthHeight ? { height: widthHeight, width: widthHeight } : undefined;
   return (
-    <Avatar src={profilePicture ? profilePicture : undefined} style={style}>{getInitialsFromName(name)}</Avatar>
+    <Avatar src={profilePicture || undefined} style={style}>{getInitialsFromName(name)}</Avatar>
   )
 }
 

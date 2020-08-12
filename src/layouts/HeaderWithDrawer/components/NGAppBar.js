@@ -85,7 +85,7 @@ const NGAppBar = ({
           <Box>
             <IconButton color="inherit" onClick={handleAvatarClick}>
               <Avatar src={user.profile_picture ? user.profile_picture : undefined}>
-                {!user.profile_picture && getInitials(user.name)}
+                {getInitialsFromName(user.name)}
               </Avatar>
             </IconButton>
             <Menu

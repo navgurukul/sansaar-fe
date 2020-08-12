@@ -108,13 +108,14 @@
     "history": "^4.7.2",
     "immutable": "^4.0.0-rc.12",
     "lodash": "^4.17.15",
+    "moment": "^2.27.0",
     "prop-types": "^15.7.2",
     "query-string": "^6.13.1",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
     "react-google-login": "^5.1.14",
     "react-helmet": "^5.2.0",
-    "react-hook-form": "^6.3.1",
+    "react-hook-form": "^6.3.2",
     "react-intl": "^2.8.0",
     "react-loadable": "^5.5.0",
     "react-redux": "^7.0.3",
@@ -132,7 +133,6 @@
     "underscore": "^1.10.2",
     "yup": "^0.29.3"
   },
-
   "keywords": [
     "react",
     "redux",

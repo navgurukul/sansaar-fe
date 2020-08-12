@@ -1,24 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Box, withStyles } from '@material-ui/core';
-import { compose } from 'recompose';
 import TwoColumnLayout from '../../layouts/TwoColumn';
 import UsersList from './UsersList';
-import UserEdit from './UserEdit';
+import UserView from './UserView';
 
-const styles = () => ({});
-
-const UsersSection = ({theme}) => {
-
-  console.log(theme);
+const UsersSection = () => {
 
   const mainPaneRoutes = [
-    {
-      path: '/users/detail/add',
-      component: () => (<Box style={{ padding: theme.spacing(2) }}>Detailed add</Box>),
-      key: 'DETAIL_USER_ADD',
-      exact: false,
-    },
     {
       path: '/users',
       exact: false,
@@ -29,16 +16,10 @@ const UsersSection = ({theme}) => {
 
   const rightPaneRoutes = [
     {
-      path: '/users/add',
-      component: () => <Link to="/users">Close</Link>,
-      key: 'USERS_ADD',
+      path: '/users/:userId',
       exact: true,
-    },
-    {
-      path: '/users/edit/userid',
-      component: UserEdit,
-      key: 'USERS_ADD',
-      exact: true,
+      component: UserView,
+      key: 'USERS_VIEW',
     }
   ];
 
@@ -48,6 +29,4 @@ const UsersSection = ({theme}) => {
 };
 
 
-export default compose(
-  withStyles(styles, { withTheme: true })
-)(UsersSection);
+export default UsersSection;

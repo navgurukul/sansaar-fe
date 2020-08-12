@@ -22,6 +22,7 @@ const TableOrCardList = ({
   containerWidth,
   searchQuery,
   renderCard,
+  onRowClick
 }) => {
   const visibleTableColumns = React.useMemo(() => {
     const getVisibleColumns = (columns, numCols) => {
@@ -40,11 +41,11 @@ const TableOrCardList = ({
       return getVisibleColumns(newColumns, numCols - 1)
     }
     return getVisibleColumns(columns)
-  }, [containerWidth])
+  }, [containerWidth]);
 
   const searchableKeys = React.useMemo(() => {
     return columns.filter(c => c.search).map(c => c.accessor)
-  }, [columns])
+  }, [columns]);
 
   const allData = React.useMemo(() => {
     return data.map(row => {
@@ -55,7 +56,7 @@ const TableOrCardList = ({
         .join(";")
       return { ...row, searchableText }
     })
-  }, [data, searchableKeys])
+  }, [data, searchableKeys]);
 
   const visibleData = React.useMemo(() => {
     if (!searchQuery) {
@@ -64,7 +65,7 @@ const TableOrCardList = ({
     return allData.filter(
       row => row.searchableText.indexOf(searchQuery.toLowerCase()) > -1
     )
-  }, [allData, searchQuery])
+  }, [allData, searchQuery]);
 
   const {
     getTableProps,
@@ -123,7 +124,11 @@ const TableOrCardList = ({
         {page.map((row) => {
           prepareRow(row);
           return (
-            <TableRow {...row.getRowProps()} hover>
+            <TableRow
+              {...row.getRowProps()}
+              onClick={onRowClick ? () => onRowClick(row.original.id) : undefined}
+              hover
+            >
               {row.cells.map(cell => {
                 return (
                   <TableCell {...cell.getCellProps()}>

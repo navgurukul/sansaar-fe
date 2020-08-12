@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
-
 import { connect } from 'react-redux';
+
 import { selectors as authSelectors } from '../../auth';
 import { ngFetch } from '../NGFetch';
 
@@ -11,30 +11,34 @@ const UserAuthProvider = ({ children, authToken }) => {
     user: null,
     userFetched: false,
     authorized: authToken !== undefined || authToken !== null,
-  })
+    editableRoles: [],
+  });
+
+  const refreshUserDetails = async () => await fetchUser();
+
+  const fetchUser = async () => {
+    if (!authToken) {
+      setState({
+        user: null,
+        userFetched: false,
+        authorized: false
+      })
+    } else {
+      const response = await ngFetch('/users/me');
+      setState({
+        user: response.user,
+        userFetched: true,
+        authorized: true,
+      });
+    }
+  }
 
   useEffect(() => {
-    const fetchUser = async () => {
-      if (!authToken) {
-        setState({
-          user: null,
-          userFetched: false,
-          authorized: false
-        })
-      } else {
-        const response = await ngFetch('/users/me');
-        setState({
-          user: response.user,
-          userFetched: true,
-          authorized: true
-        });
-      }
-    }
     fetchUser();
   }, [authToken]);
   
   return (
-    <UserAuthContext.Provider value={state}>
+    <UserAuthContext.Provider value={{ ...state, refreshUserDetails }}>
       {children}
     </UserAuthContext.Provider>
   );

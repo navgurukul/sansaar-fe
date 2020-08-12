@@ -1,23 +1,24 @@
 import React,{useState, useEffect, Fragment} from 'react';
-import { Link } from 'react-router-dom';
-import { TextField, Card, CardContent, Avatar, Typography, Box } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import tableColumns from './table';
 import UserCard from '../components/UserCard';
 import TableOrCardList from '../../../components/TableOrCardList';
 import { ngFetch } from '../../../providers/NGFetch';
 import { selectors as layoutSelectors } from '../../../layouts/TwoColumn/store';
+import { setAllUsers , selectors as userSelectors } from '../store';
+
+import history from '../../../providers/routing/app-history';
 
 
-
-function UserList({ mainPaneWidth }) {
+function UserList({ mainPaneWidth, actions, allUsers }) {
   
-  const [users, setUsers] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       const response = await ngFetch('/users', { method: 'GET'});
-      setUsers(response.users);
+      actions.setAllUsers(response.users);
     };
     fetchData();
   }, []);
@@ -40,9 +41,14 @@ function UserList({ mainPaneWidth }) {
     />
   )
 
-  return(
+  const users = React.useMemo(() => Object.values(allUsers), [allUsers]);
+
+  const handleRowClick = (userId) => {
+    history.push(`/users/${userId}`)
+  }
+
+  return (
     <Fragment>
-      <Link to="/users/add">Add a user</Link>
         
       <TextField
         defaultValue={searchQuery}
@@ -56,6 +62,7 @@ function UserList({ mainPaneWidth }) {
         data={users}
         containerWidth={mainPaneWidth}
         renderCard={userCard}
+        onRowClick={handleRowClick}
       />
 
     </Fragment>
@@ -64,6 +71,11 @@ function UserList({ mainPaneWidth }) {
 
 const mapStateToProps = (state) => ({
   mainPaneWidth: layoutSelectors.selectMainPaneWidth(state),
+  allUsers: userSelectors.selectAllUsers(state),
 });
 
-export default connect(mapStateToProps)(UserList);
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators({ setAllUsers }, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserList);

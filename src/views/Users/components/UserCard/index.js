@@ -30,7 +30,7 @@ const UserCard = ({
   classes,
   theme,
 }) => (
-  <Card key={key ? key : undefined} className={classes.container} variant="outlined">
+  <Card key={key || undefined} className={classes.container} variant="outlined">
     <CardContent>
       <Box className={classes.header}>
         <UserAvatar name={name} profilePicture={profilePicture} widthHeight={theme.spacing(6)} />
@@ -41,7 +41,10 @@ const UserCard = ({
       </Box>
       <Spacer height={theme.spacing(1)} />
       <UserRoleChips rolesList={rolesList} />
-      <Typography variant="overline">Joined { moment(joinedAt).fromNow() }</Typography>
+      <Typography variant="overline">
+        Joined
+        { moment(joinedAt).fromNow() }
+      </Typography>
     </CardContent>
   </Card>
 );

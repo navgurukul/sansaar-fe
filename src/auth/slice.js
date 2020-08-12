@@ -27,12 +27,6 @@ const AuthSlice = createSlice({
       state.pending = false;
       state.error = null;
     },
-    fetchedDatafromSlice: (state, action) => {
-      const data = action.payload;
-      state.data = data;
-      state.pending = false;
-      state.error = null;
-    },
   },
 });
 
