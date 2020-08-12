@@ -15,6 +15,8 @@ const styles = (theme) => ({
     zIndex: 10,
     background: '#fff',
     overflow: 'scroll',
+    borderColor: theme.palette.grey[500],
+    borderLeft: '1px solid',
     [theme.breakpoints.up('md')]: {
       width: '30vw',
       left: '70vw',

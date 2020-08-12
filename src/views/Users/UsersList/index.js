@@ -1,8 +1,9 @@
 import React,{useState, useEffect, Fragment} from 'react';
-import { TextField } from '@material-ui/core';
+import { TextField, Typography, ThemeProvider, withTheme } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import { compose } from 'recompose';
 import tableColumns from './table';
 import UserCard from '../components/UserCard';
 import TableOrCardList from '../../../components/TableOrCardList';
@@ -11,9 +12,10 @@ import { selectors as layoutSelectors } from '../../../layouts/TwoColumn/store';
 import { setAllUsers , selectors as userSelectors } from '../store';
 
 import history from '../../../providers/routing/app-history';
+import Spacer from '../../../components/Spacer';
 
 
-function UserList({ mainPaneWidth, actions, allUsers }) {
+function UserList({ mainPaneWidth, actions, allUsers, theme }) {
   
   useEffect(() => {
     const fetchData = async () => {
@@ -22,12 +24,6 @@ function UserList({ mainPaneWidth, actions, allUsers }) {
     };
     fetchData();
   }, []);
-
-  const [searchQuery, setSearch] = useState('')
-  const  onSearchQueryChange = e => {
-    const value = e.target.value || undefined;
-    setSearch(value);
-  };
 
   const userCard = (user, key) => (
     <UserCard
@@ -49,16 +45,12 @@ function UserList({ mainPaneWidth, actions, allUsers }) {
 
   return (
     <Fragment>
-        
-      <TextField
-        defaultValue={searchQuery}
-        onChange={onSearchQueryChange}
-        placeholder="Search"
-      />
+
+      <Typography variant="h3">Users</Typography>
+      <Spacer height={theme.spacing(2)} />
 
       <TableOrCardList
-        columns={tableColumns}
-        searchQuery={searchQuery}
+        tableColumns={tableColumns}
         data={users}
         containerWidth={mainPaneWidth}
         renderCard={userCard}
@@ -78,4 +70,7 @@ const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({ setAllUsers }, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserList);
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withTheme
+)(UserList);

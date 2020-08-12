@@ -4,6 +4,7 @@ import moment from 'moment';
 import { getInitialsFromName } from '../../../helpers'
 import UserRoleChips from '../components/UserCard/UserRoleChips';
 import UserAvatar from '../components/UserCard/UserAvatar';
+import NG_CONSTANTS from '../../../ngConstants';
 
 const tableColumns = [
     {
@@ -15,7 +16,8 @@ const tableColumns = [
       Cell: ({ row, value }) => {
         const { name } = row.original;
         return <UserAvatar name={name} profilePicture={value} />;
-      }
+      },
+      disableFilters: true,
     },
     {
       Header: 'Name',
@@ -30,6 +32,8 @@ const tableColumns = [
       priority: 2,
       minWidth: 200,
       search: true,
+      disableFilters: false,
+      filterElType: 'select',
     },
     {
       Header: 'Roles',
@@ -39,6 +43,9 @@ const tableColumns = [
       Cell: ({ value }) => (
         <UserRoleChips rolesList={value} />
       ),
+      disableFilters: true,
+      filter: 'onFilterableValue',
+      getFilterableValue: (value) => value.map(v => NG_CONSTANTS.roleNames[v].toLowerCase())
     },
     {
       Header: 'Joined On',
@@ -48,7 +55,8 @@ const tableColumns = [
       search: true,
       Cell: ({ value }) => {
         return moment(value).fromNow();
-      }
+      },
+      disableFilters: true,
     },
 ]
 

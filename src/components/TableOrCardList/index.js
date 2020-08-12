@@ -12,18 +12,49 @@ import {
   Paper,
   withTheme,
   useMediaQuery,
-  Box
+  Box,
 } from '@material-ui/core';
+import { fromPairs, map, isEmpty } from 'lodash';
+
+import AllFilters, { FILTER_COMPONENTS, FILTER_TYPES } from './filters';
+import Spacer from "../Spacer";
 
 const TableOrCardList = ({
-  columns,
+  tableColumns,
   data,
   theme,
   containerWidth,
-  searchQuery,
   renderCard,
-  onRowClick
+  onRowClick,
 }) => {
+
+  const newData = React.useMemo(() => {
+    const onFilterableValueColumns = fromPairs(tableColumns.map(c => {
+      if (c.filter === 'onFilterableValue') {
+        return [c.accessor, c.getFilterableValue];
+      }
+    }).filter(c => c !== undefined));
+    if (isEmpty(onFilterableValueColumns)) return data;
+    return data.map(row => {
+      const newRow = { ...row };
+      map(onFilterableValueColumns, (getFilterableVaue, accessor) => {
+        newRow[`${accessor}FilterableValue`] = getFilterableVaue(row[accessor])
+      })
+      return newRow;
+    })
+  }, [data, tableColumns]);
+
+  const columns = React.useMemo(() => {
+    return tableColumns.map(column => {
+      if (column.disableFilters) {
+        return column;
+      }
+      const filterElType = column.filterElType ? column.filterElType : 'text';
+      const Filter = FILTER_COMPONENTS[filterElType];
+      return { ...column, Filter }
+    })
+  }, [tableColumns]);
+
   const visibleTableColumns = React.useMemo(() => {
     const getVisibleColumns = (columns, numCols) => {
       if (!numCols) {
@@ -40,15 +71,16 @@ const TableOrCardList = ({
       }
       return getVisibleColumns(newColumns, numCols - 1)
     }
-    return getVisibleColumns(columns)
+    return getVisibleColumns(columns);
   }, [containerWidth]);
 
   const searchableKeys = React.useMemo(() => {
     return columns.filter(c => c.search).map(c => c.accessor)
   }, [columns]);
 
+  const [globalSearch, setGlobalSearch] = React.useState();
   const allData = React.useMemo(() => {
-    return data.map(row => {
+    return newData.map(row => {
       const searchableText = searchableKeys
         .map(key => get(row, key, ""))
         .filter(str => Boolean(str))
@@ -56,17 +88,22 @@ const TableOrCardList = ({
         .join(";")
       return { ...row, searchableText }
     })
-  }, [data, searchableKeys]);
+  }, [newData, searchableKeys]);
 
   const visibleData = React.useMemo(() => {
-    if (!searchQuery) {
+    if (!globalSearch) {
       return allData
     }
     return allData.filter(
-      row => row.searchableText.indexOf(searchQuery.toLowerCase()) > -1
+      row => row.searchableText.indexOf(globalSearch.toLowerCase()) > -1
     )
-  }, [allData, searchQuery]);
+  }, [allData, globalSearch]);
 
+  const defaultColumn = React.useMemo(() => ({
+      filterElType: 'text',
+      Filter: FILTER_COMPONENTS.text,
+    }), []);
+    
   const {
     getTableProps,
     getTableBodyProps,
@@ -78,12 +115,15 @@ const TableOrCardList = ({
     nextPage,
     previousPage,
     setPageSize,
+    columns: actualColumns,
     state: { pageIndex, pageSize, rowCount = rows.length },
   } = useTable(
     {
       columns: visibleTableColumns,
       data: visibleData,
       initialState: { pageSize: 25, pageIndex: 0 },
+      defaultColumn,
+      filterTypes: FILTER_TYPES
     },
     useFilters,
     useSortBy,
@@ -103,6 +143,7 @@ const TableOrCardList = ({
   const handleChangeRowsPerPage = event => {
     setPageSize(event.target.value)
   }
+
 
   const renderTable = () => (
     <Table {...getTableProps()} stickyHeader aria-label="sticky table">
@@ -156,18 +197,22 @@ const TableOrCardList = ({
   const screenAboveSm = useMediaQuery(theme.breakpoints.up('sm'))
  
   return (
-    <TableContainer component={screenAboveSm ? Paper : undefined}>
-      { screenAboveSm ? renderTable() : renderCards() }
-      <TablePagination
-        rowsPerPageOptions={[25, 50, 75, 100]}
-        component={screenAboveSm ? 'div' : Paper}
-        count={rowCount}
-        rowsPerPage={pageSize}
-        page={pageIndex}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
-      />
-    </TableContainer>
+    <React.Fragment>
+      <AllFilters columns={actualColumns} setGlobalSearch={setGlobalSearch} globalSearchQuery={globalSearch} />
+      <Spacer height={theme.spacing(2)} />
+      <TableContainer component={screenAboveSm ? Paper : undefined}>
+        { screenAboveSm ? renderTable() : renderCards() }
+        <TablePagination
+          rowsPerPageOptions={[25, 50, 75, 100]}
+          component={screenAboveSm ? 'div' : Paper}
+          count={rowCount}
+          rowsPerPage={pageSize}
+          page={pageIndex}
+          onChangePage={handleChangePage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
+        />
+      </TableContainer>
+    </React.Fragment>
   )
 }
 
