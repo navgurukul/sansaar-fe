@@ -1,24 +1,17 @@
 import React,{useState, useEffect, Fragment} from 'react';
 import { Link } from 'react-router-dom';
-import TextField from '@material-ui/core/TextField';
-import { useTheme } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import columns from './TableData';
-import { ngFetch } from '../../providers/NGFetch';
-import TableOrCardList from '../../components/TableOrCardList';
-
-import { selectors as layoutSelectors } from '../../layouts/TwoColumn/store';
 import { connect } from 'react-redux';
+import TextField from '@material-ui/core/TextField';
+import columns from './TableData';
+import TableOrCardList from '../../components/TableOrCardList';
+import { selectors as layoutSelectors } from '../../layouts/TwoColumn/store';
+import history from '../../providers/routing/app-history';
+function UserList({ mainPaneWidth, data }) {
 
-function UserList({ mainPaneWidth }) {
-  
-  const [data, setData] =useState([]);
-  useEffect( () => {
-      const fetchData = async () => {
-          const result = await ngFetch('https://jsonplaceholder.typicode.com/comments', { method: 'GET'})
-          setData(result);
-      }; fetchData()       
-  }, []);
+
+  const handleEditData = ({row, pageIndex, pageSize}) =>{
+    history.push('/users/edit/userid', row.original);
+  }
 
   // state for seach box
   const [search, setSearch] = useState('')
@@ -32,19 +25,21 @@ function UserList({ mainPaneWidth }) {
   return(
     <Fragment>
       <Link to="/users/add">Add a user</Link>
-        
+      <br/>
+      
       <TextField
         defaultValue={search}
         onChange={handleFilterChange}
         placeholder="Search"
         style={{marginTop:20}}
-      />
+       />
 
       <TableOrCardList
         columns={columns}
         searchQuery={search}
         data={data}
         containerWidth={mainPaneWidth}
+        onClick={handleEditData} 
       />
 
     </Fragment>

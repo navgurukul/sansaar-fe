@@ -28,6 +28,8 @@ const styles = (theme) => ({
     width: '100vw',
     zIndex: 10,
     background: '#fff',
+    display: 'flex',
+    justifyContent: 'center',
     [theme.breakpoints.up('md')]: {
       width: '30vw',
       left: '70vw',

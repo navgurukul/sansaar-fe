@@ -1,5 +1,5 @@
 import { ngFetch } from '../providers/NGFetch';
-import { authSuccess, fetchSuccess, fetchedDatafromSlice } from './index';
+import { authSuccess, fetchedDatafromSlice } from './index';
 
 const googleAuthSuccess = (googleResponse) => async (dispatch) => {
   const body = { idToken: googleResponse.tokenObj.id_token };

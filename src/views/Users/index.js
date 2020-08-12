@@ -1,67 +1,65 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Box, withStyles } from '@material-ui/core';
-import { compose } from 'recompose';
-import TwoColumnLayout from '../../layouts/TwoColumn';
-// import { connect } from 'react-redux';
-// import { fetchServerData } from '../../auth/asyncActions';
-// import { bindActionCreators } from 'redux';
-// import { startFetchRequest, fetchFailure, selectors } from '../../auth';
-import UserList from './UserList';
+import React, { useState, useEffect } from "react"
+import { Link } from "react-router-dom"
+import { ngFetch } from "../../providers/NGFetch"
+import { Box, withStyles } from "@material-ui/core"
+import { compose } from "recompose"
+import TwoColumnLayout from "../../layouts/TwoColumn"
+import UsersList from "./UsersList"
+import UserEdit from "./UserEdit"
+import UserAdd from "./UserAdd"
+const styles = () => ({})
 
-const styles = () => ({});
-
-const UsersSection = ({theme}) => {
-
-  console.log(theme);
+const UsersSection = ({ theme }) => {
+  const [data, setData] = useState([])
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await ngFetch(
+        "https://jsonplaceholder.typicode.com/comments",
+        { method: "GET" }
+      )
+      setData(result)
+    }
+    fetchData()
+  }, [])
 
   const mainPaneRoutes = [
     {
-      path: '/users/detail/add',
-      component: () => (<Box style={{ padding: theme.spacing(2) }}>Detailed add</Box>),
-      key: 'DETAIL_USER_ADD',
+      path: "/users/detail/add",
+      component: () => (
+        <Box style={{ padding: theme.spacing(2) }}>Detailed add</Box>
+      ),
+      key: "DETAIL_USER_ADD",
       exact: false,
     },
     {
-      path: '/users',
+      path: "/users",
       exact: false,
-      component: UserList,
-      key: 'USERS_LIST',
+      component: () => <UsersList data={data} />,
+      key: "USERS_LIST",
     },
-  ];
+  ]
 
   const rightPaneRoutes = [
     {
-      path: '/users/add',
-      component: () => <Link to="/users">Close</Link>,
-      key: 'USERS_ADD',
+      path: "/users/add",
+      component: () => <UserAdd />,
+      key: "USERS_ADD",
       exact: true,
-    }
-  ];
+    },
+    {
+      path: "/users/edit/userid",
+      component: UserEdit,
+      key: "USERS_ADD",
+      exact: true,
+    },
+  ]
 
   return (
-    <TwoColumnLayout mainPaneRoutes={mainPaneRoutes} rightPaneRoutes={rightPaneRoutes} />
-  );
-};
+    <TwoColumnLayout
+      mainPaneRoutes={mainPaneRoutes}
+      rightPaneRoutes={rightPaneRoutes}
+    />
+  )
+}
 
-
-// const mapStateToProps = (state) => {
-//   return(
-//     {
-//       fetchData: selectors.selectFetchedData(state),
-//     }
-//   )
-  
-// };
-
-// const mapDispatchToProps = (dispatch) => ({
-//   actions: bindActionCreators(
-//     { startFetchRequest, fetchFailure, fetchServerData },
-//     dispatch,
-//   ),
-// });
-
-export default compose(
-  // connect(mapStateToProps, mapDispatchToProps),
-  withStyles(styles, { withTheme: true })
-)(UsersSection);
+export default compose(withStyles(styles, { withTheme: true }))(UsersSection)
