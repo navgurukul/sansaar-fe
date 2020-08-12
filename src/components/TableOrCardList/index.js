@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import get from 'lodash/get';
 import { useTable, useFilters, useSortBy, usePagination } from "react-table";
 import {
@@ -14,7 +14,7 @@ import {
   useMediaQuery,
   Box,
 } from '@material-ui/core';
-import { fromPairs, map, isEmpty } from 'lodash';
+import { fromPairs, map, isEmpty, difference } from 'lodash';
 
 import AllFilters, { FILTER_COMPONENTS, FILTER_TYPES } from './filters';
 import Spacer from "../Spacer";
@@ -26,6 +26,7 @@ const TableOrCardList = ({
   containerWidth,
   renderCard,
   onRowClick,
+  scrollContainerToTop,
 }) => {
 
   const newData = React.useMemo(() => {
@@ -54,25 +55,6 @@ const TableOrCardList = ({
       return { ...column, Filter }
     })
   }, [tableColumns]);
-
-  const visibleTableColumns = React.useMemo(() => {
-    const getVisibleColumns = (columns, numCols) => {
-      if (!numCols) {
-        numCols = columns.length
-      }
-      const newColumns = columns.filter(h => h.priority <= numCols);
-      const tableWidth = newColumns.reduce((sum, h) => sum + h.minWidth, 0);
-
-      if (tableWidth <= containerWidth) {
-        return newColumns
-      }
-      if (numCols <= 1) {
-        return newColumns
-      }
-      return getVisibleColumns(newColumns, numCols - 1)
-    }
-    return getVisibleColumns(columns);
-  }, [containerWidth]);
 
   const searchableKeys = React.useMemo(() => {
     return columns.filter(c => c.search).map(c => c.accessor)
@@ -117,9 +99,13 @@ const TableOrCardList = ({
     setPageSize,
     columns: actualColumns,
     state: { pageIndex, pageSize, rowCount = rows.length },
+    toggleHideColumn,
+    setHiddenColumns,
+    allColumns,
   } = useTable(
     {
-      columns: visibleTableColumns,
+      // columns: visibleTableColumns,
+      columns,
       data: visibleData,
       initialState: { pageSize: 25, pageIndex: 0 },
       defaultColumn,
@@ -128,7 +114,30 @@ const TableOrCardList = ({
     useFilters,
     useSortBy,
     usePagination
-  )
+  );
+
+  // Hide columns according to container size
+  useEffect(() => {
+    const getVisibleColumns = (columns, numCols) => {
+      if (!numCols) {
+        numCols = columns.length
+      }
+      const newColumns = columns.filter(h => h.priority <= numCols);
+      const tableWidth = newColumns.reduce((sum, h) => sum + h.minWidth, 0);
+
+      if (tableWidth <= containerWidth) {
+        return newColumns.map(c => c.id);
+      }
+      if (numCols <= 1) {
+        return newColumns.map(c => c.id);
+      }
+      return getVisibleColumns(newColumns, numCols - 1)
+    }
+    const visibleColumnsId = getVisibleColumns(allColumns);
+    const allColumnIds = allColumns.map(c => c.id);
+    const hiddenColumnIds = difference(allColumnIds, visibleColumnsId);
+    setHiddenColumns(hiddenColumnIds);
+  }, [containerWidth]);
 
   const handleChangePage = (event, newPage) => {
     if (newPage === pageIndex + 1) {
@@ -138,6 +147,7 @@ const TableOrCardList = ({
     } else {
       gotoPage(newPage)
     }
+    scrollContainerToTop();
   }
 
   const handleChangeRowsPerPage = event => {
@@ -187,7 +197,7 @@ const TableOrCardList = ({
   const renderCards = () => (
     <React.Fragment>
       {page.map((row, i) => (
-        <Box key={i}>
+        <Box key={i} onClick={onRowClick ? () => onRowClick(row.original.id) : undefined}>
           {renderCard(row.original, i)}
         </Box>
       ))}

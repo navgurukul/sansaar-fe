@@ -8,7 +8,7 @@ import classNames from 'clsx';
 
 import RoutesFromList from '../../providers/routing/RoutesFromList';
 import RightPaneWrapper from './RightPaneWrapper';
-import { selectors, setMainPaneWidth } from './store';
+import { selectors, setMainPaneWidth, setMainPaneScrollToTopPending } from './store';
 
 const styles = (theme) => ({
   mainPane: {
@@ -30,13 +30,23 @@ const styles = (theme) => ({
   }
 });
 
-const MainPane = ({ actions, rightPaneOpen, classes, routes, location }) => {
+const MainPane = ({ actions, rightPaneOpen, classes, routes, location, mainPaneScrollToTopPending }) => {
 
   const mainPaneRef = React.createRef();
 
+  // set main width on url change
   useEffect(() => {
     actions.setMainPaneWidth(mainPaneRef.current.offsetWidth);
   }, [location]);
+
+  // scroll the main pane to top if marked as pending
+  useEffect(() => {
+    if (!mainPaneScrollToTopPending) {
+      return;
+    }
+    mainPaneRef.current.scrollTo(0,0);
+    actions.setMainPaneScrollToTopPending(false);
+  }, [mainPaneScrollToTopPending])
 
   useEffect(() => {
     const setMainPaneWidth = () => actions.setMainPaneWidth(mainPaneRef.current.offsetWidth);
@@ -55,11 +65,12 @@ const MainPane = ({ actions, rightPaneOpen, classes, routes, location }) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators({ setMainPaneWidth }, dispatch),
+  actions: bindActionCreators({ setMainPaneWidth, setMainPaneScrollToTopPending }, dispatch),
 });
 
 const mapStateToProps = (state) => ({
   rightPaneOpen: selectors.selectRightPaneOpen(state),
+  mainPaneScrollToTopPending: selectors.selectMainPaneScrollToTopPending(state)
 });
 
 export default compose(

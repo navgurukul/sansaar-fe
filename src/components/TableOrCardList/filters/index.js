@@ -43,7 +43,6 @@ const styles = (theme) => ({
 const AllFilters = ({ classes, columns, setGlobalSearch, globalSearchQuery }) => {
 
   const [filtersVisible, setFilterVisible] = React.useState(false);
-  // const [searchQuery, setSearchQuery] = React.useState();
   const  onSearchQueryChange = e => {
     const value = e.target.value || undefined;
     setGlobalSearch(value);
