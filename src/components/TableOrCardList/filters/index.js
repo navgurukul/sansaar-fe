@@ -21,7 +21,7 @@ export const FILTER_TYPES = {
       }
       if (Array.isArray(value)) {
         return value.map(v => v.indexOf(filterValue))
-          .filter(v => v > -1)
+        .filter(v => v > -1)
           .length > 0
       }
       return value.indexOf(filterValue) > -1;

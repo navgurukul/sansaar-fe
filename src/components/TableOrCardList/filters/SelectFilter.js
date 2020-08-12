@@ -1,11 +1,22 @@
 import React from 'react';
 import { FormControl, Select, InputLabel, MenuItem } from '@material-ui/core';
+import { fromPairs, map } from 'lodash';
 
-const SelectFilter = ({ column: { filterValue, preFilteredRows, setFilter, Header, id } }) => {
+const defaultOptionsMapping = (values) => fromPairs(values.map(v => ([v,v])));
+
+const SelectFilter = ({ column: { filterValue, preFilteredRows, setFilter, Header, id, getSelectMapping } }) => {
   const options = React.useMemo(() => {
     const options = new Set();
-    preFilteredRows.forEach(row => options.add(row.values[id]));
-    return [ ...options.values() ];
+    preFilteredRows.forEach(row => {
+      const value = row.values[id];
+      if (Array.isArray(value)) {
+        value.forEach(v => options.add(v));
+      } else {
+        options.add(value)
+      }
+    });
+    const optionsArr = [ ...options.values()]
+    return getSelectMapping ? getSelectMapping(optionsArr) : defaultOptionsMapping(optionsArr);
   }, [id, preFilteredRows]);
 
   return (
@@ -19,13 +30,14 @@ const SelectFilter = ({ column: { filterValue, preFilteredRows, setFilter, Heade
           if (e.target.value === "all") {
             setFilter(undefined);
           } else {
+            console.log("e.target.value", e.target.value);
             setFilter(e.target.value);
           }
         }}
       >
         <MenuItem value="all">All</MenuItem>
-        {options.map((option, i) => (
-          <MenuItem key={i} value={option}>{option}</MenuItem>
+        {map(options, (option, key) => (
+          <MenuItem key={key} value={key}>{option}</MenuItem>
         ))}
       </Select>
     </FormControl>

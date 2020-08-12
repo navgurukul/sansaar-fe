@@ -5,7 +5,7 @@ const DefaultColumnFilter = ({ column: { filterValue, setFilter, Header }, }) =>
   return (
     <TextField
       style={{ width: '100%' }}
-      label={Header}
+      label={`Search ${Header}`}
       variant="outlined"
       value={filterValue || ''}
       onChange={e => {

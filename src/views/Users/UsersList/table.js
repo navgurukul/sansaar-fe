@@ -5,6 +5,7 @@ import { getInitialsFromName } from '../../../helpers'
 import UserRoleChips from '../components/UserCard/UserRoleChips';
 import UserAvatar from '../components/UserCard/UserAvatar';
 import NG_CONSTANTS from '../../../ngConstants';
+import { fromPairs } from 'lodash';
 
 const tableColumns = [
     {
@@ -43,9 +44,12 @@ const tableColumns = [
       Cell: ({ value }) => (
         <UserRoleChips rolesList={value} />
       ),
-      disableFilters: true,
-      filter: 'onFilterableValue',
-      getFilterableValue: (value) => value.map(v => NG_CONSTANTS.roleNames[v].toLowerCase())
+      disableFilters: false,
+      // filter: 'onFilterableValue',
+      // filter: 'text',
+      filterElType: 'select',
+      getFilterableValue: (value) => value.map(v => NG_CONSTANTS.roleNames[v].toLowerCase()),
+      getSelectMapping: (values) => fromPairs(values.map(v => ( [v, NG_CONSTANTS.roleNames[v]] )))
     },
     {
       Header: 'Joined On',
