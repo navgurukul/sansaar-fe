@@ -23,18 +23,18 @@ const columns = [
     },
   },
   {
-    Header: "ID",
-    accessor: "id",
+    Header: "Gender",
+    accessor: "gender",
     priority: 3,
     minWidth: 200,
     search: true,
     Cell: ({ cell: { value } }) => {
-      return <Fragment key={value}>{value}</Fragment>
+      return <Fragment key={value}>{ value === 1 ? 'Female' : 'Male'}</Fragment>
     },
   },
   {
-    Header: "Content",
-    accessor: "body",
+    Header: "State",
+    accessor: "state",
     priority: 4,
     minWidth: 200,
     search: true,
@@ -43,8 +43,8 @@ const columns = [
     },
   },
   {
-    Header: "Post ID",
-    accessor: "postId",
+    Header: "Date Of Birth",
+    accessor: "dob",
     priority: 5,
     minWidth: 200,
     search: true,

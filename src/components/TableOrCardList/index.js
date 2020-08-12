@@ -1,5 +1,5 @@
 import React, { Fragment } from "react"
-import { useTable, useFilters, useSortBy, usePagination } from "react-table"
+import { useTable, useFilters, useSortBy, usePagination,useRowSelect  } from "react-table"
 import Table from "@material-ui/core/Table"
 import TableContainer from "@material-ui/core/TableContainer"
 import TableBody from "@material-ui/core/TableBody"
@@ -84,6 +84,7 @@ const TableOrCardList = ({
   const {
     getTableProps,
     getTableBodyProps,
+    getToggleRowSelectedProps,
     headerGroups,
     rows,
     prepareRow,
@@ -92,7 +93,8 @@ const TableOrCardList = ({
     nextPage,
     previousPage,
     setPageSize,
-    state: { pageIndex, pageSize, rowCount = rows.length },
+    selectedFlatRows,
+    state: { pageIndex, pageSize, rowCount = rows.length,selectedRowIds },
   } = useTable(
     {
       columns: visibleTableColumns,
@@ -101,9 +103,11 @@ const TableOrCardList = ({
     },
     useFilters,
     useSortBy,
-    usePagination
+    usePagination,
+    useRowSelect,
   )
 
+  // console.log(selectedFlatRows,'selectedFlatRows')
   const handleChangePage = (event, newPage) => {
     if (newPage === pageIndex + 1) {
       nextPage()
@@ -147,6 +151,7 @@ const TableOrCardList = ({
       <TableBody {...getTableBodyProps()}>
         {page.map((row) => {
           prepareRow(row)
+          {/* console.log(row,'row') */}
           return (
             <TableRow
               {...row.getRowProps()}

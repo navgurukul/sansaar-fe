@@ -2,7 +2,8 @@
 import React, { useEffect } from "react"
 import { useForm, Controller } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers"
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles"
+import NativeSelect from "@material-ui/core/NativeSelect"
 import {
   InputLabel,
   MenuItem,
@@ -32,8 +33,8 @@ import {
 } from "@material-ui/pickers"
 
 const useStyles = makeStyles(theme => ({
-  root:{
-    align:'center',
+  root: {
+    align: "center",
   },
   text: {
     marginTop: "20px",
@@ -58,6 +59,7 @@ export default function FormBuilder({
   id,
   firstName,
   initialValues,
+  gender,
 }) {
   const classes = useStyles()
 
@@ -83,9 +85,11 @@ export default function FormBuilder({
     resolver: yupResolver(schema),
     defaultValues: {
       ...initialValues,
+      switch: false,
     },
   })
 
+  // console.log(initialValues, "GenderData")
   const onSubmit = data => console.log(data)
 
   return (
@@ -119,14 +123,16 @@ export default function FormBuilder({
                 <Controller
                   as={
                     <Select {...e.customProps}>
-                      {e.options.map(option => (
-                        <MenuItem value={option}>{option}</MenuItem>
+                      {e.options.map((option, index) => (
+                        <MenuItem value={option.name} key={index}>
+                          {option.value}
+                        </MenuItem>
                       ))}
                     </Select>
                   }
                   name={e.name}
                   control={control}
-                  defaultValue=""
+                  defaultValue={e.customProps.defaultValue}
                 />
                 <FormHelperText>
                   {errors[e.name] && errors[e.name].message}
@@ -134,7 +140,7 @@ export default function FormBuilder({
               </FormControl>
             </section>
           ) : e.type === "date" ? (
-            <section>
+            <section key={e.name}>
               {SchemUpdate(e)}
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <Grid container justify="space-around" className={classes.root}>
@@ -144,11 +150,13 @@ export default function FormBuilder({
                         <KeyboardDatePicker
                           className={classes.date}
                           {...e.customProps}
+                          key={e.name}
                         />
                       }
                       name={e.name}
                       control={control}
                       format="MM/dd/yyyy"
+                      defaultValue={new Date()}
                     />
                   </FormControl>
                 </Grid>
@@ -159,39 +167,40 @@ export default function FormBuilder({
               component="fieldset"
               error={Boolean(errors[e.name])}
               className={classes.root}
+              key={e.name}
             >
-              <FormLabel component="legend">
-                {e.labelText}
-              </FormLabel>
+              <FormLabel component="legend">{e.labelText}</FormLabel>
               {SchemUpdate(e)}
               <Controller
                 as={
-                  <RadioGroup aria-label="gender">
-                    {e.customProps.map(each => (
+                  <RadioGroup aria-label="gender" {...e.customProps}>
+                    {e.options.map(each => (
                       <FormControlLabel
                         {...each}
                         control={<Radio />}
                         labelPlacement="end"
+                        key={each.value}
                       />
                     ))}
                   </RadioGroup>
                 }
                 name={e.name}
                 control={control}
+                defaultValue={e.customProps.defaultValue}
               />
               <FormHelperText>
                 {errors[e.name] && errors[e.name].message}
               </FormHelperText>
             </FormControl>
           ) : e.type === "checkbox" ? (
-            <div>
+            <div key={e.name}>
               {SchemUpdate(e)}
               <FormControl error={Boolean(errors[e.name])}>
                 <FormLabel component="legend" className={classes.select}>
                   {e.labelText}
                 </FormLabel>
                 <FormGroup>
-                  {e.HObbies.map(boat => {
+                  {e.HObbies.map((boat, index) => {
                     return (
                       <FormCheckBox
                         name={e.name}
@@ -200,6 +209,7 @@ export default function FormBuilder({
                         getValues={getValues}
                         value={boat.id}
                         register={register}
+                        key={index}
                         defaultValue={e.preselectedHObbies.some(
                           p => p.id === boat.id
                         )}
@@ -213,10 +223,7 @@ export default function FormBuilder({
               </FormControl>
             </div>
           ) : e.type === "slider" ? (
-            <FormControl
-              className={classes.slider}
-              error={Boolean(errors[e.name])}
-            >
+            <FormControl className={classes.slider} error={Boolean(errors[e.name])} key={e.name}>
               {SchemUpdate(e)}
               <FormLabel>
                 <Typography id="discrete-slider" gutterBottom>
@@ -226,25 +233,21 @@ export default function FormBuilder({
               <Controller
                 name={e.name}
                 control={control}
-                defaultValue={e.defaultValue}
-                onChange={value => value}
-                as={<Slider {...e.customProps} control={control} />}
+                onChange={([, value]) => value}
+                as={<Slider {...e.customProps} />}
+                defaultValue={e.customProps.defaultValue}
               />
             </FormControl>
           ) : e.type === "switch" ? (
-            <section name="switch">
+            <section key={e.name}>
               {SchemUpdate(e)}
               <FormControl error={Boolean(errors[e.name])}>
                 <Controller
-                  as={
-                    <FormControlLabel
-                      control={<Switch name="gilad" />}
-                      label={e.labelText}
-                    />
-                  }
+                  as={Switch}
                   type="checkbox"
-                  control={control}
                   name="switch"
+                  control={control}
+                  defaultValue=""
                 />
               </FormControl>
             </section>
