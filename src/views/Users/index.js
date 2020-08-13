@@ -3,6 +3,8 @@ import TwoColumnLayout from '../../layouts/TwoColumn';
 import UsersList from './UsersList';
 import UserView from './UserView';
 
+import TestUserEdit from './TestUserEdit';
+
 const UsersSection = () => {
 
   const mainPaneRoutes = [
@@ -20,6 +22,12 @@ const UsersSection = () => {
       exact: true,
       component: UserView,
       key: 'USERS_VIEW',
+    },
+    {
+      path: '/users/testEdit/:userId',
+      exact: true,
+      component: TestUserEdit,
+      key: 'USERS_TEST_EDIT'
     }
   ];
 

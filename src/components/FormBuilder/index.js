@@ -1,245 +1,74 @@
-/* eslint-disable no-nested-ternary */
-import React, {useEffect} from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers';
-import {
-  InputLabel,
-  MenuItem,
-  Select,
-  FormControl,
-  FormHelperText,
-  Button, TextField,
-  FormControlLabel,
-  FormLabel,
-  Radio,
-  RadioGroup,
-  Checkbox,
-  FormGroup,
-  Slider,
-  Switch,
-  Typography,
-} from '@material-ui/core';
+import React from "react"
+import { useForm } from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers"
+import * as yup from "yup";
 
-import * as yup from 'yup';
-import Grid from '@material-ui/core/Grid';
-import DateFnsUtils from '@date-io/date-fns';
-import 'date-fns';
-import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
+import Spacer from '../../components/Spacer';
+import NGCheckbox from './components/NGCheckbox';
+import NGDateField from './components/NGDateField';
+import NGRadioButtons from './components/NGRadioButtons';
+import NGSelectField from './components/NGSelectField';
+import NGTextField from './components/NGTextField'
+import { withStyles, withTheme } from "@material-ui/core";
 
-export default function FormBuilder({
-  list, onClick, id, firstName
-}) {
-  const schema = yup.object().shape({});
-  function SchemUpdate(value) {
-    schema.fields[value.name] = value.validation;
-    schema._nodes.push(value.name);
-    return null;
-  }
+const COMPONENTS = {
+  text: NGTextField,
+  select: NGSelectField,
+  date: NGDateField,
+  radio: NGRadioButtons,
+  checkbox: NGCheckbox,
+};
+
+const  FormBuilder = ({ structure, initialValues, onSubmit, theme }) => {
+
+  const validationSchema = React.useMemo(() => {
+    const schema = yup.object().shape({});
+    structure.map(field => {
+      schema.fields[ field.name ] = field.validation;
+      schema._nodes.push(field.name);
+    });
+    return schema;
+  }, [structure]);
 
   const {
-    register, handleSubmit, errors, control, getValues, setValue, watch
+    register,
+    handleSubmit,
+    errors,
+    control,
+    getValues,
+    setValue,
   } = useForm({
-    validationSchema: schema,
-    mode: 'onBlur',
+    validationSchema,
+    mode: "onBlur",
     submitFocusError: false,
-    resolver: yupResolver(schema),
+    resolver: yupResolver(validationSchema),
     defaultValues: {
-      firstName
+      ...initialValues,
+      switch: false,
     },
-  });
+  })
 
-  const onSubmit = (values) => {
-    alert(JSON.stringify(values, null, 2));
-    onClick({ values, id });
-  };
   return (
-    <div>
-      <form onSubmit={handleSubmit(onSubmit)} style={{ height: '410px' }}>
-        {list.map((e) => (e.type === 'text'
-          ? (
-            <section key={e.name} style={{ marginTop: '20px' }}>
-              {SchemUpdate(e)}
-              <TextField
-                {...e.customProps}
-                error={!!errors[e.name]}
-                name={e.name}
-                inputRef={register}
-                helperText={errors[e.name] && errors[e.name].message}
-              />
-            </section>
-          )
-
-          : e.type === 'select'
-            ? (
-              <section key={e.name} style={{ marginTop: '20px' }}>
-                {SchemUpdate(e)}
-                <FormControl
-                  error={Boolean(errors[e.name])}
-                  variant={e.customProps.variant ? e.customProps.variant : 'standard'}
-                >
-                  <InputLabel>{e.customProps.label ? e.customProps.label : ''}</InputLabel>
-                  <Controller
-                    as={(
-                      <Select
-                        {...e.customProps}
-                        style={{ minWidth: 222, textAlign: 'left' }}
-                      >
-                        {e.options.map((option) => (
-                          <MenuItem value={option}>
-                            {option}
-                          </MenuItem>
-                        ))}
-
-                      </Select>
-                    )}
-                    name={e.name}
-                    control={control}
-                    defaultValue=""
-                  />
-                  <FormHelperText>{errors[e.name] && errors[e.name].message}</FormHelperText>
-                </FormControl>
-              </section>
-            )
-
-            : e.type === 'date'
-              ? (
-                <section>
-                  {SchemUpdate(e)}
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <Grid container justify="space-around" style={{ marginTop: '20px' }}>
-                      <FormControl
-                        error={Boolean(errors[e.name])}
-                      >
-                        <Controller
-
-                          as={(
-                            <KeyboardDatePicker
-                              style={{ width: 222, textAlign: 'left' }}
-                              {...e.customProps}
-                            />
-)}
-                          name={e.name}
-                          control={control}
-                          format="MM/dd/yyyy"
-                        />
-                      </FormControl>
-                    </Grid>
-                  </MuiPickersUtilsProvider>
-                </section>
-              )
-              : e.type === 'radio'
-                ? (
-                  <FormControl component="fieldset" error={Boolean(errors[e.name])} style={{ marginTop: '20px' }}>
-                    <FormLabel component="legend" style={{ textAlign: 'left' }}>{e.labelText}</FormLabel>
-                    {SchemUpdate(e)}
-                    <Controller
-                      as={(
-                        <RadioGroup aria-label="gender">
-                          {e.customProps.map((each) => (
-                            <FormControlLabel
-                              {...each}
-                              control={<Radio />}
-                              labelPlacement="end"
-                            />
-                          ))}
-                        </RadioGroup>
-                      )}
-                      name={e.name}
-                      control={control}
-                    />
-                    <FormHelperText>{errors[e.name] && errors[e.name].message}</FormHelperText>
-                  </FormControl>
-                )
-                : e.type === 'checkbox'
-                  ? (
-                    <div>
-                      {SchemUpdate(e)}
-                      <FormControl error={Boolean(errors[e.name])}>
-                        <FormLabel component="legend" style={{ marginTop: '10px', textAlign: 'left' }}>{e.labelText}</FormLabel>
-                        <FormGroup>
-                          {e.HObbies.map((boat) => {
-                            return (
-                              <FormCheckBox
-                                name={e.name}
-                                control={control}
-                                setValue={setValue}
-                                getValues={getValues}
-                                value={boat.id}
-                                register={register}
-                                defaultValue={e.preselectedHObbies.some((p) => p.id === boat.id)}
-                              />
-                            );
-                          })}
-                        </FormGroup>
-                        <FormHelperText>{errors[e.name] && errors[e.name].message}</FormHelperText>
-                      </FormControl>
-                    </div>
-                  )
-
-                  : e.type === 'slider'
-                    ? (
-                      <FormControl style={{ width: '200px' }} error={Boolean(errors[e.name])}>
-                        {SchemUpdate(e)}
-                        <FormLabel><Typography id="discrete-slider" gutterBottom>{e.name}</Typography></FormLabel>
-                        <Controller
-                          name={e.name}
-                          control={control}
-                          defaultValue={e.defaultValue ? e.defaultValue : 0}
-                          onChange={([, value]) => value}
-                          as={<Slider {...e.customProps} />}
-                        />
-                      </FormControl>
-                    )
-                    : e.type === 'switch'
-                      ? (
-                        <section name="switch">
-                          {SchemUpdate(e)}
-                          <FormControl error={Boolean(errors[e.name])}>
-                            <Controller
-                              as={(
-                                <FormControlLabel
-                                  control={<Switch name="gilad" />}
-                                  label={e.labelText}
-                                />
-)}
-                              type="checkbox"
-                              control={control}
-                              name="switch"
-                            />
-                          </FormControl>
-                        </section>
-                      )
-                      : ''))}
-
-        <div style={{ marginTop: '20px' }}>
-          <Button
-            style={{ marginTop: '10px', marginBottom: '10px' }}
-            type="submit"
-            variant="contained"
-            color="primary"
-          >
-            Submit
-          </Button>
-        </div>
-      </form>
-    </div>
+    <form>
+      {structure.map((field, i) => {
+        const FieldComponent = COMPONENTS[field.type];
+        return (
+          <React.Fragment>
+            <FieldComponent
+              field={field}
+              errors={errors}
+              getValues={getValues}
+              setValue={setValue}
+              control={control}
+              register={register}
+              key={i}
+            />
+            <Spacer height={theme.spacing(2)} />
+          </React.Fragment>
+        )
+      })}
+    </form>
   );
 }
 
-export const FormCheckBox = ({
-  name,
-  value,
-  register,
-  defaultValue,
-}) => {
-  return (
-    <FormControlLabel
-      control={<Checkbox defaultChecked={defaultValue} />}
-      name={name}
-      inputRef={register}
-      value={value}
-      label={value}
-      labelPlacement="end"
-    />
-  );
-};
+export default withTheme(FormBuilder);

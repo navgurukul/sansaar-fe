@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import classNames from 'clsx';
 
 import RoutesFromList from '../../providers/routing/RoutesFromList';
-import RightPaneWrapper from './RightPaneWrapper';
 import { selectors, setMainPaneWidth, setMainPaneScrollToTopPending } from './store';
 
 const styles = (theme) => ({
