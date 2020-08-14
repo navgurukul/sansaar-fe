@@ -9,7 +9,8 @@ import NGDateField from './components/NGDateField';
 import NGRadioButtons from './components/NGRadioButtons';
 import NGSelectField from './components/NGSelectField';
 import NGTextField from './components/NGTextField'
-import { withStyles, withTheme } from "@material-ui/core";
+import { withTheme, Button } from "@material-ui/core";
+
 
 const COMPONENTS = {
   text: NGTextField,
@@ -19,13 +20,23 @@ const COMPONENTS = {
   checkbox: NGCheckbox,
 };
 
-const  FormBuilder = ({ structure, initialValues, onSubmit, theme }) => {
+const  FormBuilder = ({
+  structure,
+  initialValues,
+  onSubmit,
+  theme,
+  fullWidth = true,
+  fullWidthSubmitBtn = true,
+  submitBtnDisabled
+}) => {
 
   const validationSchema = React.useMemo(() => {
     const schema = yup.object().shape({});
     structure.map(field => {
-      schema.fields[ field.name ] = field.validation;
-      schema._nodes.push(field.name);
+      if (field.validation) {
+        schema.fields[ field.name ] = field.validation;
+        schema._nodes.push(field.name);
+      }
     });
     return schema;
   }, [structure]);
@@ -49,24 +60,35 @@ const  FormBuilder = ({ structure, initialValues, onSubmit, theme }) => {
   })
 
   return (
-    <form>
+    <form onSubmit={handleSubmit(onSubmit)}>
       {structure.map((field, i) => {
         const FieldComponent = COMPONENTS[field.type];
         return (
-          <React.Fragment>
+          <React.Fragment key={i}>
             <FieldComponent
+              fullWidth={fullWidth}
               field={field}
               errors={errors}
               getValues={getValues}
               setValue={setValue}
               control={control}
               register={register}
-              key={i}
             />
-            <Spacer height={theme.spacing(2)} />
+            <Spacer height={theme.spacing(1)} />
           </React.Fragment>
         )
       })}
+      <Spacer height={theme.spacing(1)} />
+      <Button
+        fullWidth={fullWidthSubmitBtn}
+        type="submit"
+        variant="contained"
+        color="primary"
+        disabled={submitBtnDisabled}
+        disableElevation
+      >
+        {'Submit'}
+      </Button>
     </form>
   );
 }

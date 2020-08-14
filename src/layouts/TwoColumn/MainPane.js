@@ -29,14 +29,20 @@ const styles = (theme) => ({
   }
 });
 
-const MainPane = ({ actions, rightPaneOpen, classes, routes, location, mainPaneScrollToTopPending }) => {
+const MainPane = ({
+  actions,
+  rightPaneOpen,
+  classes,
+  routes,
+  mainPaneScrollToTopPending
+}) => {
 
   const mainPaneRef = React.createRef();
 
   // set main width on url change
   useEffect(() => {
     actions.setMainPaneWidth(mainPaneRef.current.offsetWidth);
-  }, [location]);
+  }, [rightPaneOpen]);
 
   // scroll the main pane to top if marked as pending
   useEffect(() => {

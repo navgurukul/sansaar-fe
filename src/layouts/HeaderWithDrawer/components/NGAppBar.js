@@ -10,11 +10,13 @@ import {
   Avatar,
   Menu,
   MenuItem,
+  LinearProgress,
 } from '@material-ui/core';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import { selectors as layoutSelectors } from '../../TwoColumn/store';
 import NGLogo from '../../../assets/img/logoWhite.png';
 import { logOutAction } from '../../../auth'
 import withUserContext from '../../../providers/UserAuth/withUserContext';
@@ -44,6 +46,8 @@ const NGAppBar = ({
   userContext,
   actions,
   toggleDrawer = () => {},
+  mainPaneLoading,
+  rightPaneLoading,
 }) => {
 
   const { user, authorized } = userContext;
@@ -66,13 +70,15 @@ const NGAppBar = ({
   }
 
   return (
+    <React.Fragment>
+    { (mainPaneLoading || rightPaneLoading) && <LinearProgress /> }
     <AppBar position="sticky" className={classes.appBar}>
       <Toolbar>
         {authorized && (
-        <IconButton edge="start" color="inherit" onClick={toggleDrawer}>
-          <MenuIcon />
-        </IconButton>
-)}
+          <IconButton edge="start" color="inherit" onClick={toggleDrawer}>
+            <MenuIcon />
+          </IconButton>
+        )}
         <Box className={classes.logoContainer}>
           <img src={NGLogo} className={classes.logoImg} alt="NavGurukul Logo" />
           <Box className={classes.ngServiceNameContainer}>
@@ -110,9 +116,14 @@ const NGAppBar = ({
         )}
       </Toolbar>
     </AppBar>
+    </React.Fragment>
   );
 }
 
+const mapStateToProps = (state) => ({
+  mainPaneLoading: layoutSelectors.selectMainPaneLoading(state),
+  rightPaneLoading: layoutSelectors.selectRightPaneLoading(state),
+});
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({ logout: logOutAction }, dispatch)  
@@ -120,6 +131,6 @@ const mapDispatchToProps = (dispatch) => ({
 
 export default compose(
   withUserContext,
-  connect(null, mapDispatchToProps),
+  connect(mapStateToProps, mapDispatchToProps),
   withStyles(styles, { withTheme: true }),
 )(NGAppBar);

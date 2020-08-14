@@ -30,7 +30,6 @@ const SelectFilter = ({ column: { filterValue, preFilteredRows, setFilter, Heade
           if (e.target.value === "all") {
             setFilter(undefined);
           } else {
-            console.log("e.target.value", e.target.value);
             setFilter(e.target.value);
           }
         }}

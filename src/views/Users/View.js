@@ -1,18 +1,19 @@
 import React, { useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import { Box, withStyles, Typography, IconButton } from "@material-ui/core";
-import CloseIcon from '@material-ui/icons/Close';
 import { compose } from "recompose";
 import moment from 'moment';
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+
+import RightPaneWithTitle from '../../components/RightPaneWithTitle';
 import UserAvatar from './components/UserCard/UserAvatar';
 import UserRoleChips from './components/UserCard/UserRoleChips';
 import Spacer from '../../components/Spacer';
-
-import { selectors, setUserToView, setUserRolesList } from './store';
-import { ngFetch } from "../../providers/NGFetch";
 import history from "../../providers/routing/app-history";
+import { selectors, setUserToView, setUserRolesList } from './store';
+import { setRightPaneLoading, selectors as layoutSelectors } from '../../layouts/TwoColumn/store';
+import { ngFetch } from "../../providers/NGFetch";
 
 const styles = () => ({
   avatarContainer: {
@@ -25,33 +26,30 @@ const styles = () => ({
   }
 });
 
-function UserView({ match, classes, theme, actions, user }) {
+function UserView({ match, classes, theme, actions, user, rightPaneLoading }) {
 
-  const {userId} = match.params;
+  const { userId } = match.params;
   const [userLoading, setUserLoading] = React.useState(true);
   useEffect(() => {
     setUserLoading(true);
     const fetchData = async () => {
+      actions.setRightPaneLoading(true);
       const response = await ngFetch(`/users/${userId}`);
       actions.setUserToView(response.user);
       setUserLoading(false);
+      actions.setRightPaneLoading(false);
     }
     fetchData();
   }, [userId]);
 
   const handleClose = () => history.push('/users');
 
-  if (userLoading) {
-    return <Box>Loading</Box>;
+  if (rightPaneLoading || !user) {
+    return <React.Fragment />;
   }
 
   return (
-    <React.Fragment>
-      <Box>
-        <IconButton className={classes.closeBtn} onClick={handleClose}>
-          <CloseIcon fontSize="inherit" />
-        </IconButton>
-      </Box>
+    <RightPaneWithTitle closeLink="/users">
       <Box className={classes.avatarContainer}>
         <UserAvatar name={user.name} profilePicture={user.profile_picture} widthHeight={200} />
       </Box>
@@ -70,16 +68,17 @@ function UserView({ match, classes, theme, actions, user }) {
       <Spacer height={theme.spacing(1)} />
       <Typography variant="overline">ROLES</Typography>
       <UserRoleChips rolesList={user.rolesList} edit userId={user.id} setUserRolesList={actions.setUserRolesList} />
-    </React.Fragment>
+    </RightPaneWithTitle>
   )
 }
 
 const mapStateToProps = (state) => ({
   user: selectors.selectUserToView(state),
+  rightPaneLoading: layoutSelectors.selectRightPaneLoading(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators({ setUserToView, setUserRolesList }, dispatch)
+  actions: bindActionCreators({ setUserToView, setUserRolesList, setRightPaneLoading }, dispatch),
 });
 
 export default compose(

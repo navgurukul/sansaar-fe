@@ -6,6 +6,8 @@ const LayoutSlice = createSlice({
     mainPaneWidth: null,
     rightPaneOpen: false,
     mainPaneScrollToTopPending: false,
+    rightPaneLoading: false,
+    mainPaneLoading: false,
   },
   reducers: {
     setMainPaneWidth: (state, action) => {
@@ -16,6 +18,12 @@ const LayoutSlice = createSlice({
     },
     setMainPaneScrollToTopPending: (state, action) => {
       state.mainPaneScrollToTopPending = action.payload;
+    },
+    setRightPaneLoading: (state, action) => {
+      state.rightPaneLoading = action.payload;
+    },
+    setMainPaneLoading: (state, action) => {
+      state.mainPaneLoading = action.payload;
     }
   }
 });

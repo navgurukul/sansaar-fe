@@ -13,6 +13,7 @@ import {
   withTheme,
   useMediaQuery,
   Box,
+  CircularProgress
 } from '@material-ui/core';
 import { fromPairs, map, isEmpty, difference } from 'lodash';
 
@@ -27,6 +28,7 @@ const TableOrCardList = ({
   renderCard,
   onRowClick,
   scrollContainerToTop,
+  loading,
 }) => {
 
   const newData = React.useMemo(() => {
@@ -113,7 +115,7 @@ const TableOrCardList = ({
     },
     useFilters,
     useSortBy,
-    usePagination
+    usePagination,
   );
 
   // Hide columns according to container size
@@ -151,7 +153,8 @@ const TableOrCardList = ({
   }
 
   const handleChangeRowsPerPage = event => {
-    setPageSize(event.target.value)
+    setPageSize(event.target.value);
+    scrollContainerToTop();
   }
 
 
@@ -205,6 +208,10 @@ const TableOrCardList = ({
   )
 
   const screenAboveSm = useMediaQuery(theme.breakpoints.up('sm'))
+
+  if (loading) {
+    return <CircularProgress />
+  }
  
   return (
     <React.Fragment>

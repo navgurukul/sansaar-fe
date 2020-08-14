@@ -1,7 +1,7 @@
 import React from 'react';
 import TwoColumnLayout from '../../layouts/TwoColumn';
-import UsersList from './UsersList';
-import UserView from './UserView';
+import UsersList from './List';
+import UserView from './View';
 
 import TestUserEdit from './TestUserEdit';
 
