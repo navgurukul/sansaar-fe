@@ -14,8 +14,7 @@ const UserAuthProvider = ({ children, authToken }) => {
     editableRoles: [],
   });
 
-  const refreshUserDetails = async () => await fetchUser();
-
+  
   const fetchUser = async () => {
     if (!authToken) {
       setState({
@@ -32,7 +31,9 @@ const UserAuthProvider = ({ children, authToken }) => {
       });
     }
   }
-
+  
+  const refreshUserDetails = async () => {return fetchUser();}
+  
   useEffect(() => {
     fetchUser();
   }, [authToken]);

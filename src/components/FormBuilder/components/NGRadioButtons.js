@@ -10,7 +10,7 @@ const RadioButtons = ({ field, errors, control }) => (
   >
     <FormLabel component="legend">{field.labelText}</FormLabel>
     <Controller
-      as={
+      as={(
         <RadioGroup aria-label="gender" {...field.customProps}>
           {field.options.map(each => (
             <FormControlLabel
@@ -21,7 +21,7 @@ const RadioButtons = ({ field, errors, control }) => (
             />
           ))}
         </RadioGroup>
-      }
+      )}
       name={field.name}
       control={control}
       defaultValue={field.customProps.defaultValue}

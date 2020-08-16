@@ -17,7 +17,7 @@ const SelectFilter = ({ column: { filterValue, preFilteredRows, setFilter, Heade
     });
     const optionsArr = [ ...options.values()]
     return getSelectMapping ? getSelectMapping(optionsArr) : defaultOptionsMapping(optionsArr);
-  }, [id, preFilteredRows]);
+  }, [id, preFilteredRows,getSelectMapping]);
 
   return (
     <FormControl variant="outlined" style={{ width: '100%' }}>

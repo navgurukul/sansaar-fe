@@ -10,7 +10,7 @@ import {
   TableRow ,
   TablePagination,
   Paper,
-  withTheme,
+  withStyles,
   useMediaQuery,
   Box,
   CircularProgress
@@ -20,6 +20,12 @@ import { fromPairs, map, isEmpty, difference } from 'lodash';
 import AllFilters, { FILTER_COMPONENTS, FILTER_TYPES } from './filters';
 import Spacer from "../Spacer";
 
+
+const styles = () => ({
+  CursorOnRowClick: {
+    cursor: 'pointer',
+  },
+})
 const TableOrCardList = ({
   tableColumns,
   data,
@@ -29,6 +35,7 @@ const TableOrCardList = ({
   onRowClick,
   scrollContainerToTop,
   loading,
+  classes,
 }) => {
 
   const newData = React.useMemo(() => {
@@ -37,6 +44,7 @@ const TableOrCardList = ({
         return [c.accessor, c.getFilterableValue];
       }
     }).filter(c => c !== undefined));
+    
     if (isEmpty(onFilterableValueColumns)) return data;
     return data.map(row => {
       const newRow = { ...row };
@@ -101,7 +109,6 @@ const TableOrCardList = ({
     setPageSize,
     columns: actualColumns,
     state: { pageIndex, pageSize, rowCount = rows.length },
-    toggleHideColumn,
     setHiddenColumns,
     allColumns,
   } = useTable(
@@ -139,7 +146,7 @@ const TableOrCardList = ({
     const allColumnIds = allColumns.map(c => c.id);
     const hiddenColumnIds = difference(allColumnIds, visibleColumnsId);
     setHiddenColumns(hiddenColumnIds);
-  }, [containerWidth]);
+  }, [containerWidth,allColumns,setHiddenColumns]);
 
   const handleChangePage = (event, newPage) => {
     if (newPage === pageIndex + 1) {
@@ -182,6 +189,7 @@ const TableOrCardList = ({
               {...row.getRowProps()}
               onClick={onRowClick ? () => onRowClick(row.original.id) : undefined}
               hover
+              className={classes.CursorOnRowClick}
             >
               {row.cells.map(cell => {
                 return (
@@ -200,7 +208,7 @@ const TableOrCardList = ({
   const renderCards = () => (
     <React.Fragment>
       {page.map((row, i) => (
-        <Box key={i} onClick={onRowClick ? () => onRowClick(row.original.id) : undefined}>
+        <Box onClick={onRowClick ? () => onRowClick(row.original.id) : undefined} key={row.original.id} className={classes.CursorOnRowClick}>
           {renderCard(row.original, i)}
         </Box>
       ))}
@@ -233,4 +241,4 @@ const TableOrCardList = ({
   )
 }
 
-export default withTheme(TableOrCardList)
+export default withStyles(styles, { withTheme: true })(TableOrCardList)

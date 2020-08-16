@@ -1,5 +1,5 @@
-import React from 'react';
-import MenuIcon from '@material-ui/icons/Menu';
+import React from "react"
+import MenuIcon from "@material-ui/icons/Menu"
 import {
   AppBar,
   withStyles,
@@ -11,26 +11,26 @@ import {
   Menu,
   MenuItem,
   LinearProgress,
-} from '@material-ui/core';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+} from "@material-ui/core"
+import { compose } from "recompose"
+import { connect } from "react-redux"
+import { bindActionCreators } from "redux"
 
-import { selectors as layoutSelectors } from '../../TwoColumn/store';
-import NGLogo from '../../../assets/img/logoWhite.png';
-import { logOutAction } from '../../../auth'
-import withUserContext from '../../../providers/UserAuth/withUserContext';
-import history from '../../../providers/routing/app-history';
-import { getInitialsFromName } from '../../../helpers';
+import { selectors as layoutSelectors } from "../../TwoColumn/store"
+import NGLogo from "../../../assets/img/logoWhite.png"
+import { logOutAction } from "../../../auth"
+import withUserContext from "../../../providers/UserAuth/withUserContext"
+import history from "../../../providers/routing/app-history"
+import { getInitialsFromName } from "../../../helpers"
 
-const styles = (theme) => ({
+const styles = theme => ({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
   },
   logoContainer: {
     flexGrow: 1,
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
+    alignItems: "center",
   },
   logoImg: {
     height: 40,
@@ -39,7 +39,7 @@ const styles = (theme) => ({
   ngServiceNameContainer: {
     marginLeft: theme.spacing(1),
   },
-});
+})
 
 const NGAppBar = ({
   classes,
@@ -49,88 +49,93 @@ const NGAppBar = ({
   mainPaneLoading,
   rightPaneLoading,
 }) => {
+  const { user, authorized } = userContext
 
-  const { user, authorized } = userContext;
-
-  const [profileMenuAnchorEl, setProfileMenuAnchorEl] = React.useState(null);
-  const profileMenuOpen = Boolean(profileMenuAnchorEl);
+  const [profileMenuAnchorEl, setProfileMenuAnchorEl] = React.useState(null)
+  const profileMenuOpen = Boolean(profileMenuAnchorEl)
 
   const handleProfileMenuClose = () => {
-    setProfileMenuAnchorEl(null);
-  };
+    setProfileMenuAnchorEl(null)
+  }
 
-  const handleAvatarClick = (event) => {
-    setProfileMenuAnchorEl(event.target);
+  const handleAvatarClick = event => {
+    setProfileMenuAnchorEl(event.target)
   }
 
   const handleLogout = () => {
-    handleProfileMenuClose();
-    actions.logout();
-    history.push('/login');
+    handleProfileMenuClose()
+    actions.logout()
+    history.push("/login")
   }
 
   return (
     <React.Fragment>
-    { (mainPaneLoading || rightPaneLoading) && <LinearProgress /> }
-    <AppBar position="sticky" className={classes.appBar}>
-      <Toolbar>
-        {authorized && (
-          <IconButton edge="start" color="inherit" onClick={toggleDrawer}>
-            <MenuIcon />
-          </IconButton>
-        )}
-        <Box className={classes.logoContainer}>
-          <img src={NGLogo} className={classes.logoImg} alt="NavGurukul Logo" />
-          <Box className={classes.ngServiceNameContainer}>
-            <Typography variant="h6" style={{ fontWeight: 100 }}>
-              Admissions
-            </Typography>
-          </Box>
-        </Box>
-        {authorized && (
-          <Box>
-            <IconButton color="inherit" onClick={handleAvatarClick}>
-              <Avatar src={user.profile_picture ? user.profile_picture : undefined}>
-                {getInitialsFromName(user.name)}
-              </Avatar>
+      {(mainPaneLoading || rightPaneLoading) && <LinearProgress />}
+      <AppBar position="sticky" className={classes.appBar}>
+        <Toolbar>
+          {authorized && (
+            <IconButton edge="start" color="inherit" onClick={toggleDrawer}>
+              <MenuIcon />
             </IconButton>
-            <Menu
-              id="user-avatar-menu"
-              anchorEl={profileMenuAnchorEl}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={profileMenuOpen}
-              onClose={handleProfileMenuClose}
-            >
-              <MenuItem onClick={handleProfileMenuClose}>Profile</MenuItem>
-              <MenuItem onClick={handleLogout}>Logout</MenuItem>
-            </Menu>
+          )}
+          <Box className={classes.logoContainer}>
+            <img
+              src={NGLogo}
+              className={classes.logoImg}
+              alt="NavGurukul Logo"
+            />
+            <Box className={classes.ngServiceNameContainer}>
+              <Typography variant="h6" style={{ fontWeight: 100 }}>
+                Admissions
+              </Typography>
+            </Box>
           </Box>
-        )}
-      </Toolbar>
-    </AppBar>
+          {authorized && (
+            <Box>
+              <IconButton color="inherit" onClick={handleAvatarClick}>
+                <Avatar
+                  src={user.profile_picture ? user.profile_picture : undefined}
+                >
+                  {getInitialsFromName(user.name)}
+                </Avatar>
+              </IconButton>
+              <Menu
+                id="user-avatar-menu"
+                anchorEl={profileMenuAnchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={profileMenuOpen}
+                onClose={handleProfileMenuClose}
+              >
+                <MenuItem onClick={handleProfileMenuClose}>Profile</MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              </Menu>
+            </Box>
+          )}
+        </Toolbar>
+      </AppBar>
     </React.Fragment>
-  );
+  )
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   mainPaneLoading: layoutSelectors.selectMainPaneLoading(state),
   rightPaneLoading: layoutSelectors.selectRightPaneLoading(state),
-});
+})
 
-const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators({ logout: logOutAction }, dispatch)  
-});
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators({ logout: logOutAction }, dispatch),
+})
 
 export default compose(
   withUserContext,
   connect(mapStateToProps, mapDispatchToProps),
-  withStyles(styles, { withTheme: true }),
-)(NGAppBar);
+  withStyles(styles, { withTheme: true })
+)(NGAppBar)

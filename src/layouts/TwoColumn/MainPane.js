@@ -42,7 +42,7 @@ const MainPane = ({
   // set main width on url change
   useEffect(() => {
     actions.setMainPaneWidth(mainPaneRef.current.offsetWidth);
-  }, [rightPaneOpen]);
+  }, [rightPaneOpen,mainPaneRef,actions]);
 
   // scroll the main pane to top if marked as pending
   useEffect(() => {
@@ -51,7 +51,7 @@ const MainPane = ({
     }
     mainPaneRef.current.scrollTo(0,0);
     actions.setMainPaneScrollToTopPending(false);
-  }, [mainPaneScrollToTopPending])
+  }, [mainPaneScrollToTopPending,actions,mainPaneRef])
 
   useEffect(() => {
     const setMainPaneWidth = () => actions.setMainPaneWidth(mainPaneRef.current.offsetWidth);

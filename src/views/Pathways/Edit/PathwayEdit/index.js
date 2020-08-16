@@ -5,16 +5,17 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { withTheme } from '@material-ui/core';
-
-import { selectors as layoutSelectors, setRightPaneLoading } from '../../../layouts/TwoColumn/store';
-import { ngFetch } from '../../../providers/NGFetch';
-import { getPathwayEditFormStructure } from '../forms';
-import FormBuilder from '../../../components/FormBuilder';
-import Spacer from '../../../components/Spacer';
-import RightPaneWithTitle from '../../../components/RightPaneWithTitle';
+import { selectors, setPathwayToView, setAddOrEditPathway } from '../../store';
+import { selectors as layoutSelectors, setRightPaneLoading } from '../../../../layouts/TwoColumn/store';
+import { ngFetch } from '../../../../providers/NGFetch';
+import { getPathwayEditFormStructure } from '../../Forms/pathwaysFormStructure';
+import FormBuilder from '../../../../components/FormBuilder';
+import Spacer from '../../../../components/Spacer';
+import RightPaneWithTitle from '../../../../components/RightPaneWithTitle';
 import Milestones from './Milestones';
+import history from '../../../../providers/routing/app-history';
 
-const PathwayEdit = ({ rightPaneLoading, actions, match, theme, classes }) => {
+const PathwayEdit = ({ rightPaneLoading, actions, match, theme }) => {
 
   const { pathwayId } = match.params;
   const { enqueueSnackbar } = useSnackbar();
@@ -24,19 +25,26 @@ const PathwayEdit = ({ rightPaneLoading, actions, match, theme, classes }) => {
     const fetchData = async () => {
       actions.setRightPaneLoading(true);
       const response = await ngFetch(`/pathways/${pathwayId}`);
+      actions.setPathwayToView(response.pathway);
       setPathway(response.pathway);
       actions.setRightPaneLoading(false);
     }
     fetchData();
-  }, [pathwayId]);
+  }, [actions,pathwayId]);
 
+  const [submitBtnDisabled, setSubmitBtnDisabled] = React.useState(false);
   const onSubmit = async (data) => {
+    setSubmitBtnDisabled(true);
+    delete data.createdAt
     const response = await ngFetch(`/pathways/${pathwayId}`, {
       method: 'PUT',
       body: data,
     });
+    actions.setAddOrEditPathway({pathway: response.pathway, pathwayId:response.id})
     setPathway(response.pathway);
     enqueueSnackbar("Pathway details saved.", { variant: 'success' });
+    setSubmitBtnDisabled(false);
+    history.push('/pathways');
   }
 
   if (!pathway || rightPaneLoading) {
@@ -45,7 +53,7 @@ const PathwayEdit = ({ rightPaneLoading, actions, match, theme, classes }) => {
 
   return (
     <RightPaneWithTitle title="Edit Pathway" closeLink="/pathways">
-      <FormBuilder structure={getPathwayEditFormStructure(pathway)} onSubmit={onSubmit} initialValues={pathway} />
+      <FormBuilder structure={getPathwayEditFormStructure(pathway)} onSubmit={onSubmit} initialValues={pathway} submitBtnDisabled={submitBtnDisabled} />
       <Spacer height={theme.spacing(2)} />
       <Milestones pathway={pathway} />
     </RightPaneWithTitle>
@@ -54,10 +62,11 @@ const PathwayEdit = ({ rightPaneLoading, actions, match, theme, classes }) => {
 
 const mapStateToProps = (state) => ({
   rightPaneLoading: layoutSelectors.selectRightPaneLoading(state),
+  pathway: selectors.selectPathwayToView(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators({ setRightPaneLoading }, dispatch),
+  actions: bindActionCreators({ setRightPaneLoading, setPathwayToView , setAddOrEditPathway }, dispatch),
 });
 
 export default compose(

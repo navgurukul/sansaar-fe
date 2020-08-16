@@ -5,7 +5,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import history from '../providers/routing/app-history';
 import Spacer from './Spacer';
 
-const styles = (theme) => ({
+const styles = () => ({
   titleContainer: {
     display: 'flex',
     flexDirection: 'row',

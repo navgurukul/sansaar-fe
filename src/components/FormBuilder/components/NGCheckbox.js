@@ -8,8 +8,8 @@ const NGCheckbox = ({ field, control, setValue, getValues, register, errors }) =
       {field.labelText}
     </FormLabel>
     <FormGroup>
-      {field.hobbies.map((boat, index) => (
-        <React.Fragment key={index}>
+      {field.hobbies.map((boat) => (
+        <React.Fragment key={boat.id}>
           <FormCheckBox
             name={field.name}
             control={control}

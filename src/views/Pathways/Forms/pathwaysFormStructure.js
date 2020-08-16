@@ -1,8 +1,8 @@
 import * as yup from "yup";
 
-import { ngFetch } from '../../providers/NGFetch';
+import { ngFetch } from '../../../providers/NGFetch';
 
-yup.addMethod(yup.string, 'pathwayCodeIsUnique', function ({ currentCode }) {
+yup.addMethod(yup.string, 'pathwayCodeIsUnique', function CODE({ currentCode }) {
   return this.test({
     name: 'pathwayCodeUnique',
     message: 'Code is taken by another pathway.',
@@ -10,7 +10,7 @@ yup.addMethod(yup.string, 'pathwayCodeIsUnique', function ({ currentCode }) {
       if (!code) return false;
       const response  = await ngFetch('/pathways/checkIfCodeExists', { query: { code } });
       if (response.exists) {
-        return currentCode === response.pathway.code ? true : false;
+        return currentCode === response.pathway.code;
       }
       return true;
     }

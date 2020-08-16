@@ -3,13 +3,13 @@ import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers"
 import * as yup from "yup";
 
-import Spacer from '../../components/Spacer';
+import { withTheme, Button } from "@material-ui/core";
+import Spacer from "../Spacer";
 import NGCheckbox from './components/NGCheckbox';
 import NGDateField from './components/NGDateField';
 import NGRadioButtons from './components/NGRadioButtons';
 import NGSelectField from './components/NGSelectField';
 import NGTextField from './components/NGTextField'
-import { withTheme, Button } from "@material-ui/core";
 
 
 const COMPONENTS = {
@@ -61,10 +61,10 @@ const  FormBuilder = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {structure.map((field, i) => {
+      {structure.map((field) => {
         const FieldComponent = COMPONENTS[field.type];
         return (
-          <React.Fragment key={i}>
+          <React.Fragment key={field.name}>
             <FieldComponent
               fullWidth={fullWidth}
               field={field}
@@ -87,7 +87,7 @@ const  FormBuilder = ({
         disabled={submitBtnDisabled}
         disableElevation
       >
-        {'Submit'}
+        Submit
       </Button>
     </form>
   );

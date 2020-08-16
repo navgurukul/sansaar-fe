@@ -73,25 +73,25 @@ const FormData = [
     type: "radio",
     labelText: "Gender",
   },
-  {
-    name: "Hobbies",
-    hobbies: [
-      { id: "cricet" },
-      { id: "volleyball" },
-      { id: "chess" },
-      { id: "coding" },
-    ],
-    preselectedHObbies: [{ id: "cricet" }, { id: "volleyball" }],
-    validation: yup
-      .array()
-      .transform(function(o, obj) {
-        return o.filter(o => o)
-      })
-      .min(2, "please select two options")
-      .required("required"),
-    type: "checkbox",
-    labelText: "Hobbies",
-  },
+  // {
+  //   name: "Hobbies",
+  //   hobbies: [
+  //     { id: "cricet" },
+  //     { id: "volleyball" },
+  //     { id: "chess" },
+  //     { id: "coding" },
+  //   ],
+  //   preselectedHObbies: [{ id: "cricet" }, { id: "volleyball" }],
+  //   validation: yup
+  //     .array()
+  //     .transform(function(o, obj) {
+  //       return o.filter(o => o)
+  //     })
+  //     .min(2, "please select two options")
+  //     .required("required"),
+  //   type: "checkbox",
+  //   labelText: "Hobbies",
+  // },
   // {
   //   name: "Age",
   //   type: "slider",

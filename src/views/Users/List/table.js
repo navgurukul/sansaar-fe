@@ -1,11 +1,11 @@
 import React from 'react';
 import moment from 'moment';
-
-import { getInitialsFromName } from '../../../helpers'
+import { fromPairs } from 'lodash';
+// import { getInitialsFromName } from '../../../helpers';
 import UserRoleChips from '../components/UserCard/UserRoleChips';
 import UserAvatar from '../components/UserCard/UserAvatar';
 import NG_CONSTANTS from '../../../ngConstants';
-import { fromPairs } from 'lodash';
+
 
 const tableColumns = [
     {

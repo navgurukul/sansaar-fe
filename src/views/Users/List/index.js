@@ -1,5 +1,5 @@
-import React,{useState, useEffect, Fragment} from 'react';
-import { TextField, Typography, ThemeProvider, withTheme } from '@material-ui/core';
+import React,{ useEffect, Fragment} from 'react';
+import {  Typography, withTheme } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -25,7 +25,7 @@ function UserList({ mainPaneWidth, actions, allUsers, theme, mainPaneLoading }) 
       actions.setMainPaneLoading(false);
     };
     fetchData();
-  }, []);
+  }, [actions]);
 
   const userCard = (user, key) => (
     <UserCard

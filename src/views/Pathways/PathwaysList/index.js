@@ -7,68 +7,60 @@ import Button from "@material-ui/core/Button"
 import TableOrCardList from "../../../components/TableOrCardList"
 import { ngFetch } from "../../../providers/NGFetch"
 import tableColumns from "./table"
-import MilestoneCard from "../components/MilestoneCard"
+import PathwayCard from "../components/PathwayCard"
 import history from "../../../providers/routing/app-history"
 import Spacer from "../../../components/Spacer"
 import {
   selectors as layoutSelectors,
   setMainPaneScrollToTopPending,
 } from "../../../layouts/TwoColumn/store"
-import { setAllMilestones, selectors as userSelectors } from "../store"
+import { setAllPathways, selectors as userSelectors } from "../store"
 
-function MilestonesList({
-  match,
-  mainPaneWidth,
-  actions,
-  allMilestones,
-  theme,
-}) {
-  const { pathwayId } = match.params
+
+function PathwaysList({ mainPaneWidth, actions, allPathways, theme }) {
   useEffect(() => {
     const fetchData = async () => {
-      const response = await ngFetch(`/pathways/${pathwayId}/milestones`, {
-        method: "GET",
-      })
-      actions.setAllMilestones(response.milestones)
+      const response = await ngFetch("/pathways", { method: "GET" })
+      actions.setAllPathways(response.pathways)
     }
     fetchData()
-  }, [actions,pathwayId])
+  }, [actions])
 
-  const MileStoneCard = (Milestone, key) => (
-    <MilestoneCard
+  const pathwayCard = (pathway, key) => (
+    <PathwayCard
       key={key}
-      id={Milestone.id}
-      name={Milestone.name}
-      startedAt={Milestone.createdAt}
-      description={Milestone.description}
+      id={pathway.id}
+      name={pathway.name}
+      startedAt={pathway.createdAt}
+      description={pathway.description}
     />
   )
 
-  const milestones = React.useMemo(() => Object.values(allMilestones), [
-    allMilestones,
+  const pathways = React.useMemo(() => Object.values(allPathways), [
+    allPathways,
   ])
 
-  const handleRowClick = milestoneId => {
-    history.push(`/pathways/${pathwayId}/milestones/${milestoneId}`)
+  const handleRowClick = pathwayId => {
+    history.push(`/pathways/${pathwayId}`)
   }
 
-  const handleAddMilestone = () => {
-    history.push(`/pathways/${pathwayId}/milestones/add`)
+  const handleAddPathWay = () => {
+    history.push('/pathways/add')
   }
 
   return (
     <Fragment>
-      <Typography variant="h3">Milestones</Typography>
+      <Typography variant="h3">Pathways</Typography>
       <Spacer height={theme.spacing(2)} />
-      <Button variant="contained" color="primary" onClick={handleAddMilestone}>
-        Add Milestone
+      <Button variant="contained" color="primary" onClick={handleAddPathWay}>
+        Add Pathway
       </Button>
       <Spacer height={theme.spacing(2)} />
       <TableOrCardList
         tableColumns={tableColumns}
-        data={milestones}
+        data={pathways}
         containerWidth={mainPaneWidth}
-        renderCard={MileStoneCard}
+        renderCard={pathwayCard}
         onRowClick={handleRowClick}
         scrollContainerToTop={() => actions.setMainPaneScrollToTopPending(true)}
       />
@@ -78,12 +70,12 @@ function MilestonesList({
 
 const mapStateToProps = state => ({
   mainPaneWidth: layoutSelectors.selectMainPaneWidth(state),
-  allMilestones: userSelectors.selectAllMilestones(state),
+  allPathways: userSelectors.selectAllPathways(state),
 })
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
-    { setAllMilestones, setMainPaneScrollToTopPending },
+    { setAllPathways, setMainPaneScrollToTopPending },
     dispatch
   ),
 })
@@ -91,4 +83,4 @@ const mapDispatchToProps = dispatch => ({
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withTheme
-)(MilestonesList)
+)(PathwaysList)
