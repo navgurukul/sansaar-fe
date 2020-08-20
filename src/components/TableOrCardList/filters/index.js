@@ -29,7 +29,7 @@ export const FILTER_TYPES = {
   },
 }
 
-const styles = (theme) => ({
+const styles = () => ({
   filterInput: {
     width: '100%',
   },
@@ -67,10 +67,10 @@ const AllFilters = ({ classes, columns, setGlobalSearch, globalSearchQuery }) =>
       </Grid>
       {filtersVisible && (
         <React.Fragment>
-          {columns.map((column, i) => {
+          {columns.map((column) => {
             if (!column.canFilter) return null
             return (
-              <Grid item xs={12} md={4} lg={3} key={i}>
+              <Grid item xs={12} md={4} lg={3} key={column.priority}>
                 {column.render("Filter")}
               </Grid>
             );

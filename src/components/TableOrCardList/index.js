@@ -1,25 +1,30 @@
-import React, { useEffect } from "react";
-import get from 'lodash/get';
-import { useTable, useFilters, useSortBy, usePagination } from "react-table";
+import React, { useEffect } from "react"
+import get from "lodash/get"
+import { useTable, useFilters, useSortBy, usePagination } from "react-table"
 import {
   Table,
   TableContainer,
   TableBody,
   TableCell,
   TableHead,
-  TableRow ,
+  TableRow,
   TablePagination,
   Paper,
-  withTheme,
+  withStyles,
   useMediaQuery,
   Box,
-  CircularProgress
-} from '@material-ui/core';
-import { fromPairs, map, isEmpty, difference } from 'lodash';
+  CircularProgress,
+} from "@material-ui/core"
+import { fromPairs, map, isEmpty, difference } from "lodash"
 
-import AllFilters, { FILTER_COMPONENTS, FILTER_TYPES } from './filters';
-import Spacer from "../Spacer";
+import AllFilters, { FILTER_COMPONENTS, FILTER_TYPES } from "./filters"
+import Spacer from "../Spacer"
 
+const styles = () => ({
+  CursorOnRowClick: {
+    cursor: "pointer",
+  },
+})
 const TableOrCardList = ({
   tableColumns,
   data,
@@ -29,50 +34,57 @@ const TableOrCardList = ({
   onRowClick,
   scrollContainerToTop,
   loading,
+  classes,
 }) => {
-
   const newData = React.useMemo(() => {
-    const onFilterableValueColumns = fromPairs(tableColumns.map(c => {
-      if (c.filter === 'onFilterableValue') {
-        return [c.accessor, c.getFilterableValue];
-      }
-    }).filter(c => c !== undefined));
-    if (isEmpty(onFilterableValueColumns)) return data;
+    const onFilterableValueColumns = fromPairs(
+      tableColumns
+        .map(c => {
+          if (c.getSearchText) {
+            return [c.accessor, c.getSearchText]
+          }
+        })
+        .filter(c => c !== undefined)
+    )
+
+    if (isEmpty(onFilterableValueColumns)) return data
     return data.map(row => {
-      const newRow = { ...row };
-      map(onFilterableValueColumns, (getFilterableVaue, accessor) => {
-        newRow[`${accessor}FilterableValue`] = getFilterableVaue(row[accessor])
+      const newRow = { ...row }
+      map(onFilterableValueColumns, (getSearchText, accessor) => {
+        newRow[`${accessor}GlobalFilterableValue`] = getSearchText(row[accessor])
       })
-      return newRow;
+      return newRow
     })
-  }, [data, tableColumns]);
+  }, [data, tableColumns])
+
 
   const columns = React.useMemo(() => {
     return tableColumns.map(column => {
       if (column.disableFilters) {
-        return column;
+        return column
       }
-      const filterElType = column.filterElType ? column.filterElType : 'text';
-      const Filter = FILTER_COMPONENTS[filterElType];
+      const filterElType = column.filterElType ? column.filterElType : "text"
+      const Filter = FILTER_COMPONENTS[filterElType]
       return { ...column, Filter }
     })
-  }, [tableColumns]);
+  }, [tableColumns])
 
   const searchableKeys = React.useMemo(() => {
     return columns.filter(c => c.search).map(c => c.accessor)
-  }, [columns]);
+  }, [columns])
 
-  const [globalSearch, setGlobalSearch] = React.useState();
+  const [globalSearch, setGlobalSearch] = React.useState()
   const allData = React.useMemo(() => {
     return newData.map(row => {
       const searchableText = searchableKeys
-        .map(key => get(row, key, ""))
+        .map(key => get(row, `${key}GlobalFilterableValue`, row[key]))
         .filter(str => Boolean(str))
         .map(str => str.toString().toLowerCase())
         .join(";")
       return { ...row, searchableText }
     })
-  }, [newData, searchableKeys]);
+  }, [newData,searchableKeys])
+
 
   const visibleData = React.useMemo(() => {
     if (!globalSearch) {
@@ -81,13 +93,16 @@ const TableOrCardList = ({
     return allData.filter(
       row => row.searchableText.indexOf(globalSearch.toLowerCase()) > -1
     )
-  }, [allData, globalSearch]);
+  }, [allData, globalSearch])
 
-  const defaultColumn = React.useMemo(() => ({
-      filterElType: 'text',
+  const defaultColumn = React.useMemo(
+    () => ({
+      filterElType: "text",
       Filter: FILTER_COMPONENTS.text,
-    }), []);
-    
+    }),
+    []
+  )
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -101,7 +116,6 @@ const TableOrCardList = ({
     setPageSize,
     columns: actualColumns,
     state: { pageIndex, pageSize, rowCount = rows.length },
-    toggleHideColumn,
     setHiddenColumns,
     allColumns,
   } = useTable(
@@ -111,12 +125,12 @@ const TableOrCardList = ({
       data: visibleData,
       initialState: { pageSize: 25, pageIndex: 0 },
       defaultColumn,
-      filterTypes: FILTER_TYPES
+      filterTypes: FILTER_TYPES,
     },
     useFilters,
     useSortBy,
-    usePagination,
-  );
+    usePagination
+  )
 
   // Hide columns according to container size
   useEffect(() => {
@@ -124,22 +138,23 @@ const TableOrCardList = ({
       if (!numCols) {
         numCols = columns.length
       }
-      const newColumns = columns.filter(h => h.priority <= numCols);
-      const tableWidth = newColumns.reduce((sum, h) => sum + h.minWidth, 0);
+      const newColumns = columns.filter(h => h.priority <= numCols)
+      const tableWidth = newColumns.reduce((sum, h) => sum + h.minWidth, 0)
 
       if (tableWidth <= containerWidth) {
-        return newColumns.map(c => c.id);
+        return newColumns.map(c => c.id)
       }
       if (numCols <= 1) {
-        return newColumns.map(c => c.id);
+        return newColumns.map(c => c.id)
       }
       return getVisibleColumns(newColumns, numCols - 1)
     }
-    const visibleColumnsId = getVisibleColumns(allColumns);
-    const allColumnIds = allColumns.map(c => c.id);
-    const hiddenColumnIds = difference(allColumnIds, visibleColumnsId);
-    setHiddenColumns(hiddenColumnIds);
-  }, [containerWidth]);
+
+    const visibleColumnsId = getVisibleColumns(allColumns)
+    const allColumnIds = allColumns.map(c => c.id)
+    const hiddenColumnIds = difference(allColumnIds, visibleColumnsId)
+    setHiddenColumns(hiddenColumnIds)
+  }, [containerWidth, allColumns, setHiddenColumns])
 
   const handleChangePage = (event, newPage) => {
     if (newPage === pageIndex + 1) {
@@ -149,14 +164,13 @@ const TableOrCardList = ({
     } else {
       gotoPage(newPage)
     }
-    scrollContainerToTop();
+    scrollContainerToTop()
   }
 
   const handleChangeRowsPerPage = event => {
-    setPageSize(event.target.value);
-    scrollContainerToTop();
+    setPageSize(event.target.value)
+    scrollContainerToTop()
   }
-
 
   const renderTable = () => (
     <Table {...getTableProps()} stickyHeader aria-label="sticky table">
@@ -164,34 +178,39 @@ const TableOrCardList = ({
         {headerGroups.map(headerGroup => (
           <TableRow {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map(column => (
-              <TableCell {...column.getHeaderProps(column.getSortByToggleProps())}>
+              <TableCell
+                {...column.getHeaderProps(column.getSortByToggleProps())}
+              >
                 {column.render("Header")}
                 <span>
-                  {column.isSorted ? (column.isSortedDesc ? ' 🔽' : ' 🔼') : ''}
+                  {column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""}
                 </span>
               </TableCell>
             ))}
           </TableRow>
-      ))}
+        ))}
       </TableHead>
       <TableBody {...getTableBodyProps()}>
-        {page.map((row) => {
-          prepareRow(row);
+        {page.map(row => {
+          prepareRow(row)
           return (
             <TableRow
               {...row.getRowProps()}
-              onClick={onRowClick ? () => onRowClick(row.original.id) : undefined}
+              onClick={
+                onRowClick ? () => onRowClick(row.original.id) : undefined
+              }
               hover
+              className={classes.CursorOnRowClick}
             >
               {row.cells.map(cell => {
                 return (
                   <TableCell {...cell.getCellProps()}>
                     {cell.render("Cell")}
                   </TableCell>
-                );
+                )
               })}
             </TableRow>
-          );
+          )
         })}
       </TableBody>
     </Table>
@@ -200,28 +219,36 @@ const TableOrCardList = ({
   const renderCards = () => (
     <React.Fragment>
       {page.map((row, i) => (
-        <Box key={i} onClick={onRowClick ? () => onRowClick(row.original.id) : undefined}>
+        <Box
+          onClick={onRowClick ? () => onRowClick(row.original.id) : undefined}
+          key={row.original.id}
+          className={classes.CursorOnRowClick}
+        >
           {renderCard(row.original, i)}
         </Box>
       ))}
     </React.Fragment>
   )
 
-  const screenAboveSm = useMediaQuery(theme.breakpoints.up('sm'))
+  const screenAboveSm = useMediaQuery(theme.breakpoints.up("sm"))
 
   if (loading) {
     return <CircularProgress />
   }
- 
+
   return (
     <React.Fragment>
-      <AllFilters columns={actualColumns} setGlobalSearch={setGlobalSearch} globalSearchQuery={globalSearch} />
+      <AllFilters
+        columns={actualColumns}
+        setGlobalSearch={setGlobalSearch}
+        globalSearchQuery={globalSearch}
+      />
       <Spacer height={theme.spacing(2)} />
       <TableContainer component={screenAboveSm ? Paper : undefined}>
-        { screenAboveSm ? renderTable() : renderCards() }
+        {screenAboveSm ? renderTable() : renderCards()}
         <TablePagination
           rowsPerPageOptions={[25, 50, 75, 100]}
-          component={screenAboveSm ? 'div' : Paper}
+          component={screenAboveSm ? "div" : Paper}
           count={rowCount}
           rowsPerPage={pageSize}
           page={pageIndex}
@@ -233,4 +260,4 @@ const TableOrCardList = ({
   )
 }
 
-export default withTheme(TableOrCardList)
+export default withStyles(styles, { withTheme: true })(TableOrCardList)

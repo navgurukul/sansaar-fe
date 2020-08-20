@@ -1,5 +1,5 @@
-import React,{useState, useEffect, Fragment} from 'react';
-import { TextField, Typography, ThemeProvider, withTheme } from '@material-ui/core';
+import React,{ useEffect, Fragment} from 'react';
+import {  Typography, withTheme } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -10,7 +10,6 @@ import TableOrCardList from '../../../components/TableOrCardList';
 import { ngFetch } from '../../../providers/NGFetch';
 import { selectors as layoutSelectors, setMainPaneScrollToTopPending, setMainPaneLoading } from '../../../layouts/TwoColumn/store';
 import { setAllUsers, selectors as userSelectors } from '../store';
-
 import history from '../../../providers/routing/app-history';
 import Spacer from '../../../components/Spacer';
 
@@ -25,7 +24,7 @@ function UserList({ mainPaneWidth, actions, allUsers, theme, mainPaneLoading }) 
       actions.setMainPaneLoading(false);
     };
     fetchData();
-  }, []);
+  }, [actions]);
 
   const userCard = (user, key) => (
     <UserCard

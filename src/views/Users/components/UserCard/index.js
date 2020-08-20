@@ -21,7 +21,6 @@ const styles = (theme) => ({
 
 const UserCard = ({
   key,
-  id,
   name,
   profilePicture,
   rolesList,

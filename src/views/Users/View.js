@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { withRouter } from "react-router-dom";
-import { Box, withStyles, Typography, IconButton } from "@material-ui/core";
+import { Box, withStyles, Typography } from "@material-ui/core";
 import { compose } from "recompose";
 import moment from 'moment';
 import { bindActionCreators } from "redux";
@@ -10,7 +10,6 @@ import RightPaneWithTitle from '../../components/RightPaneWithTitle';
 import UserAvatar from './components/UserCard/UserAvatar';
 import UserRoleChips from './components/UserCard/UserRoleChips';
 import Spacer from '../../components/Spacer';
-import history from "../../providers/routing/app-history";
 import { selectors, setUserToView, setUserRolesList } from './store';
 import { setRightPaneLoading, selectors as layoutSelectors } from '../../layouts/TwoColumn/store';
 import { ngFetch } from "../../providers/NGFetch";
@@ -40,9 +39,8 @@ function UserView({ match, classes, theme, actions, user, rightPaneLoading }) {
       actions.setRightPaneLoading(false);
     }
     fetchData();
-  }, [userId]);
+  }, [actions,userId]);
 
-  const handleClose = () => history.push('/users');
 
   if (rightPaneLoading || !user) {
     return <React.Fragment />;

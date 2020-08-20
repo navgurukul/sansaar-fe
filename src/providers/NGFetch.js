@@ -92,7 +92,7 @@ const isResponseJson = responseType => {
 export const ngFetch = async (path, options = {}) => {
   const response = await fetch(makeUrl(path, options.query), createOptions(options));
   const responseType = response.headers.get('Content-Type');
-
+  
   if (responseType && isResponseJson(responseType)) {
     const body = await response.json();
     if (response.status === 401) {

@@ -1,16 +1,16 @@
 import * as yup from "yup";
+import { ngFetch } from '../../../providers/NGFetch';
 
-import { ngFetch } from '../../providers/NGFetch';
-
-yup.addMethod(yup.string, 'pathwayCodeIsUnique', function ({ currentCode }) {
+yup.addMethod(yup.string, 'pathwayCodeIsUnique', function CODE({ currentCode }) {
   return this.test({
     name: 'pathwayCodeUnique',
     message: 'Code is taken by another pathway.',
     test: async (code = "") => {
       if (!code) return false;
+      if (code.length > 6) return false;
       const response  = await ngFetch('/pathways/checkIfCodeExists', { query: { code } });
       if (response.exists) {
-        return currentCode === response.pathway.code ? true : false;
+        return currentCode === response.pathway.code;
       }
       return true;
     }
@@ -34,7 +34,7 @@ export const getPathwayAddFormStructure = (pathway) => ([
     type: "text",
     validation: yup
       .string()
-      .length(6, "Must 6 characters.")
+      .length(6, "Must be 6 characters.")
       .required("Required")
       .uppercase("Should be upper case")
       .strict()

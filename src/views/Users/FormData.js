@@ -65,25 +65,25 @@ const data = [
     type: "radio",
     labelText: "Gender",
   },
-  {
-    name: "Hobbies",
-    HObbies: [
-      { id: "cricet" },
-      { id: "volleyball" },
-      { id: "chess" },
-      { id: "coding" },
-    ],
-    preselectedHObbies: [],
-    validation: yup
-      .array()
-      .transform(function(o, obj) {
-        return o.filter(o => o)
-      })
-      .min(2, "please select two options")
-      .required("required"),
-    type: "checkbox",
-    labelText: "Hobbies",
-  },
+  // {
+  //   name: "Hobbies",
+  //   HObbies: [
+  //     { id: "cricet" },
+  //     { id: "volleyball" },
+  //     { id: "chess" },
+  //     { id: "coding" },
+  //   ],
+  //   preselectedHObbies: [],
+  //   validation: yup
+  //     .array()
+  //     .transform(function(o, obj) {
+  //       return o.filter(o => o)
+  //     })
+  //     .min(2, "please select two options")
+  //     .required("required"),
+  //   type: "checkbox",
+  //   labelText: "Hobbies",
+  // },
   {
     name: "Age",
     type: "slider",

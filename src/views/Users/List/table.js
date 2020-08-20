@@ -1,11 +1,11 @@
 import React from 'react';
 import moment from 'moment';
-
-import { getInitialsFromName } from '../../../helpers'
+import { fromPairs } from 'lodash';
+// import { getInitialsFromName } from '../../../helpers';
 import UserRoleChips from '../components/UserCard/UserRoleChips';
 import UserAvatar from '../components/UserCard/UserAvatar';
 import NG_CONSTANTS from '../../../ngConstants';
-import { fromPairs } from 'lodash';
+
 
 const tableColumns = [
     {
@@ -19,6 +19,7 @@ const tableColumns = [
         return <UserAvatar name={name} profilePicture={value} />;
       },
       disableFilters: true,
+
     },
     {
       Header: 'Name',
@@ -41,14 +42,15 @@ const tableColumns = [
       accessor: 'rolesList',
       priority: 4,
       minWidth: 200,
+      search: true,
       Cell: ({ value }) => (
         <UserRoleChips rolesList={value} />
       ),
       disableFilters: false,
-      // filter: 'onFilterableValue',
+      filter: 'onFilterableValue',
       // filter: 'text',
       filterElType: 'select',
-      getFilterableValue: (value) => value.map(v => NG_CONSTANTS.roleNames[v].toLowerCase()),
+      getSearchText: (value) => value.map(v => NG_CONSTANTS.roleNames[v].toLowerCase()),
       getSelectMapping: (values) => fromPairs(values.map(v => ( [v, NG_CONSTANTS.roleNames[v]] )))
     },
     {

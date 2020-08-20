@@ -1,10 +1,11 @@
 import React from 'react';
-
 import TwoColumnLayout from '../../layouts/TwoColumn';
-import PathwaysList from './List';
-import PathwayEdit from './Edit';
-import PathwayAdd from './Add';
+import PathwaysList from './PathwaysList';
+import PathwayEdit from './Edit/Pathway';
+import PathwayAdd from './Add/Pathway';
 import MilestonesList from './MilestonesList';
+import MilestoneEdit from './Edit/Milestone';
+import MilestoneAdd from './Add/Milestone';
 
 const PathwaysSection = () => {
   const mainPaneRoutes = [
@@ -34,6 +35,18 @@ const PathwaysSection = () => {
       component: PathwayEdit,
       key: 'PATHWAY_EDIT'
     },
+    {
+      path: '/pathways/:pathwayId/milestones/add',
+      exact: true,
+      component: MilestoneAdd,
+      key: 'MILESTONE_ADD'
+    },
+    {
+      path: '/pathways/:pathwayId/milestones/:milestoneId',
+      exact: true,
+      component: MilestoneEdit,
+      key: 'MILESTONE_ADD'
+    }
   ];
 
   return <TwoColumnLayout mainPaneRoutes={mainPaneRoutes} rightPaneRoutes={rightPaneRoutes} />
