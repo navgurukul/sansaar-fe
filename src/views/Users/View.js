@@ -1,55 +1,77 @@
-import React, { useEffect } from "react";
-import { withRouter } from "react-router-dom";
-import { Box, withStyles, Typography } from "@material-ui/core";
-import { compose } from "recompose";
-import moment from 'moment';
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
+import React, { useEffect } from "react"
+import { withRouter } from "react-router-dom"
+import { Box, withStyles, Typography } from "@material-ui/core"
+import { compose } from "recompose"
+import moment from "moment"
+import { bindActionCreators } from "redux"
+import { connect } from "react-redux"
 
-import RightPaneWithTitle from '../../components/RightPaneWithTitle';
-import UserAvatar from './components/UserCard/UserAvatar';
-import UserRoleChips from './components/UserCard/UserRoleChips';
-import Spacer from '../../components/Spacer';
-import { selectors, setUserToView, setUserRolesList } from './store';
-import { setRightPaneLoading, selectors as layoutSelectors } from '../../layouts/TwoColumn/store';
-import { ngFetch } from "../../providers/NGFetch";
+import RightPaneWithTitle from "../../components/RightPaneWithTitle"
+import UserAvatar from "./components/UserCard/UserAvatar"
+import UserRoleOrPathwayChips from "./components/UserCard/UserRoleOrPathwayChips"
+import Spacer from "../../components/Spacer"
+import {
+  selectors,
+  setUserToView,
+  setUserRolesList,
+  setUserPathwaysList,
+} from "./store"
+import {
+  setRightPaneLoading,
+  selectors as layoutSelectors,
+} from "../../layouts/TwoColumn/store"
+import { ngFetch } from "../../providers/NGFetch"
 
 const styles = () => ({
   avatarContainer: {
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'center',
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
   },
   closeBtn: {
-    float: 'right',
-  }
-});
+    float: "right",
+  },
+})
 
 function UserView({ match, classes, theme, actions, user, rightPaneLoading }) {
-
-  const { userId } = match.params;
-  const [userLoading, setUserLoading] = React.useState(true);
+  const { userId } = match.params
+  const [userLoading, setUserLoading] = React.useState(true)
   useEffect(() => {
-    setUserLoading(true);
+    setUserLoading(true)
     const fetchData = async () => {
-      actions.setRightPaneLoading(true);
-      const response = await ngFetch(`/users/${userId}`);
-      actions.setUserToView(response.user);
-      setUserLoading(false);
-      actions.setRightPaneLoading(false);
+      actions.setRightPaneLoading(true)
+      const response = await ngFetch(`/users/${userId}`)
+      actions.setUserToView(response.user)
+      setUserLoading(false)
+      actions.setRightPaneLoading(false)
     }
-    fetchData();
-  }, [actions,userId]);
+    fetchData()
+  }, [actions, userId])
 
+
+  const [allPathways, setAllpathways] = React.useState([])
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await ngFetch(`/pathways`, {
+        method: "GET",
+      })
+      setAllpathways(response.pathways)
+    }
+    fetchData()
+  }, [])
 
   if (rightPaneLoading || !user) {
-    return <React.Fragment />;
+    return <React.Fragment />
   }
 
   return (
     <RightPaneWithTitle closeLink="/users">
       <Box className={classes.avatarContainer}>
-        <UserAvatar name={user.name} profilePicture={user.profile_picture} widthHeight={200} />
+        <UserAvatar
+          name={user.name}
+          profilePicture={user.profile_picture}
+          widthHeight={200}
+        />
       </Box>
       <Spacer height={theme.spacing(2)} />
       <Typography variant="overline">NAME</Typography>
@@ -62,25 +84,51 @@ function UserView({ match, classes, theme, actions, user, rightPaneLoading }) {
       <Typography variant="body1">{user.google_user_id}</Typography>
       <Spacer height={theme.spacing(1)} />
       <Typography variant="overline">JOINED</Typography>
-      <Typography variant="body1">{moment(user.createdAt).fromNow()}</Typography>
+      <Typography variant="body1">
+        {moment(user.createdAt).fromNow()}
+      </Typography>
       <Spacer height={theme.spacing(1)} />
       <Typography variant="overline">ROLES</Typography>
-      <UserRoleChips rolesList={user.rolesList} edit userId={user.id} setUserRolesList={actions.setUserRolesList} />
+      <UserRoleOrPathwayChips
+        rolesList={user.rolesList}
+        header="roles"
+        edit
+        userId={user.id}
+        setUserRolesList={actions.setUserRolesList}
+      />
+      <Spacer height={theme.spacing(1)} />
+      <Typography variant="overline">Pathways</Typography>
+      <UserRoleOrPathwayChips
+        pathwaysList={user.pathways}
+        header="pathways"
+        edit
+        userId={user.id}
+        setUserPathwaysList={actions.setUserPathwaysList}
+        allPathways={allPathways}
+      />
     </RightPaneWithTitle>
   )
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   user: selectors.selectUserToView(state),
   rightPaneLoading: layoutSelectors.selectRightPaneLoading(state),
-});
+})
 
-const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators({ setUserToView, setUserRolesList, setRightPaneLoading }, dispatch),
-});
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(
+    {
+      setUserToView,
+      setUserRolesList,
+      setRightPaneLoading,
+      setUserPathwaysList,
+    },
+    dispatch
+  ),
+})
 
 export default compose(
   withRouter,
   withStyles(styles, { withTheme: true }),
   connect(mapStateToProps, mapDispatchToProps)
-)(UserView);
+)(UserView)

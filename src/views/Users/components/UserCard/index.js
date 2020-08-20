@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { withStyles, Card, CardContent, Typography, Box } from '@material-ui/core';
 import UserAvatar from './UserAvatar';
-import UserRoleChips from './UserRoleChips';
+import UserRoleOrPathwayChips from './UserRoleOrPathwayChips';
 import Spacer from '../../../../components/Spacer';
 
 const styles = (theme) => ({
@@ -39,7 +39,7 @@ const UserCard = ({
         </Box>
       </Box>
       <Spacer height={theme.spacing(1)} />
-      <UserRoleChips rolesList={rolesList} />
+      <UserRoleOrPathwayChips header="roles" rolesList={rolesList} />
       <Typography variant="overline">
         Joined
         { moment(joinedAt).fromNow() }

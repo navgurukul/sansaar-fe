@@ -19,7 +19,10 @@ const UserSectionSlice = createSlice({
       if (state.allUsers[userId]) {
         state.allUsers[userId].rolesList = rolesList;
       }
-    }
+    },
+    setUserPathwaysList: (state, { payload: { pathways } }) => {
+      state.userToView.pathways = pathways;
+    },
   },
 });
 

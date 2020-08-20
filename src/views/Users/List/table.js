@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { fromPairs } from 'lodash';
 // import { getInitialsFromName } from '../../../helpers';
-import UserRoleChips from '../components/UserCard/UserRoleChips';
+import UserRoleOrPathwayChips from '../components/UserCard/UserRoleOrPathwayChips';
 import UserAvatar from '../components/UserCard/UserAvatar';
 import NG_CONSTANTS from '../../../ngConstants';
 
@@ -44,7 +44,7 @@ const tableColumns = [
       minWidth: 200,
       search: true,
       Cell: ({ value }) => (
-        <UserRoleChips rolesList={value} />
+        <UserRoleOrPathwayChips header="roles" rolesList={value} />
       ),
       disableFilters: false,
       filter: 'onFilterableValue',
