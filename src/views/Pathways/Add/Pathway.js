@@ -3,11 +3,11 @@ import { useSnackbar } from 'notistack';
 import { compose } from "recompose";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { setAddOrEditPathway } from '../store';
+import { addOrEditPathway } from '../store';
 import RightPaneWithTitle from '../../../components/RightPaneWithTitle';
 import FormBuilder from '../../../components/FormBuilder';
 import history from '../../../providers/routing/app-history';
-import { getPathwayAddFormStructure } from '../Forms/pathwaysFormStructure';
+import { getPathwayAddFormStructure } from '../forms/pathway';
 import { ngFetch } from '../../../providers/NGFetch';
 
 const PathwayAdd = ({actions}) => {
@@ -19,10 +19,11 @@ const PathwayAdd = ({actions}) => {
   const onSubmit = async (data) => {
     setSubmitBtnDisabled(true);
     const response = await ngFetch('/pathways', {method: 'POST', body: data});
-    actions.setAddOrEditPathway({pathway: response.pathway, pathwayId:response.id});
+    const pathwayId= response.pathway.id
+    actions.addOrEditPathway({pathway: response.pathway, pathwayId:response.pathway.id});
     enqueueSnackbar('Pathway created.', { variant: 'success' });
     setSubmitBtnDisabled(false);
-    history.push('/pathways');
+    history.push(`/pathways/${pathwayId}`);
   };
 
   return (
@@ -34,7 +35,7 @@ const PathwayAdd = ({actions}) => {
 
 
 const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators({ setAddOrEditPathway }, dispatch),
+  actions: bindActionCreators({ addOrEditPathway }, dispatch),
 });
 
 export default compose(

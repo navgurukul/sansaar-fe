@@ -3,6 +3,7 @@ import { Typography, withTheme } from "@material-ui/core"
 import { connect } from "react-redux"
 import { bindActionCreators } from "redux"
 import { compose } from "recompose"
+import { withRouter } from 'react-router';
 import Button from "@material-ui/core/Button"
 import TableOrCardList from "../../../components/TableOrCardList"
 import { ngFetch } from "../../../providers/NGFetch"
@@ -14,7 +15,7 @@ import {
   selectors as layoutSelectors,
   setMainPaneScrollToTopPending,
 } from "../../../layouts/TwoColumn/store"
-import { setAllMilestones, selectors as userSelectors } from "../store"
+import { setAllMilestones, selectors as userSelectors } from "../store";
 
 function MilestonesList({
   match,
@@ -32,7 +33,7 @@ function MilestonesList({
       actions.setAllMilestones(response.milestones)
     }
     fetchData()
-  }, [actions,pathwayId])
+  }, [actions,pathwayId],match.path)
 
   const MileStoneCard = (Milestone, key) => (
     <MilestoneCard
@@ -90,5 +91,6 @@ const mapDispatchToProps = dispatch => ({
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  withTheme
+  withTheme,
+  withRouter,
 )(MilestonesList)

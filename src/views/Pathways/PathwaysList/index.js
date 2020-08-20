@@ -3,6 +3,7 @@ import { Typography, withTheme } from "@material-ui/core"
 import { connect } from "react-redux"
 import { bindActionCreators } from "redux"
 import { compose } from "recompose"
+import { withRouter } from 'react-router';
 import Button from "@material-ui/core/Button"
 import TableOrCardList from "../../../components/TableOrCardList"
 import { ngFetch } from "../../../providers/NGFetch"
@@ -30,6 +31,7 @@ function PathwaysList({ mainPaneWidth, actions, allPathways, theme }) {
     <PathwayCard
       key={key}
       id={pathway.id}
+      code={pathway.code}
       name={pathway.name}
       startedAt={pathway.createdAt}
       description={pathway.description}
@@ -82,5 +84,6 @@ const mapDispatchToProps = dispatch => ({
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  withTheme
+  withTheme,
+  withRouter,
 )(PathwaysList)

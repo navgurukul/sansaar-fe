@@ -10,7 +10,6 @@ import TableOrCardList from '../../../components/TableOrCardList';
 import { ngFetch } from '../../../providers/NGFetch';
 import { selectors as layoutSelectors, setMainPaneScrollToTopPending, setMainPaneLoading } from '../../../layouts/TwoColumn/store';
 import { setAllUsers, selectors as userSelectors } from '../store';
-
 import history from '../../../providers/routing/app-history';
 import Spacer from '../../../components/Spacer';
 

@@ -1,6 +1,5 @@
 import * as yup from "yup";
 
-
 const createdAtField = {
   name: "createdAt",
   type: "date",

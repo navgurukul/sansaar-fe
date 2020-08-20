@@ -22,21 +22,11 @@ const PathwaySectionSlice = createSlice({
     setMilestoneToView: (state, action) => {
       state.milestoneToView = action.payload
     },
-    setAddOrEditMilestone: (state, {payload : {milestone, milestoneId}}) => {
-      if(!state.allMilestones[milestoneId]){
+    addOrEditMilestone: (state, {payload : {milestone, milestoneId}}) => {
         state.allMilestones[milestoneId] = milestone
-      }
-      else{
-        state.allMilestones[milestoneId] = milestone
-      }
     },
-    setAddOrEditPathway: (state, {payload : {pathway, pathwayId}}) => {
-      if(!state.allPathways[pathwayId]){
+    addOrEditPathway: (state, {payload : {pathway, pathwayId}}) => {
         state.allPathways[pathwayId] = pathway
-      }
-      else{
-        state.allPathways[pathwayId] = pathway
-      }
     }
   },
 });

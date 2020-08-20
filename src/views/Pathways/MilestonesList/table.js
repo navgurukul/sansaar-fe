@@ -23,11 +23,12 @@ const tableColumns = [
     accessor: "createdAt",
     priority: 2,
     minWidth: 200,
-    search: true,
+    // search: true,
     Cell: ({ value }) => {
       return moment(value).fromNow()
     },
     disableFilters: true,
+    getSearchText: (value) => moment(value).fromNow()
   },
 ]
 

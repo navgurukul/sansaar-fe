@@ -1,5 +1,4 @@
 import React from 'react';
-
 import HomeIcon from '@material-ui/icons/Home';
 import PeopleIcon from '@material-ui/icons/People';
 import DirectionsBikeIcon from '@material-ui/icons/DirectionsBike';
@@ -15,52 +14,62 @@ const items = [
   {
     text: 'Home',
     icon: <HomeIcon />,
-    url: '/',
+    url: '/home',
+    rolesList: ['student', 'team', 'trainingAndPlacement', 'admissionIncharge', 'facha','dumbeldore']
   },
   {
     text: 'Users',
     icon: <PeopleIcon />,
     url: '/users',
-    dividerBelow: true
+    dividerBelow: true,
+    rolesList: [ 'team', 'trainingAndPlacement', 'admissionIncharge', 'facha','dumbeldore']
   },
   {
     text: 'Pathways',
     icon: <DirectionsBikeIcon />,
-    url: '/pathways'
+    url: '/pathways',
+    rolesList: ['student', 'team', 'trainingAndPlacement', 'admissionIncharge', 'facha','dumbeldore']
   },
   {
     text: 'Progress Tracking',
     icon: <TrendingUpIcon />,
+    rolesList: ['student', 'team', 'trainingAndPlacement', 'admissionIncharge', 'facha','dumbeldore'],
     children: [
       {
         text: 'Parameters',
         icon: <TuneIcon />,
-        url: '/progressTracking/parameters'
+        url: '/progressTracking/parameters',
+        rolesList: [ 'team', 'trainingAndPlacement', 'admissionIncharge', 'facha','dumbeldore']
       },
       {
         text: 'Questions',
         icon: <HelpIcon />,
-        url: '/progressTracking/questions'
+        url: '/progressTracking/questions',
+        rolesList: [ 'team', 'trainingAndPlacement', 'admissionIncharge', 'facha','dumbeldore']
       },
       {
         text: 'My Mentees',
         icon: <ContactsIcon />,
-        url: '/progressTracking/myMentees'
+        url: '/progressTracking/myMentees',
+        rolesList: [ 'team', 'trainingAndPlacement', 'admissionIncharge', 'facha','dumbeldore']
       },
       {
         text: 'All Requests',
         icon: <AssignmentIcon />,
-        url: '/progressTracking/allRequests'
+        url: '/progressTracking/allRequests',
+        rolesList: [ 'team', 'trainingAndPlacement', 'admissionIncharge', 'facha','dumbeldore']
       },
       {
         text: 'My Requests',
         icon: <AssignmentIndIcon />,
-        url: '/progressTracking/myRequests'
+        url: '/progressTracking/myRequests',
+        rolesList: [ 'team', 'trainingAndPlacement', 'admissionIncharge', 'facha','dumbeldore']
       },
       {
         text: 'My Progress',
         icon: <TimelineIcon />,
-        url: '/progressTracking/myProgress'
+        url: '/progressTracking/myProgress',
+        rolesList: []
       }
     ]
   }

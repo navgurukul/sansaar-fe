@@ -5,10 +5,10 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { withTheme } from '@material-ui/core';
-import { selectors, setMilestoneToView, setAddOrEditMilestone } from '../../store';
+import { selectors, setMilestoneToView, addOrEditMilestone } from '../../store';
 import { selectors as layoutSelectors, setRightPaneLoading } from '../../../../layouts/TwoColumn/store';
 import { ngFetch } from '../../../../providers/NGFetch';
-import { getMilestoneEditFormStructure } from '../../Forms/milestoneFormStructure';
+import { getMilestoneEditFormStructure } from '../../forms/milestone';
 import FormBuilder from '../../../../components/FormBuilder';
 import Spacer from '../../../../components/Spacer';
 import RightPaneWithTitle from '../../../../components/RightPaneWithTitle';
@@ -48,7 +48,7 @@ const MilestoneEdit = ({ rightPaneLoading, actions, match, theme }) => {
       method: 'PUT',
       body: data,
     });
-    actions.setAddOrEditMilestone({milestone: response.milestone[0], milestoneId:response.milestone[0].id});
+    actions.addOrEditMilestone({milestone: response.milestone[0], milestoneId:response.milestone[0].id});
     setMilestone(response.milestone);
     enqueueSnackbar("Milestone details saved.", { variant: 'success' });
     setSubmitBtnDisabled(false);
@@ -73,7 +73,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators({ setRightPaneLoading,setMilestoneToView, setAddOrEditMilestone }, dispatch),
+  actions: bindActionCreators({ setRightPaneLoading,setMilestoneToView, addOrEditMilestone }, dispatch),
 });
 
 export default compose(

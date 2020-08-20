@@ -27,6 +27,7 @@ const styles = theme => ({
 const PathwayCard = ({
   key,
   name,
+  // code,
   description,
   joinedAt,
   classes,
@@ -36,6 +37,7 @@ const PathwayCard = ({
     <CardContent>
       <Box className={classes.header}>
         <Box className={classes.nameContainer}>
+          {/* <Typography variant="h4">{code}</Typography> */}
           <Typography variant="h4">{toTitleCase(name)}</Typography>
         </Box>
       </Box>

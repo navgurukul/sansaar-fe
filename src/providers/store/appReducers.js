@@ -9,5 +9,5 @@ export default combineReducers({
   [AuthSlice.name]: AuthSlice.reducer,
   [LayoutSlice.name]: LayoutSlice.reducer,
   [UserSectionSlice.name]: UserSectionSlice.reducer,
-  [PathwaySectionSlice.name]: PathwaySectionSlice.reducer
+  [PathwaySectionSlice.name]: PathwaySectionSlice.reducer,
 });
