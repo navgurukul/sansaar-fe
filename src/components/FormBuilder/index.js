@@ -2,7 +2,6 @@ import React from "react"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers"
 import * as yup from "yup";
-
 import { withTheme, Button } from "@material-ui/core";
 import Spacer from "../Spacer";
 import NGCheckbox from './components/NGCheckbox';
@@ -27,7 +26,8 @@ const  FormBuilder = ({
   theme,
   fullWidth = true,
   fullWidthSubmitBtn = true,
-  submitBtnDisabled
+  submitBtnDisabled,
+  selectedType,
 }) => {
 
   const validationSchema = React.useMemo(() => {
@@ -48,6 +48,7 @@ const  FormBuilder = ({
     control,
     getValues,
     setValue,
+    watch,
   } = useForm({
     validationSchema,
     mode: "onBlur",
@@ -59,10 +60,16 @@ const  FormBuilder = ({
     },
   })
 
+
+
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       {structure.map((field) => {
         const FieldComponent = COMPONENTS[field.type];
+        if (field.name === 'type') {
+          selectedType(watch('type'))
+        }
         return (
           <React.Fragment key={field.name}>
             <FieldComponent
@@ -74,7 +81,7 @@ const  FormBuilder = ({
               control={control}
               register={register}
             />
-            <Spacer height={theme.spacing(1)} />
+            {field.type === 'select' ? <Spacer height={theme.spacing(3)} /> : <Spacer height={theme.spacing(1)} />}
           </React.Fragment>
         )
       })}

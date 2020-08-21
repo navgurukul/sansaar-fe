@@ -12,7 +12,7 @@ const createdAtField = {
   },
 }
 
-export const getParameterAddFormStructure = parameter => {
+export const getParameterAddFormStructure = (parameter,type) => {
   return [
     {
       name: "name",
@@ -49,12 +49,15 @@ export const getParameterAddFormStructure = parameter => {
       type: "text",
       validation: yup
         .number()
+        .typeError('you must specify a number')
         .required("Required")
         .min(0, "more than 0"),
+        
       customProps: {
         placeholder: "minimum value for range",
         label: "minimum value for range",
         defaultValue: 0,
+        disabled: type === 'boolean'
       },
     },
     {
@@ -62,12 +65,14 @@ export const getParameterAddFormStructure = parameter => {
       type: "text",
       validation: yup
         .number()
+        .typeError('you must specify a number')
         .required("Required")
         .max(10, "less than 10"),
       customProps: {
         placeholder: "maximum value for range",
         label: "maximum value for range",
         defaultValue: 0,
+        disabled: type === 'boolean'
       },
     },
     {
@@ -84,8 +89,8 @@ export const getParameterAddFormStructure = parameter => {
   ]
 }
 
-export const getParameterEditFormStructure = parameter => {
-  const fields = getParameterAddFormStructure(parameter)
+export const getParameterEditFormStructure = (parameter, type) => {
+  const fields = getParameterAddFormStructure(parameter, type)
   fields.push(createdAtField)
   return fields
 }

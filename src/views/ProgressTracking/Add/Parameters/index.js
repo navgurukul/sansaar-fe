@@ -15,7 +15,7 @@ import { ngFetch } from '../../../../providers/NGFetch';
 
 const ParamterAdd = ({ actions }) => {
   const { enqueueSnackbar } = useSnackbar();
-
+  const [type, setType] = React.useState(null)
   const [submitBtnDisabled, setSubmitBtnDisabled] = React.useState(false);
 
   const onSubmit = async (data) => {
@@ -27,9 +27,14 @@ const ParamterAdd = ({ actions }) => {
     history.push(`/progressTracking/parameters`);
   };
 
+  const selectedType = (v) => {
+    setType(v)
+  }
+  const parameter =''
+  
   return (
     <RightPaneWithTitle title="Add Parameter" closeLink="/progressTracking/parameters">
-      <FormBuilder structure={getParameterAddFormStructure()} onSubmit={onSubmit} submitBtnDisabled={submitBtnDisabled} />
+      <FormBuilder structure={getParameterAddFormStructure(parameter,type)} onSubmit={onSubmit} submitBtnDisabled={submitBtnDisabled} selectedType={selectedType} />
     </RightPaneWithTitle>
   );
 };

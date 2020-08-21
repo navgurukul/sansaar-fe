@@ -20,6 +20,8 @@ const PathwayEdit = ({ rightPaneLoading, actions, match, theme }) => {
   const { enqueueSnackbar } = useSnackbar();
   
   const [parameter, setParameter] = React.useState(null);
+  const [type, setType] = React.useState(null)
+
   useEffect(() => {
     const fetchData = async () => {
       actions.setRightPaneLoading(true);
@@ -50,9 +52,12 @@ const PathwayEdit = ({ rightPaneLoading, actions, match, theme }) => {
     return <React.Fragment />
   }
 
+  const selectedType = (v) => {
+    setType(v)
+  }
   return (
     <RightPaneWithTitle title="Edit Parameter" closeLink="/progressTracking/parameters/">
-      <FormBuilder structure={getParameterEditFormStructure(parameter)} onSubmit={onSubmit} initialValues={parameter} submitBtnDisabled={submitBtnDisabled} />
+      <FormBuilder structure={getParameterEditFormStructure(parameter,type)} onSubmit={onSubmit} initialValues={parameter} submitBtnDisabled={submitBtnDisabled} selectedType={selectedType} />
       <Spacer height={theme.spacing(2)} />
     </RightPaneWithTitle>
   );
