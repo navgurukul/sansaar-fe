@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { compose } from 'recompose';
 import tableColumns from './table';
-import ProgressCard from '../../components/ProgressCard';
+import ParameterCard from '../../components/ParameterCard';
 import TableOrCardList from '../../../../components/TableOrCardList';
 import { ngFetch } from '../../../../providers/NGFetch';
 import { selectors as layoutSelectors, setMainPaneScrollToTopPending, setMainPaneLoading } from '../../../../layouts/TwoColumn/store';
@@ -26,7 +26,7 @@ function UserList({ mainPaneWidth, actions, allParameters, mainPaneLoading }) {
 
 
   const progressCard = (parameter, key) => (
-    <ProgressCard
+    <ParameterCard
       key={key}
       id={parameter.id}
       name={parameter.name}
@@ -46,7 +46,6 @@ function UserList({ mainPaneWidth, actions, allParameters, mainPaneLoading }) {
 
 
   return (
-
     <MainPaneWithTitle addBtnLink="/progressTracking/parameters/add" title='Parameters'>
       <TableOrCardList
         loading={mainPaneLoading}

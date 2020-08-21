@@ -24,7 +24,7 @@ const styles = theme => ({
   },
 })
 
-const ProgressCard = ({
+const ParameterCard = ({
   key,
   name,
   description,
@@ -63,4 +63,4 @@ const ProgressCard = ({
   </Card>
 )
 
-export default withStyles(styles, { withTheme: true })(ProgressCard)
+export default withStyles(styles, { withTheme: true })(ParameterCard)
