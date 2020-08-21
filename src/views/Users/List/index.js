@@ -1,8 +1,7 @@
-import React,{ useEffect, Fragment} from 'react';
-import {  Typography, withTheme } from '@material-ui/core';
+import React,{ useEffect} from 'react';
+import {   withTheme } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
 import { compose } from 'recompose';
 import tableColumns from './table';
 import UserCard from '../components/UserCard';
@@ -11,10 +10,10 @@ import { ngFetch } from '../../../providers/NGFetch';
 import { selectors as layoutSelectors, setMainPaneScrollToTopPending, setMainPaneLoading } from '../../../layouts/TwoColumn/store';
 import { setAllUsers, selectors as userSelectors } from '../store';
 import history from '../../../providers/routing/app-history';
-import Spacer from '../../../components/Spacer';
+import MainPaneWithTitle from '../../../components/MainPaneWithTitle';
 
 
-function UserList({ mainPaneWidth, actions, allUsers, theme, mainPaneLoading }) {
+function UserList({ mainPaneWidth, actions, allUsers, mainPaneLoading }) {
   
   useEffect(() => {
     const fetchData = async () => {
@@ -45,11 +44,8 @@ function UserList({ mainPaneWidth, actions, allUsers, theme, mainPaneLoading }) 
   }
 
   return (
-    <Fragment>
 
-      <Typography variant="h3">Users</Typography>
-      <Spacer height={theme.spacing(2)} />
-
+    <MainPaneWithTitle title='Users'>
       <TableOrCardList
         loading={mainPaneLoading}
         tableColumns={tableColumns}
@@ -59,8 +55,7 @@ function UserList({ mainPaneWidth, actions, allUsers, theme, mainPaneLoading }) 
         onRowClick={handleRowClick}
         scrollContainerToTop={() => actions.setMainPaneScrollToTopPending(true)}
       />
-
-    </Fragment>
+    </MainPaneWithTitle>
   )
 }
 

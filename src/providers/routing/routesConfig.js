@@ -2,6 +2,7 @@ import React from 'react'; // eslint-disable-line no-unused-vars
 import LoginPage from '../../views/Login';
 import UsersSection from '../../views/Users';
 import PathwaysSection from '../../views/Pathways';
+import ParamtersSection from '../../views/ProgressTracking/List';
 
 const ROUTES = [
   {
@@ -27,7 +28,14 @@ const ROUTES = [
     auth: true,
     key: 'PATHWAYS_SECTION',
     component: PathwaysSection,
+  },
+  {
+    path: '/progressTracking/parameters',
+    auth: true,
+    key: 'PARAMETERS_SECTION',
+    component: ParamtersSection,
   }
+  
 ]
 
 export default ROUTES;

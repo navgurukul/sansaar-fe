@@ -29,7 +29,7 @@ const MilestoneAdd = ({ actions, match }) => {
   }, [actions,pathwayId]);
 
   const milestone=""
-  const [submitBtnDisabled, setSubmitBtnDisabled] = React.useState(true);
+  const [submitBtnDisabled, setSubmitBtnDisabled] = React.useState(false);
 
   const onSubmit = async (data) => {
     data.position= data.position === '' ? 0 : data.position+=1

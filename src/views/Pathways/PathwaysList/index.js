@@ -1,24 +1,23 @@
-import React, { useEffect, Fragment } from "react"
-import { Typography, withTheme } from "@material-ui/core"
+import React, { useEffect } from "react"
+import {  withTheme } from "@material-ui/core"
 import { connect } from "react-redux"
 import { bindActionCreators } from "redux"
 import { compose } from "recompose"
 import { withRouter } from 'react-router';
-import Button from "@material-ui/core/Button"
 import TableOrCardList from "../../../components/TableOrCardList"
 import { ngFetch } from "../../../providers/NGFetch"
 import tableColumns from "./table"
 import PathwayCard from "../components/PathwayCard"
 import history from "../../../providers/routing/app-history"
-import Spacer from "../../../components/Spacer"
 import {
   selectors as layoutSelectors,
   setMainPaneScrollToTopPending,
 } from "../../../layouts/TwoColumn/store"
 import { setAllPathways, selectors as userSelectors } from "../store"
+import MainPaneWithTitle from '../../../components/MainPaneWithTitle';
 
 
-function PathwaysList({ mainPaneWidth, actions, allPathways, theme }) {
+function PathwaysList({ mainPaneWidth, actions, allPathways }) {
   useEffect(() => {
     const fetchData = async () => {
       const response = await ngFetch("/pathways", { method: "GET" })
@@ -46,18 +45,8 @@ function PathwaysList({ mainPaneWidth, actions, allPathways, theme }) {
     history.push(`/pathways/${pathwayId}`)
   }
 
-  const handleAddPathWay = () => {
-    history.push('/pathways/add')
-  }
-
   return (
-    <Fragment>
-      <Typography variant="h3">Pathways</Typography>
-      <Spacer height={theme.spacing(2)} />
-      <Button variant="contained" color="primary" onClick={handleAddPathWay}>
-        Add Pathway
-      </Button>
-      <Spacer height={theme.spacing(2)} />
+    <MainPaneWithTitle addBtnLink='/pathways/add' title='Pathways'>
       <TableOrCardList
         tableColumns={tableColumns}
         data={pathways}
@@ -66,7 +55,7 @@ function PathwaysList({ mainPaneWidth, actions, allPathways, theme }) {
         onRowClick={handleRowClick}
         scrollContainerToTop={() => actions.setMainPaneScrollToTopPending(true)}
       />
-    </Fragment>
+    </MainPaneWithTitle>
   )
 }
 
