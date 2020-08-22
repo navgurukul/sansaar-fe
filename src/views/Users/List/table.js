@@ -55,7 +55,7 @@ const tableColumns = [
     },
     {
       Header: 'Joined On',
-      accessor: 'createdAt',
+      accessor: 'created_at',
       priority: 5,
       minWidth: 200,
       search: true,

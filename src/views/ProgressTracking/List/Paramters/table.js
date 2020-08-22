@@ -48,7 +48,7 @@ const tableColumns = [
   },
   {
     Header: "created At",
-    accessor: "createdAt",
+    accessor: "created_at",
     priority: 6,
     minWidth: 200,
     search: true,

@@ -5,9 +5,9 @@ import { bindActionCreators } from "redux"
 import { compose } from "recompose"
 import { withRouter } from 'react-router';
 import TableOrCardList from "../../../components/TableOrCardList"
-import { ngFetch } from "../../../providers/NGFetch"
+import RenderCards from "../../../components/TableOrCardList/RenderCards";
+import { ngFetch } from "../../../providers/NGFetch";
 import tableColumns from "./table"
-import MilestoneCard from "../components/MilestoneCard"
 import history from "../../../providers/routing/app-history"
 import {
   selectors as layoutSelectors,
@@ -33,14 +33,8 @@ function MilestonesList({
     fetchData()
   }, [actions,pathwayId],match.path)
 
-  const MileStoneCard = (Milestone, key) => (
-    <MilestoneCard
-      key={key}
-      id={Milestone.id}
-      name={Milestone.name}
-      startedAt={Milestone.createdAt}
-      description={Milestone.description}
-    />
+  const MileStoneCard = (row, key) => (
+    <RenderCards row={row} key={key} titleKey={row.id} tableColumns={tableColumns} />
   )
 
   const milestones = React.useMemo(() => Object.values(allMilestones), [

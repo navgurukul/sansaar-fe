@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { compose } from 'recompose';
 import tableColumns from './table';
-import ParameterCard from '../../components/ParameterCard';
 import TableOrCardList from '../../../../components/TableOrCardList';
+import RenderCards from '../../../../components/TableOrCardList/RenderCards';
 import { ngFetch } from '../../../../providers/NGFetch';
 import { selectors as layoutSelectors, setMainPaneScrollToTopPending, setMainPaneLoading } from '../../../../layouts/TwoColumn/store';
 import { setAllParameters, selectors as progressSelectors } from '../../store';
@@ -25,17 +25,8 @@ function UserList({ mainPaneWidth, actions, allParameters, mainPaneLoading }) {
   }, [actions]);
 
 
-  const progressCard = (parameter, key) => (
-    <ParameterCard
-      key={key}
-      id={parameter.id}
-      name={parameter.name}
-      description={parameter.description}
-      type={parameter.type}
-      joinedAt={parameter.createdAt}
-      minimumValue={parameter.min_value}
-      maximumValue={parameter.max_value}
-    />
+  const progressCard = (row, key) => (
+    <RenderCards row={row} tableColumns={tableColumns} key={key} />
   )
 
   const parameters = React.useMemo(() => Object.values(allParameters), [allParameters]);

@@ -20,8 +20,8 @@ const tableColumns = [
   },
   {
     Header: "Created At",
-    accessor: "createdAt",
-    priority: 2,
+    accessor: "created_at",
+    priority: 3,
     minWidth: 200,
     // search: true,
     Cell: ({ value }) => {

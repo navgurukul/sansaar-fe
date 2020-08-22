@@ -7,7 +7,6 @@ import { withRouter } from 'react-router';
 import TableOrCardList from "../../../components/TableOrCardList"
 import { ngFetch } from "../../../providers/NGFetch"
 import tableColumns from "./table"
-import PathwayCard from "../components/PathwayCard"
 import history from "../../../providers/routing/app-history"
 import {
   selectors as layoutSelectors,
@@ -15,6 +14,7 @@ import {
 } from "../../../layouts/TwoColumn/store"
 import { setAllPathways, selectors as userSelectors } from "../store"
 import MainPaneWithTitle from '../../../components/MainPaneWithTitle';
+import RenderCards from "../../../components/TableOrCardList/RenderCards";
 
 
 function PathwaysList({ mainPaneWidth, actions, allPathways }) {
@@ -26,16 +26,14 @@ function PathwaysList({ mainPaneWidth, actions, allPathways }) {
     fetchData()
   }, [actions])
 
-  const pathwayCard = (pathway, key) => (
-    <PathwayCard
-      key={key}
-      id={pathway.id}
-      code={pathway.code}
-      name={pathway.name}
-      startedAt={pathway.createdAt}
-      description={pathway.description}
-    />
-  )
+  const pathwayCard = (row, key) => {
+    return(
+      <RenderCards row={row} key={key} titleKey={row.id} tableColumns={tableColumns} />
+    )
+  }
+  
+  
+
 
   const pathways = React.useMemo(() => Object.values(allPathways), [
     allPathways,

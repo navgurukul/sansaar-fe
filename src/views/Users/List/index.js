@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { compose } from 'recompose';
 import tableColumns from './table';
-import UserCard from '../components/UserCard';
 import TableOrCardList from '../../../components/TableOrCardList';
+import RenderCards from '../../../components/TableOrCardList/RenderCards';
 import { ngFetch } from '../../../providers/NGFetch';
 import { selectors as layoutSelectors, setMainPaneScrollToTopPending, setMainPaneLoading } from '../../../layouts/TwoColumn/store';
 import { setAllUsers, selectors as userSelectors } from '../store';
@@ -25,16 +25,8 @@ function UserList({ mainPaneWidth, actions, allUsers, mainPaneLoading }) {
     fetchData();
   }, [actions]);
 
-  const userCard = (user, key) => (
-    <UserCard
-      key={key}
-      id={user.id}
-      name={user.name}
-      profilePicture={user.profile_picture}
-      rolesList={user.rolesList}
-      eMail={user.email}
-      joinedAt={user.createdAt}
-    />
+  const userCard = (row, key) => (
+    <RenderCards row={row} tableColumns={tableColumns} key={key} />
   )
 
   const users = React.useMemo(() => Object.values(allUsers), [allUsers]);

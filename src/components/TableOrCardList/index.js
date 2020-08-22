@@ -177,7 +177,10 @@ const TableOrCardList = ({
       <TableHead>
         {headerGroups.map(headerGroup => (
           <TableRow {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map(column => (
+            {headerGroup.headers.map(column => {
+            
+            return(
+
               <TableCell
                 {...column.getHeaderProps(column.getSortByToggleProps())}
               >
@@ -186,7 +189,7 @@ const TableOrCardList = ({
                   {column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""}
                 </span>
               </TableCell>
-            ))}
+            )})}
           </TableRow>
         ))}
       </TableHead>
@@ -216,19 +219,21 @@ const TableOrCardList = ({
     </Table>
   )
 
-  const renderCards = () => (
-    <React.Fragment>
-      {page.map((row, i) => (
-        <Box
-          onClick={onRowClick ? () => onRowClick(row.original.id) : undefined}
-          key={row.original.id}
-          className={classes.CursorOnRowClick}
-        >
-          {renderCard(row.original, i)}
-        </Box>
+
+  const renderCards = () => {
+    return(
+      <React.Fragment>
+        {page.map((row, i) => (
+          <Box
+            onClick={onRowClick ? () => onRowClick(row.original.id) : undefined}
+            key={row.original.id}
+            className={classes.CursorOnRowClick}
+          >
+            {renderCard(row.original, i, row)}
+          </Box>
       ))}
-    </React.Fragment>
-  )
+      </React.Fragment>
+  )}
 
   const screenAboveSm = useMediaQuery(theme.breakpoints.up("sm"))
 
