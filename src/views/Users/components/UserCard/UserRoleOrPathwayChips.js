@@ -16,7 +16,7 @@ import {
 } from "@material-ui/core"
 import { flatten, uniq, map, pullAll, pullAllBy } from "lodash"
 import { compose } from "redux"
-import NG_CONSTANTS from "../../../../ngConstants"
+import NG_CONSTANTS from "ng-constants";
 import Spacer from "../../../../components/Spacer"
 import withUserContext from "../../../../providers/UserAuth/withUserContext"
 import { ngFetch } from "../../../../providers/NGFetch"

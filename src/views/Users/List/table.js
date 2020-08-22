@@ -2,9 +2,9 @@ import React from 'react';
 import moment from 'moment';
 import { fromPairs } from 'lodash';
 // import { getInitialsFromName } from '../../../helpers';
+import NG_CONSTANTS from 'ng-constants';
 import UserRoleOrPathwayChips from '../components/UserCard/UserRoleOrPathwayChips';
 import UserAvatar from '../components/UserCard/UserAvatar';
-import NG_CONSTANTS from '../../../ngConstants';
 
 
 const tableColumns = [
