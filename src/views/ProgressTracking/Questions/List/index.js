@@ -8,42 +8,42 @@ import TableOrCardList from '../../../../components/TableOrCardList';
 import RenderCards from '../../../../components/TableOrCardList/RenderCards';
 import { ngFetch } from '../../../../providers/NGFetch';
 import { selectors as layoutSelectors, setMainPaneScrollToTopPending, setMainPaneLoading } from '../../../../layouts/TwoColumn/store';
-import { setAllParameters, selectors as progressSelectors } from '../../store';
+import { setAllQuestions, selectors as progressSelectors } from '../../store';
 import history from '../../../../providers/routing/app-history';
 import MainPaneWithTitle from '../../../../components/MainPaneWithTitle';
 
-function UserList({ mainPaneWidth, actions, allParameters, mainPaneLoading }) {
+function UserList({ mainPaneWidth, actions, allQuestions, mainPaneLoading }) {
   
   useEffect(() => {
     const fetchData = async () => {
       actions.setMainPaneLoading(true);
-      const response = await ngFetch('/progressTracking/parameters', { method: 'GET'});
-      actions.setAllParameters(response.parameters);
+      const response = await ngFetch('/progressTracking/questions', { method: 'GET'});
+      actions.setAllQuestions(response.questions);
       actions.setMainPaneLoading(false);
     };
     fetchData();
   }, [actions]);
 
 
-  const progressCard = (row, key) => (
+  const questionsCard = (row, key) => (
     <RenderCards row={row} tableColumns={tableColumns} key={key} />
   )
 
-  const parameters = React.useMemo(() => Object.values(allParameters), [allParameters]);
+  const questions = React.useMemo(() => Object.values(allQuestions), [allQuestions]);
 
-  const handleRowClick = (parameterId) => {
-    history.push(`/progressTracking/parameters/${parameterId}`)
+  const handleRowClick = questionId => {
+    history.push(`/progressTracking/questions/${questionId}`)
   }
 
 
   return (
-    <MainPaneWithTitle addBtnLink="/progressTracking/parameters/add" title='Parameters'>
+    <MainPaneWithTitle addBtnLink="/progressTracking/questions/add" title='Questions'>
       <TableOrCardList
         loading={mainPaneLoading}
         tableColumns={tableColumns}
-        data={parameters}
+        data={questions}
         containerWidth={mainPaneWidth}
-        renderCard={progressCard}
+        renderCard={questionsCard}
         onRowClick={handleRowClick}
         scrollContainerToTop={() => actions.setMainPaneScrollToTopPending(true)}
       />
@@ -53,12 +53,12 @@ function UserList({ mainPaneWidth, actions, allParameters, mainPaneLoading }) {
 
 const mapStateToProps = (state) => ({
   mainPaneWidth: layoutSelectors.selectMainPaneWidth(state),
-  allParameters: progressSelectors.selectAllParameters(state),
+  allQuestions: progressSelectors.selectAllQuestions(state),
   mainPaneLoading: layoutSelectors.selectMainPaneLoading(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators({ setAllParameters, setMainPaneScrollToTopPending, setMainPaneLoading }, dispatch),
+  actions: bindActionCreators({ setAllQuestions, setMainPaneScrollToTopPending, setMainPaneLoading }, dispatch),
 });
 
 export default compose(

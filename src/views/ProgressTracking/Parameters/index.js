@@ -1,8 +1,8 @@
 import React from 'react';
 import TwoColumnLayout from '../../../layouts/TwoColumn';
-import ParametersList from './Paramters';
-import ParameterAdd from "../Add/Parameters/index";
-import ParameterEdit from '../Edit/Parameters';
+import ParametersList from './List';
+import ParameterAdd from "./Add";
+import ParameterEdit from './Edit';
 
 const ParamtersSection = () => {
 
@@ -13,6 +13,7 @@ const ParamtersSection = () => {
       component: ParametersList,
       key: 'PARAMETERS_LIST',
     },
+
   ];
 
   const rightPaneRoutes = [
@@ -27,7 +28,7 @@ const ParamtersSection = () => {
       exact: true,
       component: ParameterEdit,
       key: 'USERS_TEST_EDIT'
-    }
+    },
   ];
 
   return (

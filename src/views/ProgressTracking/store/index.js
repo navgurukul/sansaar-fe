@@ -1,6 +1,13 @@
-import ProgressSectionSlice from './slice';
-import * as selectors from './selectors';
+import ProgressSectionSlice from "./slice"
+import * as selectors from "./selectors"
 
-export const { setAllParameters,setParameterToView, addOrEditParameter } = ProgressSectionSlice.actions;
+export const {
+  setAllParameters,
+  setParameterToView,
+  addOrEditParameter,
+  setAllQuestions,
+  setQuestionToView,
+  addOrEditQuestion,
+} = ProgressSectionSlice.actions
 
 export { ProgressSectionSlice, selectors }

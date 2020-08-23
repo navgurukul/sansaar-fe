@@ -6,6 +6,8 @@ const ProgressSectionSlice = createSlice({
   initialState: {
     parameterToView: null,
     allParameters: {},
+    allQuestions:{},
+    questionToView:null,
   },
   reducers: {
     setAllParameters: (state, action) => {
@@ -17,6 +19,15 @@ const ProgressSectionSlice = createSlice({
     addOrEditParameter: (state, {payload : {parameter, parameterId}}) => {
       state.allParameters[parameterId] = {...parameter,id:parameterId}
   },
+  setAllQuestions: (state, action) => {
+    state.allQuestions = fromPairs( action.payload.map(u => [u.id, u]) );
+  },
+  setQuestionToView: (state, action) => {
+    state.questionToView = action.payload
+  },
+  addOrEditQuestion: (state, {payload : {question, questionId}}) => {
+    state.allQuestions[questionId] = {...question,id:questionId}
+},
   },
 });
 
