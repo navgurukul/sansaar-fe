@@ -1,25 +1,35 @@
-import React from 'react';
+import React from "react"
 
-import { FormControl, FormLabel, FormGroup, FormHelperText, FormControlLabel, Checkbox } from '@material-ui/core';
+import {
+  FormControl,
+  FormLabel,
+  FormGroup,
+  FormHelperText,
+  FormControlLabel,
+  Checkbox,
+} from "@material-ui/core"
 
-const NGCheckbox = ({ field, control, setValue, getValues, register, errors }) => (
+const NGCheckbox = ({
+  field,
+  control,
+  setValue,
+  getValues,
+  register,
+  errors,
+}) => (
   <FormControl error={Boolean(errors[field.name])}>
-    <FormLabel component="legend">
-      {field.labelText}
-    </FormLabel>
+    <FormLabel component="legend">{field.labelText}</FormLabel>
     <FormGroup>
-      {field.hobbies.map((boat) => (
-        <React.Fragment key={boat.id}>
+      {field.options.map(eachOption => (
+        <React.Fragment key={eachOption.id}>
           <FormCheckBox
             name={field.name}
             control={control}
             setValue={setValue}
             getValues={getValues}
-            value={boat.id}
+            value={eachOption.id}
             register={register}
-            defaultValue={field.preselectedHObbies.some(
-              p => p.id === boat.id
-            )}
+            defaultValue={field.preselectedOptions.some(checked => checked.id === eachOption.id)}
           />
         </React.Fragment>
       ))}
@@ -28,7 +38,7 @@ const NGCheckbox = ({ field, control, setValue, getValues, register, errors }) =
       {errors[field.name] && errors[field.name].message}
     </FormHelperText>
   </FormControl>
-);
+)
 
 export const FormCheckBox = ({ name, value, register, defaultValue }) => {
   return (
@@ -43,4 +53,4 @@ export const FormCheckBox = ({ name, value, register, defaultValue }) => {
   )
 }
 
-export default NGCheckbox;
+export default NGCheckbox

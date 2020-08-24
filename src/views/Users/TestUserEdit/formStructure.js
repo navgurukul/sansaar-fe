@@ -10,7 +10,7 @@ const FormData = [
       .max(15, "Must be 15 characters or less"),
     customProps: {
       variant: "outlined",
-      id: "",
+      id: "name",
       defaultValue: "default Name",
       placeholder: "Enter a name",
       label: "First Name",
@@ -26,7 +26,7 @@ const FormData = [
       .required("Required"),
     customProps: {
       variant: "outlined",
-      id: "",
+      id: "email",
       defaultValue: "default@navgurukul.org",
       placeholder: "kumar19@navgurukul.org",
       label: "Email",
@@ -73,44 +73,44 @@ const FormData = [
     type: "radio",
     labelText: "Gender",
   },
-  // {
-  //   name: "Hobbies",
-  //   hobbies: [
-  //     { id: "cricet" },
-  //     { id: "volleyball" },
-  //     { id: "chess" },
-  //     { id: "coding" },
-  //   ],
-  //   preselectedHObbies: [{ id: "cricet" }, { id: "volleyball" }],
-  //   validation: yup
-  //     .array()
-  //     .transform(function(o, obj) {
-  //       return o.filter(o => o)
-  //     })
-  //     .min(2, "please select two options")
-  //     .required("required"),
-  //   type: "checkbox",
-  //   labelText: "Hobbies",
-  // },
-  // {
-  //   name: "Age",
-  //   type: "slider",
-  //   validation: yup.number().required("required"),
-  //   customProps: {
-  //     "aria-labelledby": "discrete-slider",
-  //     valueLabelDisplay: "auto",
-  //     step: 1,
-  //     min: 17,
-  //     defaultValue: 18,
-  //     max: 24,
-  //   },
-  // },
-  // {
-  //   name: "switch",
-  //   type: "switch",
-  //   validation: yup.boolean().required(),
-  //   labelText: "Mui Switch",
-  // },
+  {
+    name: "Hobbies",
+    options: [
+      { id: "cricet" },
+      { id: "volleyball" },
+      { id: "chess" },
+      { id: "coding" },
+    ],
+    preselectedOptions: [{ id: "cricet" }, { id: "volleyball" }],
+    validation: yup
+      .array()
+      .min(1, "please select two options")
+      .required("required"),
+    type: "checkbox",
+    labelText: "Checkboxes",
+  },
+  {
+    name: "Age",
+    type: "slider",
+    defaultValue: 18,
+    validation: yup.number().required("required"),
+    customProps: {
+      "aria-labelledby": "discrete-slider",
+      valueLabelDisplay: "auto",
+      step: 1,
+      min: 17,
+      max: 24,
+    },
+  },
+  {
+    name: "Are you ok to join",
+    type: "switch",
+    validation: yup.boolean().required(),
+    labelText: "Mui Switch",
+    customProps:{
+      defaultValue: true,
+    }
+  },
 ]
 
 export default FormData

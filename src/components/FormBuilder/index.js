@@ -9,7 +9,8 @@ import NGDateField from './components/NGDateField';
 import NGRadioButtons from './components/NGRadioButtons';
 import NGSelectField from './components/NGSelectField';
 import NGTextField from './components/NGTextField'
-
+import NGSlider from './components/NGSlider'
+import NGSwitch from './components/NGSwitch'
 
 const COMPONENTS = {
   text: NGTextField,
@@ -17,6 +18,8 @@ const COMPONENTS = {
   date: NGDateField,
   radio: NGRadioButtons,
   checkbox: NGCheckbox,
+  slider: NGSlider,
+  switch: NGSwitch,
 };
 
 const  FormBuilder = ({
@@ -56,7 +59,6 @@ const  FormBuilder = ({
     resolver: yupResolver(validationSchema),
     defaultValues: {
       ...initialValues,
-      switch: false,
     },
   })
 
@@ -80,6 +82,7 @@ const  FormBuilder = ({
               setValue={setValue}
               control={control}
               register={register}
+              watch={watch}
             />
             {field.type === 'select' ? <Spacer height={theme.spacing(3)} /> : <Spacer height={theme.spacing(1)} />}
           </React.Fragment>
