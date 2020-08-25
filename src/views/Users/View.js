@@ -21,6 +21,7 @@ import {
   selectors as layoutSelectors,
 } from "../../layouts/TwoColumn/store"
 import { ngFetch } from "../../providers/NGFetch"
+import Mentees from './Mentees/Mentees';
 
 const styles = () => ({
   avatarContainer: {
@@ -33,7 +34,7 @@ const styles = () => ({
   },
 })
 
-function UserView({ match, classes, theme, actions, user, rightPaneLoading }) {
+function UserView({ match, classes, theme, actions, user, rightPaneLoading, allUsers }) {
   const { userId } = match.params
   const [userLoading, setUserLoading] = React.useState(true)
   useEffect(() => {
@@ -106,12 +107,16 @@ function UserView({ match, classes, theme, actions, user, rightPaneLoading }) {
         setUserPathwaysList={actions.setUserPathwaysList}
         allPathways={allPathways}
       />
+      <Spacer height={theme.spacing(1)} />
+      <Typography variant="overline">MENTEES</Typography>
+      <Mentees allUsers={allUsers} user={user} />
     </RightPaneWithTitle>
   )
 }
 
 const mapStateToProps = state => ({
   user: selectors.selectUserToView(state),
+  allUsers: selectors.selectAllUsers(state),
   rightPaneLoading: layoutSelectors.selectRightPaneLoading(state),
 })
 

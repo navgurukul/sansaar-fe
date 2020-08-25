@@ -1,4 +1,4 @@
-import React from "react"
+import React,{useEffect} from "react"
 import {
   Chip,
   withStyles,
@@ -49,7 +49,6 @@ const UserRoleOrPathwayChips = ({
   theme,
   userContext,
   header,
-  allPathways,
 }) => {
 
   const { user: currentUser, refreshUserDetails } = userContext
@@ -65,8 +64,21 @@ const UserRoleOrPathwayChips = ({
     setAddDialog(false)
     setNewChips([])
   }
+  
 
-
+  const [allpathways, setAllPathways]= React.useState(null)
+  useEffect(
+    () => {
+      const fetchData = async () => {
+        const response = await ngFetch(`/pathways`, {
+          method: "GET",
+        })
+        setAllPathways(response.pathways)
+      }
+      fetchData()
+    },
+    [],
+  )
   const rolesListChips = () => {
     const handleDelete = async role => {
       await ngFetch(`/users/${userId}/roles`, {
@@ -230,7 +242,7 @@ const UserRoleOrPathwayChips = ({
                     onChange={e => setNewChips(e.target.value)}
                     label="Select Pathways"
                   >
-                    {map(pullAllBy(allPathways, pathwaysList, 'id'), pathway => {
+                    {map(pullAllBy(allpathways, pathwaysList, 'id'), pathway => {
                       return (
                         <MenuItem key={pathway.id} value={pathway.id}>
                           {pathway.name}

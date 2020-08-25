@@ -6,6 +6,8 @@ const UserSectionSlice = createSlice({
   initialState: {
     userToView: null,
     allUsers: {},
+    allMentees: {},
+    PathwayMenteesToView:{},
   },
   reducers: {
     setAllUsers: (state, action) => {
@@ -23,6 +25,13 @@ const UserSectionSlice = createSlice({
     setUserPathwaysList: (state, { payload: { pathways } }) => {
       state.userToView.pathways = pathways;
     },
+    setAllMentees: (state, action) => {
+      state.allMentees = fromPairs( action.payload.map(u => [u.id, u]) );
+    },
+    setUserMenteesList: (state, action) => {
+      state.allMentees = fromPairs( action.payload.map(u => [u.id, u]) );
+    },
+
   },
 });
 
