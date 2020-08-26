@@ -47,7 +47,6 @@ const MenteesList = ({ actions, allMentees, pathwayId, user, theme ,allUsers }) 
           method: "GET",
         }
       )
-      console.log(response, "response from MenteesList com")
       actions.setAllMentees(response.mentees)
     }
     fetchData()
@@ -82,7 +81,6 @@ const MenteesList = ({ actions, allMentees, pathwayId, user, theme ,allUsers }) 
         )
       : ""
 
-    console.log(UserswithSamePathway, 'UserswithSamePathway');
 
   const [value, setValue] = React.useState([])
 

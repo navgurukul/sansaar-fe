@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React from "react"
 import {
   Chip,
   withStyles,
@@ -18,7 +18,6 @@ import {
   selectors as userSelectors,
 } from "../store"
 import Spacer from "../../../components/Spacer"
-import { ngFetch } from "../../../providers/NGFetch"
 import MenteesList from './MenteesList';
 
 
@@ -38,26 +37,8 @@ const styles = theme => ({
     color:'red',
   }
 })
-const Mentees = ({ allUsers, user, theme, classes, actions }) => {
+const Mentees = ({ allUsers, user, theme, classes }) => {
   const [pathwayId, setpathwayId] = React.useState("")
-
-
-  // const [tree, setTree] = React.useState(null)
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const response = await ngFetch(`/pathways/${pathwayId}/mentorship/tree`, {
-  //       method: "GET",
-  //     })
-  //     console.log(response, "reponse for tree")
-  //     setTree(response.tree)
-  //   }
-  //   fetchData()
-  // }, [pathwayId])
-  // console.log(tree, "nayak")
-
-
-
-  // const mentees = React.useMemo(() => Object.values(allMentees), [allMentees])
 
 
   return (
