@@ -26,6 +26,7 @@ const UserSectionSlice = createSlice({
       state.userToView.pathways = pathways;
     },
     setAllMentees: (state, action) => {
+      console.log(action.payload, 'payloadpayload')
       state.allMentees = fromPairs( action.payload.map(u => [u.id, u]) );
     },
     setUserMenteesList: (state, action) => {
