@@ -4,7 +4,7 @@ import { withRouter } from 'react-router';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { useSnackbar } from 'notistack';
-import { withTheme } from '@material-ui/core';
+import { withTheme, Button } from '@material-ui/core';
 import { selectors, setPathwayToView, addOrEditPathway } from '../../store';
 import { selectors as layoutSelectors, setRightPaneLoading } from '../../../../layouts/TwoColumn/store';
 import { ngFetch } from '../../../../providers/NGFetch';
@@ -13,7 +13,7 @@ import FormBuilder from '../../../../components/FormBuilder';
 import Spacer from '../../../../components/Spacer';
 import RightPaneWithTitle from '../../../../components/RightPaneWithTitle';
 import Milestones from './Milestones';
-// import history from '../../../../providers/routing/app-history';
+import history from '../../../../providers/routing/app-history';
 
 const PathwayEdit = ({ rightPaneLoading, actions, match, theme }) => {
 
@@ -50,10 +50,16 @@ const PathwayEdit = ({ rightPaneLoading, actions, match, theme }) => {
     return <React.Fragment />
   }
 
+  const ViewMentorTree =() =>{
+    history.push(`/pathway/${pathwayId}/mentorTree`)
+  }
+
+
   return (
     <RightPaneWithTitle title="Edit Pathway" closeLink="/pathways">
       <FormBuilder structure={getPathwayEditFormStructure(pathway)} onSubmit={onSubmit} initialValues={pathway} submitBtnDisabled={submitBtnDisabled} />
       <Spacer height={theme.spacing(2)} />
+      <Button fullWidth variant="contained" disableElevation color="primary" onClick={() => ViewMentorTree()}>View MentorTree</Button>
       <Milestones pathway={pathway} />
     </RightPaneWithTitle>
   );
