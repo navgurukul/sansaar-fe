@@ -25,7 +25,6 @@ const MentorShipTree =({match, actions}) =>{
       fetchData();
     }, [actions,pathwayId]);
 
-
     const treeView = (tree) =>{
         const name=  tree ? tree.map((each) => {
           return (
@@ -43,6 +42,8 @@ const MentorShipTree =({match, actions}) =>{
               
             </React.Fragment>
 )}) : ''
+
+
         return(
             name
         )

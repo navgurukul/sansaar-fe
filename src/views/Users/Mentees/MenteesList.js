@@ -52,6 +52,23 @@ const MenteesList = ({ actions, allMentees, pathwayId, user, theme ,allUsers }) 
     fetchData()
   }, [pathwayId, user.id, actions])
 
+  const [tree, setTree] = React.useState(null);
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await ngFetch(`/pathways/${pathwayId}/mentorship/tree`);
+      setTree(response.tree);
+    }
+    fetchData();
+  }, [actions,pathwayId]);
+
+
+  const StudentsAlreadyInTree=[]
+  const Students =(tree) =>{
+    tree ? tree.map((each) =>{ StudentsAlreadyInTree.push(each);each.mentees.length===0?'':Students(each.mentees)}) :''
+  }
+
+  const IdsInTree = Students(tree)
+
   const handleAddMentees = async value => {
     const menteesIds = value[0].map(eachMentee => eachMentee.id)
     const response = await ngFetch(
@@ -81,8 +98,12 @@ const MenteesList = ({ actions, allMentees, pathwayId, user, theme ,allUsers }) 
         )
       : ""
 
+      console.log(UserswithSamePathway,'UserswithSamePathway')
+
 
   const [value, setValue] = React.useState([])
+
+  
 
 
   const handleDeleteMentee = async eachMentee => {
@@ -124,7 +145,7 @@ const MenteesList = ({ actions, allMentees, pathwayId, user, theme ,allUsers }) 
               setValue([newValue])
             }}
         id="multiple-limit-tags"
-        options={pullAllBy(UserswithSamePathway, [], "id")}
+        options={pullAllBy(UserswithSamePathway,StudentsAlreadyInTree, "id")}
         noOptionsText=' No students are there'
         getOptionLabel={option => option.name}
         renderInput={params => (
