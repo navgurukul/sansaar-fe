@@ -14,6 +14,7 @@ import Spacer from '../../../../components/Spacer';
 import RightPaneWithTitle from '../../../../components/RightPaneWithTitle';
 import Milestones from './Milestones';
 import history from '../../../../providers/routing/app-history';
+import Courses from './Courses';
 
 const PathwayEdit = ({ rightPaneLoading, actions, match, theme }) => {
 
@@ -54,12 +55,14 @@ const PathwayEdit = ({ rightPaneLoading, actions, match, theme }) => {
     history.push(`/pathway/${pathwayId}/mentorTree`)
   }
 
+  console.log(pathway, 'pathwaypathway')
 
   return (
     <RightPaneWithTitle title="Edit Pathway" closeLink="/pathways">
       <FormBuilder structure={getPathwayEditFormStructure(pathway)} onSubmit={onSubmit} initialValues={pathway} submitBtnDisabled={submitBtnDisabled} />
       <Spacer height={theme.spacing(2)} />
       <Button fullWidth variant="contained" disableElevation color="primary" onClick={() => ViewMentorTree()}>View MentorTree</Button>
+      <Courses pathway={pathway} />
       <Milestones pathway={pathway} />
     </RightPaneWithTitle>
   );

@@ -1,27 +1,31 @@
 import moment from "moment";
-import {toTitleCase} from '../../../helpers';
 
 const tableColumns = [
   {
     Header: "Name",
-    accessor: "name",
+    accessor: "courses.name",
     priority: 1,
     minWidth: 200,
     search: true,
-    Cell :({value}) => {
-      return toTitleCase(value)
-    }
   },
   {
-    Header: "Description",
-    accessor: "description",
+    Header: "Course Id",
+    accessor: "course_id",
     priority: 2,
     minWidth: 200,
+    search: true,
+  },
+  {
+    Header: "SequenceNumber",
+    accessor: "courses.sequence_num",
+    priority: 3,
+    minWidth: 200,
+    search: true,
   },
   {
     Header: "Created At",
     accessor: "created_at",
-    priority: 3,
+    priority: 4,
     minWidth: 200,
     // search: true,
     Cell: ({ value }) => {

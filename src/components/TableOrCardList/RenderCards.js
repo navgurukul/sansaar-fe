@@ -32,10 +32,12 @@ const RenderCards = ({
   tableColumns,
   theme,
   titleKey
-}) => (
-  <Card key={key || undefined} className={classes.container} variant="outlined">
-    <CardContent>
-      {
+}) => {
+  console.log(row, 'rowww')
+  return(
+    <Card key={key || undefined} className={classes.container} variant="outlined">
+      <CardContent>
+        {
         titleKey ? (
           <React.Fragment>
             <Typography variant="h3">{titleKey}</Typography>
@@ -45,23 +47,25 @@ const RenderCards = ({
         : ''
       }
 
-      {row.profile_picture ? (
-        <React.Fragment>
-          <Box className={classes.header}>
-            <UserAvatar name={row.name} profilePicture={row.profile_picture} widthHeight={theme.spacing(6)} />
-          </Box>
-          <Spacer height={theme.spacing(1)} />
-        </React.Fragment>
+        {row.profile_picture ? (
+          <React.Fragment>
+            <Box className={classes.header}>
+              <UserAvatar name={row.name} profilePicture={row.profile_picture} widthHeight={theme.spacing(6)} />
+            </Box>
+            <Spacer height={theme.spacing(1)} />
+          </React.Fragment>
       )
       : ''}
       
-      {tableColumns.map(eachcolumn => {
+        {tableColumns.map(eachcolumn => {
         return(
           <React.Fragment key={eachcolumn.priority}>
             {eachcolumn.Header ? (
               <React.Fragment>
                 <Typography variant="overline">{eachcolumn.Header}</Typography>
                 <Typography variant="body1">{eachcolumn.accessor === 'created_at' ? moment(row.created_at).fromNow() : row[eachcolumn.accessor]}</Typography>
+                <Typography variant="body1">{eachcolumn.accessor === 'courses.name' && row.courses.name}</Typography>
+                <Typography variant="body1">{eachcolumn.accessor === 'courses.sequence_num' && row.courses.sequence_num}</Typography>
                 {eachcolumn.accessor === 'rolesList' ? <UserRoleOrPathwayChips header="roles" rolesList={row.rolesList} /> : ''}
                 <Spacer height={theme.spacing(1)} />
 
@@ -72,8 +76,8 @@ const RenderCards = ({
           </React.Fragment>
         )
     })}
-    </CardContent>
-  </Card>
-)
+      </CardContent>
+    </Card>
+)}
 
 export default withStyles(styles, { withTheme: true })(RenderCards)

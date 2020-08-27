@@ -8,6 +8,7 @@ const PathwaySectionSlice = createSlice({
     allPathways: {},
     milestoneToView: null,
     allMilestones:{},
+    allCourses: {},
   },
   reducers: {
     setAllPathways: (state, action) => {
@@ -15,6 +16,9 @@ const PathwaySectionSlice = createSlice({
     },
     setAllMilestones: (state, action) => {
       state.allMilestones = fromPairs( action.payload.map(u => [u.id, u]) );
+    },
+    setAllCourses: (state, action) => {
+      state.allCourses = fromPairs( action.payload.map(u => [u.id, u]) );
     },
     setPathwayToView: (state, action) => {
       state.pathwayToView = action.payload
@@ -27,7 +31,10 @@ const PathwaySectionSlice = createSlice({
     },
     addOrEditPathway: (state, {payload : {pathway, pathwayId}}) => {
         state.allPathways[pathwayId] = pathway
-    }
+    },
+    addOrEditCourse: (state, {payload : {course, courseId}}) => {
+      state.allCourses[courseId] = course
+  }
   },
 });
 

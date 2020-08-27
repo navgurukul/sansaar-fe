@@ -4,19 +4,20 @@ import { connect } from "react-redux"
 import { bindActionCreators } from "redux"
 import { compose } from "recompose"
 import { withRouter } from 'react-router';
-import TableOrCardList from "../../../components/TableOrCardList"
-import RenderCards from "../../../components/TableOrCardList/RenderCards";
-import { ngFetch } from "../../../providers/NGFetch";
+import TableOrCardList from "../../../../components/TableOrCardList"
+import RenderCards from "../../../../components/TableOrCardList/RenderCards";
+import { ngFetch } from "../../../../providers/NGFetch";
 import tableColumns from "./table"
-import history from "../../../providers/routing/app-history"
+import history from "../../../../providers/routing/app-history"
 import {
   selectors as layoutSelectors,
   setMainPaneScrollToTopPending,
-} from "../../../layouts/TwoColumn/store"
-import { setAllCourses, selectors as userSelectors } from "../store";
-import MainPaneWithTitle from '../../../components/MainPaneWithTitle';
+  setMainPaneLoading,
+} from "../../../../layouts/TwoColumn/store"
+import { setAllCourses, selectors as userSelectors } from "../../store";
+import MainPaneWithTitle from '../../../../components/MainPaneWithTitle';
 
-function MilestonesList({
+function CoursesList({
   match,
   mainPaneWidth,
   actions,
@@ -25,10 +26,13 @@ function MilestonesList({
   const { pathwayId } = match.params
   useEffect(() => {
     const fetchData = async () => {
-      const response = await ngFetch(`/courses/pathways/${pathwayId}`, {
+      actions.setMainPaneLoading(true);
+      const response = await ngFetch(`/courses/pathway/${pathwayId}`, {
         method: "GET",
       })
-      actions.setAllCourses(response.courses)
+      console.log(response, 'nayaknayak')
+      actions.setAllCourses(response)
+      actions.setMainPaneLoading(false);
     }
     fetchData()
   }, [actions,pathwayId],match.path)
@@ -41,33 +45,36 @@ function MilestonesList({
     allCourses,
   ])
 
-  const handleRowClick = () => {
-    history.push(`/courses/pathways/${pathwayId}/`)
-  }
+  // const handleRowClick = milestoneId => {
+  //   history.push(`/courses/pathways/${pathwayId}/edit`)
+  // }
 
 
   return (
+    
     <MainPaneWithTitle addBtnLink={`/courses/pathways/${pathwayId}/add`} title='Courses'>
       <TableOrCardList
         tableColumns={tableColumns}
         data={courses}
         containerWidth={mainPaneWidth}
         renderCard={CoursesCard}
-        onRowClick={handleRowClick}
+        // onRowClick={handleRowClick}
         scrollContainerToTop={() => actions.setMainPaneScrollToTopPending(true)}
       />
     </MainPaneWithTitle>
+
+    
   )
 }
 
 const mapStateToProps = state => ({
   mainPaneWidth: layoutSelectors.selectMainPaneWidth(state),
-  allCourses: userSelectors.selectAllMilestones(state),
+  allCourses: userSelectors.selectAllCourses(state),
 })
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
-    { setAllCourses, setMainPaneScrollToTopPending },
+    { setAllCourses, setMainPaneScrollToTopPending,setMainPaneLoading },
     dispatch
   ),
 })
@@ -76,4 +83,4 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withTheme,
   withRouter,
-)(MilestonesList)
+)(CoursesList)

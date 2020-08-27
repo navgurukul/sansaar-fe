@@ -9,12 +9,12 @@ const Courses = ({ pathway, theme }) => (
   <React.Fragment>
     <Spacer height={theme.spacing(2)} />
     <Typography variant="h5">Courses</Typography>
-    {pathway.courses.length >  0 ? (
+    {pathway.pathwayCourses.length >  0 ? (
       <List>
-        {pathway.courses.map(course => (
+        {pathway.pathwayCourses.map(course => (
           <ListItem key={course.id}>
             <ListItemIcon><FlagIcon /></ListItemIcon>
-            {/* <ListItemText primary={course.courses.name} secondary={milestone.description} /> */}
+            <ListItemText primary={course.courses.name} secondary={course.courses.description} />
           </ListItem>
         ))}
       </List>
@@ -24,7 +24,7 @@ const Courses = ({ pathway, theme }) => (
         <Spacer height={theme.spacing(2)} />
       </React.Fragment>
     )}
-    <Button to={`/courses/pathways/${pathway.id}/`} component={Link} fullWidth variant="contained" disableElevation color="primary">View/Edit Courses</Button>
+    <Button to={`/courses/pathways/${pathway.id}`} component={Link} fullWidth variant="contained" disableElevation color="primary">View/Edit Courses</Button>
   </React.Fragment>
 );
 
