@@ -7,9 +7,9 @@ import TreeView from '@material-ui/lab/TreeView';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import TreeItem from '@material-ui/lab/TreeItem';
+import {Box} from '@material-ui/core';
 import { ngFetch } from '../../../providers/NGFetch';
 import { setMainPaneLoading } from '../../../layouts/TwoColumn/store';
-
 
 const MentorShipTree =({match, actions}) =>{
     const { pathwayId } = match.params;
@@ -29,9 +29,19 @@ const MentorShipTree =({match, actions}) =>{
     const treeView = (tree) =>{
         const name=  tree ? tree.map((each) => {
           return (
-            <TreeItem label={each.name} nodeId={each.name} key={each.name}>
-              {each.mentees.length===0?'':treeView(each.mentees)}
-            </TreeItem>
+            <React.Fragment key={each.name}>
+              
+              <Box>
+                
+                <TreeItem
+                  label={`${each.name} (${each.email})`}
+                  nodeId={each.name}
+                >
+                  {each.mentees.length===0?'':treeView(each.mentees)}
+                </TreeItem>
+              </Box>
+              
+            </React.Fragment>
 )}) : ''
         return(
             name
@@ -61,3 +71,4 @@ export default compose(
     connect(null, mapDispatchToProps),
     withRouter,
   )(MentorShipTree);
+

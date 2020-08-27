@@ -85,7 +85,6 @@ const MenteesList = ({ actions, allMentees, pathwayId, user, theme ,allUsers }) 
   const [value, setValue] = React.useState([])
 
 
-
   const handleDeleteMentee = async eachMentee => {
     const response = await ngFetch(
       `/pathways/${pathwayId}/mentorship/users/${user.id}/mentees`,
@@ -118,13 +117,14 @@ const MenteesList = ({ actions, allMentees, pathwayId, user, theme ,allUsers }) 
           : ""}
       </List>
       <Autocomplete
+
         multiple
         limitTags={2}
         onChange={(event, newValue) => {
               setValue([newValue])
             }}
         id="multiple-limit-tags"
-        options={pullAllBy(UserswithSamePathway, mentees, "id")}
+        options={pullAllBy(UserswithSamePathway, [], "id")}
         noOptionsText=' No students are there'
         getOptionLabel={option => option.name}
         renderInput={params => (
