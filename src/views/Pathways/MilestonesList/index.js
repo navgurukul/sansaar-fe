@@ -12,6 +12,7 @@ import history from "../../../providers/routing/app-history"
 import {
   selectors as layoutSelectors,
   setMainPaneScrollToTopPending,
+  setMainPaneLoading,
 } from "../../../layouts/TwoColumn/store"
 import { setAllMilestones, selectors as userSelectors } from "../store";
 import MainPaneWithTitle from '../../../components/MainPaneWithTitle';
@@ -21,14 +22,17 @@ function MilestonesList({
   mainPaneWidth,
   actions,
   allMilestones,
+  mainPaneLoading,
 }) {
   const { pathwayId } = match.params
   useEffect(() => {
     const fetchData = async () => {
+      actions.setMainPaneLoading(true);
       const response = await ngFetch(`/pathways/${pathwayId}/milestones`, {
         method: "GET",
       })
       actions.setAllMilestones(response.milestones)
+      actions.setMainPaneLoading(false);
     }
     fetchData()
   }, [actions,pathwayId],match.path)
@@ -49,6 +53,7 @@ function MilestonesList({
   return (
     <MainPaneWithTitle addBtnLink={`/pathways/${pathwayId}/milestones/add`} title='Milestones'>
       <TableOrCardList
+        loading={mainPaneLoading}
         tableColumns={tableColumns}
         data={milestones}
         containerWidth={mainPaneWidth}
@@ -63,11 +68,12 @@ function MilestonesList({
 const mapStateToProps = state => ({
   mainPaneWidth: layoutSelectors.selectMainPaneWidth(state),
   allMilestones: userSelectors.selectAllMilestones(state),
+  mainPaneLoading: layoutSelectors.selectMainPaneLoading(state),
 })
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
-    { setAllMilestones, setMainPaneScrollToTopPending },
+    { setAllMilestones, setMainPaneScrollToTopPending,setMainPaneLoading },
     dispatch
   ),
 })

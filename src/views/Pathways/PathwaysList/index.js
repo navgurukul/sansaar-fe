@@ -11,17 +11,20 @@ import history from "../../../providers/routing/app-history"
 import {
   selectors as layoutSelectors,
   setMainPaneScrollToTopPending,
+  setMainPaneLoading,
 } from "../../../layouts/TwoColumn/store"
 import { setAllPathways, selectors as userSelectors } from "../store"
 import MainPaneWithTitle from '../../../components/MainPaneWithTitle';
 import RenderCards from "../../../components/TableOrCardList/RenderCards";
 
 
-function PathwaysList({ mainPaneWidth, actions, allPathways }) {
+function PathwaysList({ mainPaneWidth, actions, allPathways,mainPaneLoading }) {
   useEffect(() => {
     const fetchData = async () => {
+      actions.setMainPaneLoading(true);
       const response = await ngFetch("/pathways", { method: "GET" })
       actions.setAllPathways(response.pathways)
+      actions.setMainPaneLoading(false);
     }
     fetchData()
   }, [actions])
@@ -46,6 +49,7 @@ function PathwaysList({ mainPaneWidth, actions, allPathways }) {
   return (
     <MainPaneWithTitle addBtnLink='/pathways/add' title='Pathways'>
       <TableOrCardList
+        loading={mainPaneLoading}
         tableColumns={tableColumns}
         data={pathways}
         containerWidth={mainPaneWidth}
@@ -60,11 +64,12 @@ function PathwaysList({ mainPaneWidth, actions, allPathways }) {
 const mapStateToProps = state => ({
   mainPaneWidth: layoutSelectors.selectMainPaneWidth(state),
   allPathways: userSelectors.selectAllPathways(state),
+  mainPaneLoading: layoutSelectors.selectMainPaneLoading(state),
 })
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
-    { setAllPathways, setMainPaneScrollToTopPending },
+    { setAllPathways, setMainPaneScrollToTopPending,setMainPaneLoading },
     dispatch
   ),
 })

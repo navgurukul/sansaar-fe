@@ -6,3 +6,4 @@ export const selectAllMilestones = (state) => get(state, `${PathwaysSectionSlice
 export const selectAllCourses = (state) => get(state, `${PathwaysSectionSlice.name}.allCourses`);
 export const selectPathwayToView = (state) => get(state, `${PathwaysSectionSlice.name}.pathwayToView`);
 export const selectMilestoneToView = (state) => get(state, `${PathwaysSectionSlice.name}.milestoneToView`);
+export const selectCourseToView = (state) => get(state, `${PathwaysSectionSlice.name}.courseToView`);

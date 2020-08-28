@@ -6,7 +6,6 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
-  FormHelperText,
 } from "@material-ui/core"
 import { connect } from "react-redux"
 import { bindActionCreators, compose } from "redux"
@@ -63,7 +62,8 @@ const Mentees = ({ allUsers, user, theme, classes }) => {
                 )
               })}
             </Select>
-            <FormHelperText className={pathwayId ? '' : classes.helperText}>pathway neds to be selected</FormHelperText>
+            <Spacer height={theme.spacing(1)} />
+            {pathwayId === '' ? <Chip label="No Pathways selected" /> : ''}
           </FormControl>
           <Spacer height={theme.spacing(1)} />
           {user.id && pathwayId ? <MenteesList user={user} pathwayId={pathwayId} allUsers={allUsers} /> : ''}

@@ -1,5 +1,4 @@
 import * as yup from "yup"
-import { ngFetch } from "../../../providers/NGFetch"
 
 const createdAtField = {
   name: "createdAt",
@@ -13,24 +12,21 @@ const createdAtField = {
 }
 
 export const getCourseAddFormStructure = (course,allCourses) => {
-  console.log(allCourses,'allCourses')
   const optionsList=[]
-  let optionsToChoose= allCourses ? allCourses.map(eachcourse => optionsList.push({value: eachcourse.name, name: [eachcourse.id,eachcourse.sequence_num], sequence_num:eachcourse.sequence_num, })) : []
+  let optionsToChoose= allCourses ? allCourses.map(eachcourse => optionsList.push({value: eachcourse.name, name: [{course_id:eachcourse.id,sequence_num:eachcourse.sequence_num}] })) : []
   const optionsCanSelect= optionsList ? optionsList.map(option => option.name) : [];
   optionsToChoose =[...optionsList]
-  console.log(optionsCanSelect,optionsToChoose,'optionsCanSelect')
 
   return [
     {
       name: "course_id",
       type: "select",
       'validation': yup
-      .array()
-      // .oneOf(
-      //   optionsCanSelect,
-      //   "please select one"
-      // )
-      .required("Required"),
+      .array().typeError('select something').required('required')
+      .oneOf(
+        optionsCanSelect,
+        "please select one"
+      ),
     options: optionsToChoose,
     customProps: { variant: "outlined", id: "", label: "Select a course", defaultValue: '' },
   

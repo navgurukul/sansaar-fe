@@ -22,15 +22,15 @@ function CoursesList({
   mainPaneWidth,
   actions,
   allCourses,
+  mainPaneLoading,
 }) {
   const { pathwayId } = match.params
   useEffect(() => {
     const fetchData = async () => {
       actions.setMainPaneLoading(true);
-      const response = await ngFetch(`/courses/pathway/${pathwayId}`, {
+      const response = await ngFetch(`/pathways/${pathwayId}/courses`, {
         method: "GET",
       })
-      console.log(response, 'nayaknayak')
       actions.setAllCourses(response)
       actions.setMainPaneLoading(false);
     }
@@ -45,20 +45,21 @@ function CoursesList({
     allCourses,
   ])
 
-  // const handleRowClick = milestoneId => {
-  //   history.push(`/courses/pathways/${pathwayId}/edit`)
-  // }
+  const handleRowClick = PathwayCourseId => {
+    history.push(`/pathways/${pathwayId}/courses/${PathwayCourseId}/edit`)
+  }
 
 
   return (
     
     <MainPaneWithTitle addBtnLink={`/pathways/${pathwayId}/courses/add`} title='Courses'>
       <TableOrCardList
+        loading={mainPaneLoading}
         tableColumns={tableColumns}
         data={courses}
         containerWidth={mainPaneWidth}
         renderCard={CoursesCard}
-        // onRowClick={handleRowClick}
+        onRowClick={handleRowClick}
         scrollContainerToTop={() => actions.setMainPaneScrollToTopPending(true)}
       />
     </MainPaneWithTitle>
@@ -70,6 +71,7 @@ function CoursesList({
 const mapStateToProps = state => ({
   mainPaneWidth: layoutSelectors.selectMainPaneWidth(state),
   allCourses: userSelectors.selectAllCourses(state),
+  mainPaneLoading: layoutSelectors.selectMainPaneLoading(state),
 })
 
 const mapDispatchToProps = dispatch => ({

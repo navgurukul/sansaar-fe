@@ -31,16 +31,11 @@ const CourseAdd = ({ actions, match }) => {
   }, [actions]);
 
   const onSubmit = async (data) => {
-    console.log(data, 'data when you are going to submit')
-    data.course_id = data.course_id[0]
-    data.sequence_num = data.course_id[1]
-    console.log(data, 'datnow')
-    setSubmitBtnDisabled(true);
-    const response = await ngFetch(`/courses/pathway/${pathwayId}`, {method: 'PUT', body: data});
-    console.log(response, 'response after adding')
-    // actions.addOrEditCourse({milestone: response.pathway[0], milestoneId:response.pathway[0].id});
+    data = data.course_id[0]
+    await ngFetch(`/pathways/${pathwayId}/courses`, {method: 'POST', body: data});
+    const result = await ngFetch(`/pathways/${pathwayId}/courses`, {method: 'GET'});
+    actions.addOrEditCourse({pathwaysCourses: result});
     enqueueSnackbar('Course created.', { variant: 'success' });
-    setSubmitBtnDisabled(false);
     history.push(`/pathways/${pathwayId}/courses`);
   };
 

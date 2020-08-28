@@ -63,8 +63,6 @@ const RenderCards = ({
               <React.Fragment>
                 <Typography variant="overline">{eachcolumn.Header}</Typography>
                 <Typography variant="body1">{eachcolumn.accessor === 'created_at' ? moment(row.created_at).fromNow() : row[eachcolumn.accessor]}</Typography>
-                <Typography variant="body1">{eachcolumn.accessor === 'courses.name' && row.courses.name}</Typography>
-                <Typography variant="body1">{eachcolumn.accessor === 'courses.sequence_num' && row.courses.sequence_num}</Typography>
                 {eachcolumn.accessor === 'rolesList' ? <UserRoleOrPathwayChips header="roles" rolesList={row.rolesList} /> : ''}
                 <Spacer height={theme.spacing(1)} />
 

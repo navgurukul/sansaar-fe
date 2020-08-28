@@ -4,7 +4,7 @@ import { withRouter } from 'react-router';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { useSnackbar } from 'notistack';
-import { withTheme, Button } from '@material-ui/core';
+import { withTheme, Button,Typography } from '@material-ui/core';
 import { selectors, setPathwayToView, addOrEditPathway } from '../../store';
 import { selectors as layoutSelectors, setRightPaneLoading } from '../../../../layouts/TwoColumn/store';
 import { ngFetch } from '../../../../providers/NGFetch';
@@ -60,6 +60,8 @@ const PathwayEdit = ({ rightPaneLoading, actions, match, theme }) => {
     <RightPaneWithTitle title="Edit Pathway" closeLink="/pathways">
       <FormBuilder structure={getPathwayEditFormStructure(pathway)} onSubmit={onSubmit} initialValues={pathway} submitBtnDisabled={submitBtnDisabled} />
       <Spacer height={theme.spacing(2)} />
+      <Typography variant="h5">Mentorship Tree</Typography>
+      <Spacer height={theme.spacing(1)} />
       <Button fullWidth variant="contained" disableElevation color="primary" onClick={() => ViewMentorTree()}>View MentorTree</Button>
       <Courses pathway={pathway} />
       <Milestones pathway={pathway} />
