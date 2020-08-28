@@ -6,9 +6,18 @@ import PathwayAdd from './Add/Pathway';
 import MilestonesList from './MilestonesList';
 import MilestoneEdit from './Edit/Milestone';
 import MilestoneAdd from './Add/Milestone';
+import CoursesList from './CoursesList';
+import MentorShipTree from './MentoShipTree/MentorShipTree'
+import CourseAdd from './Add/Course';
 
 const PathwaysSection = () => {
   const mainPaneRoutes = [
+    {
+      path: '/pathways/:pathwayId/courses',
+      exact: false,
+      component: CoursesList,
+      key: 'COURSES_LIST'
+    },
     {
       path: '/pathways/:pathwayId/milestones',
       exact: false,
@@ -16,11 +25,18 @@ const PathwaysSection = () => {
       key: 'MILESTONES_LIST',
     },
     {
+      path: '/pathways/:pathwayId/mentorTree',
+      auth: true,
+      key: 'MENTORSHIP_TREE_SECTION',
+      component: MentorShipTree,
+    },  
+    {
       path: '/pathways',
       exact: false,
       component: PathwaysList,
       key: 'PATHWAYS_LIST'
     },
+
   ];
   const rightPaneRoutes = [
     {
@@ -46,7 +62,13 @@ const PathwaysSection = () => {
       exact: true,
       component: MilestoneEdit,
       key: 'MILESTONE_ADD'
-    }
+    },
+    {
+      path: '/pathways/:pathwayId/courses/add',
+      exact: true,
+      component: CourseAdd,
+      key: 'COURSE_ADD'
+    },
   ];
 
   return <TwoColumnLayout mainPaneRoutes={mainPaneRoutes} rightPaneRoutes={rightPaneRoutes} />

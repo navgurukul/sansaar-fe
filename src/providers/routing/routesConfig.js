@@ -4,8 +4,6 @@ import UsersSection from '../../views/Users';
 import PathwaysSection from '../../views/Pathways';
 import ParamtersSection from '../../views/ProgressTracking/Parameters';
 import QuestionsSection from '../../views/ProgressTracking/Questions';
-import MentorShipTree from '../../views/Pathways/MentoShipTree/MentorShipTree'
-import CoursesSection from '../../views/Pathways/Courses'
 
 const ROUTES = [
   {
@@ -44,18 +42,6 @@ const ROUTES = [
     key: 'QUESTIONS_SECTION',
     component: QuestionsSection,
   },
-  {
-    path: '/pathway/:pathwayId/mentorTree',
-    auth: true,
-    key: 'MENTORSHIP_TREE_SECTION',
-    component: MentorShipTree,
-  },  
-  {
-    path: '/courses',
-    auth: true,
-    key: 'COURSES_SECTION',
-    component: CoursesSection,
-  },  
   
 ]
 

@@ -33,7 +33,6 @@ const RenderCards = ({
   theme,
   titleKey
 }) => {
-  console.log(row, 'rowww')
   return(
     <Card key={key || undefined} className={classes.container} variant="outlined">
       <CardContent>

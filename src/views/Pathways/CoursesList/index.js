@@ -4,18 +4,18 @@ import { connect } from "react-redux"
 import { bindActionCreators } from "redux"
 import { compose } from "recompose"
 import { withRouter } from 'react-router';
-import TableOrCardList from "../../../../components/TableOrCardList"
-import RenderCards from "../../../../components/TableOrCardList/RenderCards";
-import { ngFetch } from "../../../../providers/NGFetch";
+import TableOrCardList from "../../../components/TableOrCardList"
+import RenderCards from "../../../components/TableOrCardList/RenderCards";
+import { ngFetch } from "../../../providers/NGFetch";
 import tableColumns from "./table"
-import history from "../../../../providers/routing/app-history"
+import history from "../../../providers/routing/app-history"
 import {
   selectors as layoutSelectors,
   setMainPaneScrollToTopPending,
   setMainPaneLoading,
-} from "../../../../layouts/TwoColumn/store"
-import { setAllCourses, selectors as userSelectors } from "../../store";
-import MainPaneWithTitle from '../../../../components/MainPaneWithTitle';
+} from "../../../layouts/TwoColumn/store"
+import { setAllCourses, selectors as userSelectors } from "../store";
+import MainPaneWithTitle from '../../../components/MainPaneWithTitle';
 
 function CoursesList({
   match,
@@ -52,7 +52,7 @@ function CoursesList({
 
   return (
     
-    <MainPaneWithTitle addBtnLink={`/courses/pathways/${pathwayId}/add`} title='Courses'>
+    <MainPaneWithTitle addBtnLink={`/pathways/${pathwayId}/courses/add`} title='Courses'>
       <TableOrCardList
         tableColumns={tableColumns}
         data={courses}

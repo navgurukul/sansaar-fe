@@ -60,7 +60,7 @@ const MainPane = ({
       window.removeEventListener('resize', setMainPaneWidth);
     }
   });
-
+  console.log(routes, 'same routes from mainpane')
   return (
     <Box className={classNames(classes.mainPane, { [classes.mainPaneAfterRightOpen]: rightPaneOpen })} ref={mainPaneRef}>
       <RoutesFromList routes={routes} />

@@ -29,6 +29,7 @@ const NGRoute = ({
       props.component = Component;
     }
   }
+  console.log(route, 'route in Ngroute')
   return <Route {...props} />;
 }
 

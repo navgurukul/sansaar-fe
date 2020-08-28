@@ -52,10 +52,9 @@ const PathwayEdit = ({ rightPaneLoading, actions, match, theme }) => {
   }
 
   const ViewMentorTree =() =>{
-    history.push(`/pathway/${pathwayId}/mentorTree`)
+    history.push(`/pathways/${pathwayId}/mentorTree`)
   }
 
-  console.log(pathway, 'pathwaypathway')
 
   return (
     <RightPaneWithTitle title="Edit Pathway" closeLink="/pathways">
