@@ -9,6 +9,7 @@ import MilestoneAdd from './Add/Milestone';
 import CoursesList from './CoursesList';
 import MentorShipTree from './MentoShipTree/MentorShipTree'
 import CourseAdd from './Add/Course';
+import CourseEdit from './Edit/Course';
 
 const PathwaysSection = () => {
   const mainPaneRoutes = [
@@ -68,6 +69,12 @@ const PathwaysSection = () => {
       exact: true,
       component: CourseAdd,
       key: 'COURSE_ADD'
+    },
+    {
+      path: '/pathways/:pathwayId/courses/:PathwayCourseId/edit',
+      exact: true,
+      component: CourseEdit,
+      key: 'COURSE_EDIT'
     },
   ];
 

@@ -12,8 +12,9 @@ const createdAtField = {
 }
 
 export const getCourseAddFormStructure = (course,allCourses) => {
+
   const optionsList=[]
-  let optionsToChoose= allCourses ? allCourses.map(eachcourse => optionsList.push({value: eachcourse.name, name: [{course_id:eachcourse.id,sequence_num:eachcourse.sequence_num}] })) : []
+  let optionsToChoose= allCourses ? allCourses.map(eachcourse => optionsList.push({value: eachcourse.name, name:eachcourse.id })) : []
   const optionsCanSelect= optionsList ? optionsList.map(option => option.name) : [];
   optionsToChoose =[...optionsList]
 
@@ -22,19 +23,19 @@ export const getCourseAddFormStructure = (course,allCourses) => {
       name: "course_id",
       type: "select",
       'validation': yup
-      .array().typeError('select something').required('required')
+      .string().typeError('select something').required('required')
       .oneOf(
         optionsCanSelect,
         "please select one"
       ),
     options: optionsToChoose,
     customProps: { variant: "outlined", id: "", label: "Select a course", defaultValue: '' },
-  
     },
+
   ]
 }
 
-export const getCourseEditFormStructure = (course, allCourses) => {
+export const getCourseEditFormStructure = (course,allCourses) => {
   const fields = getCourseAddFormStructure(course,allCourses)
   fields.push(createdAtField)
   return fields

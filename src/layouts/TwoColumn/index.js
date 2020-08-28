@@ -8,7 +8,6 @@ const TwoColumnLayout = ({
   mainPaneRoutes,
   rightPaneRoutes,
 }) => {
-  console.log(mainPaneRoutes,'mainPaneRoutes')
   return (
     <React.Fragment>
       <MainPane routes={mainPaneRoutes} />

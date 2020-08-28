@@ -14,7 +14,6 @@ const SelectField = ({
   errors,
   fullWidth,
 }) => {
-
   return (
     <section key={field.name}>
       <FormControl

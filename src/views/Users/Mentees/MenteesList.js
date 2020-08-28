@@ -85,7 +85,9 @@ const MenteesList = ({ actions, allMentees, pathwayId, user, theme ,allUsers }) 
 
   const Users = React.useMemo(() => Object.values(allUsers), [allUsers])
   const UserswithSamePathway = []
-  const newData =
+
+    const newData = React.useMemo(() => {
+    const Data=
     Users && pathwayId
       ? Users.map(eachuser =>
           eachuser.pathways.length && eachuser.id !== user.id
@@ -97,8 +99,9 @@ const MenteesList = ({ actions, allMentees, pathwayId, user, theme ,allUsers }) 
             : ""
         )
       : ""
+      
+    }, [Users,pathwayId,UserswithSamePathway,user.id])
 
-      console.log(UserswithSamePathway,'UserswithSamePathway')
 
 
   const [value, setValue] = React.useState([])

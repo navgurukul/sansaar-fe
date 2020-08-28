@@ -36,8 +36,8 @@ const PathwaySectionSlice = createSlice({
     addOrEditPathway: (state, {payload : {pathway, pathwayId}}) => {
         state.allPathways[pathwayId] = pathway
     },
-    addOrEditCourse: (state, {payload : {pathwaysCourses}}) => {
-      state.allCourses = fromPairs( pathwaysCourses.map(u => [u.id, u]) )
+    addOrEditCourse: (state, {payload : {pathwaysCourse, pathwaysCourseId}}) => {
+      state.allCourses[pathwaysCourseId] = pathwaysCourse
   }
   },
 });

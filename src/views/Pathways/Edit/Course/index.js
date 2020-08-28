@@ -5,10 +5,10 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { withTheme } from '@material-ui/core';
-import { selectors, setPathwayCourseToView, addOrEditCourse } from '../../store';
+import { selectors, setCourseToView, addOrEditCourse } from '../../store';
 import { selectors as layoutSelectors, setRightPaneLoading } from '../../../../layouts/TwoColumn/store';
 import { ngFetch } from '../../../../providers/NGFetch';
-import { getMilestoneEditFormStructure } from '../../forms/milestone';
+import { getCourseEditFormStructure } from '../../forms/course';
 import FormBuilder from '../../../../components/FormBuilder';
 import Spacer from '../../../../components/Spacer';
 import RightPaneWithTitle from '../../../../components/RightPaneWithTitle';
@@ -24,8 +24,8 @@ const PathwayCourseEdit = ({ rightPaneLoading, actions, match, theme }) => {
     const fetchData = async () => {
       actions.setRightPaneLoading(true);
       const response = await ngFetch(`/pathways/${pathwayId}/courses/${PathwayCourseId}`);
-      actions.setCourseToView(response);
-    //   setCourse(response.milestone);
+      actions.setCourseToView(response.pathwayCourse);
+      setCourse(response.pathwayCourse);
       actions.setRightPaneLoading(false);
     }
     fetchData();
@@ -50,8 +50,8 @@ const PathwayCourseEdit = ({ rightPaneLoading, actions, match, theme }) => {
       method: 'PUT',
       body: data,
     });
-    // actions.addOrEditMilestone({milestone: response.milestone[0], milestoneId:response.milestone[0].id});
-    // setMilestone(response.milestone);
+    actions.addOrEditCourse({pathwaysCourse: response.updatedpathwayCourse, pathwaysCourseId:response.updatedpathwayCourse.id});
+    setCourse(response.updatedpathwayCourse);
     enqueueSnackbar("Course details saved.", { variant: 'success' });
     setSubmitBtnDisabled(false);
     history.push(`/pathways/${pathwayId}/courses/`);
@@ -62,8 +62,8 @@ const PathwayCourseEdit = ({ rightPaneLoading, actions, match, theme }) => {
   }
 
   return (
-    <RightPaneWithTitle title="Edit Milestone" closeLink={`/pathways/${pathwayId}/courses`}>
-      <FormBuilder structure={getMilestoneEditFormStructure(course,allCourses)} onSubmit={onSubmit} initialValues={course} submitBtnDisabled={submitBtnDisabled} />
+    <RightPaneWithTitle title="Edit Course" closeLink={`/pathways/${pathwayId}/courses`}>
+      <FormBuilder structure={getCourseEditFormStructure(course,allCourses)} onSubmit={onSubmit} initialValues={course} submitBtnDisabled={submitBtnDisabled} />
       <Spacer height={theme.spacing(2)} />
     </RightPaneWithTitle>
   );
@@ -75,11 +75,11 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators({ setRightPaneLoading,setMilestoneToView, addOrEditMilestone }, dispatch),
+  actions: bindActionCreators({ setRightPaneLoading,setCourseToView, addOrEditCourse }, dispatch),
 });
 
 export default compose(
   withTheme,
   withRouter,
   connect(mapStateToProps, mapDispatchToProps),
-)(MilestoneEdit);
+)(PathwayCourseEdit);
