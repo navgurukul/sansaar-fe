@@ -54,7 +54,7 @@ const UserRoleOrPathwayChips = ({
   const { user: currentUser, refreshUserDetails } = userContext
   const editableRoles = React.useMemo(
     () => getEditableRoles(currentUser.rolesList),
-    [currentUser]
+    [currentUser,rolesList]
   )
 
   const [addDialog, setAddDialog] = React.useState(false)
@@ -77,7 +77,7 @@ const UserRoleOrPathwayChips = ({
       }
       fetchData()
     },
-    [],
+    [pathwaysList],
   )
   const rolesListChips = () => {
     const handleDelete = async role => {
@@ -85,6 +85,7 @@ const UserRoleOrPathwayChips = ({
         method: "DELETE",
         body: { rolesList: [role] },
       })
+      console.log(rolesList.filter(r => r !== role), 'kuma')
       setUserRolesList({ rolesList: rolesList.filter(r => r !== role), userId })
       if (currentUser.id === userId) refreshUserDetails()
     }
@@ -189,7 +190,7 @@ const UserRoleOrPathwayChips = ({
         body: { pathwayIds: newChips },
       })
 
-      setUserPathwaysList({ pathways: response.user.pathways, userId, pathwayIds:newChips  })
+      setUserPathwaysList({ pathways: response.user.pathways, userId })
       setAddDialog(false)
       setNewChips([])
     }

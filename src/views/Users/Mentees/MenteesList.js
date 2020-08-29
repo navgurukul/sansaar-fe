@@ -59,15 +59,17 @@ const MenteesList = ({ actions, allMentees, pathwayId, user, theme ,allUsers }) 
       setTree(response.tree);
     }
     fetchData();
-  }, [actions,pathwayId]);
+  }, [actions,pathwayId,allMentees]);
 
 
   const StudentsAlreadyInTree=[]
+
   const Students =(tree) =>{
     tree ? tree.map((each) =>{ StudentsAlreadyInTree.push(each);each.mentees.length===0?'':Students(each.mentees)}) :''
   }
 
   const IdsInTree = Students(tree)
+
 
   const handleAddMentees = async value => {
     const menteesIds = value[0].map(eachMentee => eachMentee.id)
@@ -78,7 +80,7 @@ const MenteesList = ({ actions, allMentees, pathwayId, user, theme ,allUsers }) 
         body: { menteeIds: menteesIds },
       }
     )
-    actions.setUserMenteesList(response.mentees)
+    actions.setUserMenteesList({mentees :response.mentees, userId: user.id})
   }
 
   const mentees = React.useMemo(() => Object.values(allMentees), [allMentees])
@@ -117,7 +119,7 @@ const MenteesList = ({ actions, allMentees, pathwayId, user, theme ,allUsers }) 
         body: { menteeIds: [eachMentee.id] },
       }
     )
-    actions.setUserMenteesList(response.mentees)
+    actions.setUserMenteesList({mentees:response.mentees, userId: user.id})
   }
   return (
     <React.Fragment>

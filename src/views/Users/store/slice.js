@@ -22,14 +22,20 @@ const UserSectionSlice = createSlice({
         state.allUsers[userId].rolesList = rolesList;
       }
     },
-    setUserPathwaysList: (state, { payload: { pathways } }) => {
+    setUserPathwaysList: (state, { payload: { pathways, userId } }) => {
       state.userToView.pathways = pathways;
+      if (state.allUsers[userId]) {
+        state.allUsers[userId].pathways = pathways;
+      }
     },
     setAllMentees: (state, action) => {
       state.allMentees = fromPairs( action.payload.map(u => [u.id, u]) );
     },
-    setUserMenteesList: (state, action) => {
-      state.allMentees = fromPairs( action.payload.map(u => [u.id, u]) );
+    setUserMenteesList: (state, {payload: {mentees, userId}}) => {
+      state.allMentees = fromPairs( mentees.map(u => [u.id, u]) );
+      if (state.allUsers[userId]) {
+        state.allUsers[userId].mentees = mentees;
+      }
     },
 
   },
