@@ -5,6 +5,7 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { withTheme } from '@material-ui/core';
+import {find} from 'lodash';
 import { selectors, setCourseToView, addOrEditCourse } from '../../store';
 import { selectors as layoutSelectors, setRightPaneLoading } from '../../../../layouts/TwoColumn/store';
 import { ngFetch } from '../../../../providers/NGFetch';
@@ -19,6 +20,19 @@ const PathwayCourseEdit = ({ rightPaneLoading, actions, match, theme }) => {
   const { PathwayCourseId, pathwayId } = match.params;
   const { enqueueSnackbar } = useSnackbar();
  
+
+  const [CoursesAlreadyPresent, setCoursesAlreadyPresent] = React.useState(null);
+  useEffect(() => {
+    const fetchallCourses = async () => {
+      actions.setRightPaneLoading(true);
+      const response = await ngFetch(`/pathways/${pathwayId}/courses`);
+      setCoursesAlreadyPresent(response);
+      actions.setRightPaneLoading(false);
+    }
+    fetchallCourses();
+  }, [actions,pathwayId]);
+
+
   const [course, setCourse] = React.useState(null);
   useEffect(() => {
     const fetchData = async () => {
@@ -44,7 +58,8 @@ const PathwayCourseEdit = ({ rightPaneLoading, actions, match, theme }) => {
 
   const [submitBtnDisabled, setSubmitBtnDisabled] = React.useState(false);
   const onSubmit = async (data) => {
-    setSubmitBtnDisabled(true);
+    // setSubmitBtnDisabled(true);
+    {find(CoursesAlreadyPresent,{course_id: parseInt(data.course_id, 10) }) && enqueueSnackbar('Course is already there.', { variant: 'failed' }) } 
     delete data.createdAt
     const response = await ngFetch(`/pathways/${pathwayId}/courses/${PathwayCourseId}`, {
       method: 'PUT',
