@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import { ngFetch } from '../../../providers/NGFetch';
+import { ngFetch } from '../../../../providers/NGFetch';
 
 yup.addMethod(yup.string, 'pathwayCodeIsUnique', function CODE({ currentCode }) {
   return this.test({

@@ -11,10 +11,10 @@ const createdAtField = {
   },
 }
 
-export const getMilestoneAddFormStructure = (milestone,allmilestones) => {
+export const getMilestoneAddFormStructure = (milestone,allMilestones) => {
   
   const optionsList=[]
-  let optionsToChoose= allmilestones ? allmilestones.map(eachmilestone => optionsList.push({value: eachmilestone.name, name: eachmilestone.position})) : []
+  let optionsToChoose= allMilestones ? allMilestones.map(eachmilestone => optionsList.push({value: eachmilestone.name, name: eachmilestone.position})) : []
   const optionsCanSelect= optionsList ? optionsList.map(option => option.name) : [];
   const lastPosition = Math.max(...optionsCanSelect);
   optionsToChoose =[...optionsList,{value: 'Last', name: lastPosition}]
@@ -46,6 +46,7 @@ export const getMilestoneAddFormStructure = (milestone,allmilestones) => {
     'validation': 
     optionsToChoose.length === 1 ? '' : yup
       .number()
+      .typeError('select one')
       .oneOf(
         optionsCanSelect,
         "please select one"
@@ -57,8 +58,8 @@ export const getMilestoneAddFormStructure = (milestone,allmilestones) => {
   
 ])}
 
-export const getMilestoneEditFormStructure = (milestone,allmilestones) => {
-  const fields = getMilestoneAddFormStructure(milestone,allmilestones);
+export const getMilestoneEditFormStructure = (milestone,allMilestones) => {
+  const fields = getMilestoneAddFormStructure(milestone,allMilestones);
   fields.push(createdAtField);
   return fields;
 };

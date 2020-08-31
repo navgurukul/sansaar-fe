@@ -19,9 +19,10 @@ import { fromPairs, map, isEmpty, difference } from "lodash"
 
 import AllFilters, { FILTER_COMPONENTS, FILTER_TYPES } from "./filters"
 import Spacer from "../Spacer"
+import GenericCardForScreen from "./GenericCardForScreens"
 
 const styles = () => ({
-  CursorOnRowClick: {
+  cursorOnRowClick: {
     cursor: "pointer",
   },
 })
@@ -35,6 +36,7 @@ const TableOrCardList = ({
   scrollContainerToTop,
   loading,
   classes,
+  cardTitle,
 }) => {
   const newData = React.useMemo(() => {
     const onFilterableValueColumns = fromPairs(
@@ -51,12 +53,13 @@ const TableOrCardList = ({
     return data.map(row => {
       const newRow = { ...row }
       map(onFilterableValueColumns, (getSearchText, accessor) => {
-        newRow[`${accessor}GlobalFilterableValue`] = getSearchText(row[accessor])
+        newRow[`${accessor}GlobalFilterableValue`] = getSearchText(
+          row[accessor]
+        )
       })
       return newRow
     })
   }, [data, tableColumns])
-
 
   const columns = React.useMemo(() => {
     return tableColumns.map(column => {
@@ -83,8 +86,7 @@ const TableOrCardList = ({
         .join(";")
       return { ...row, searchableText }
     })
-  }, [newData,searchableKeys])
-
+  }, [newData, searchableKeys])
 
   const visibleData = React.useMemo(() => {
     if (!globalSearch) {
@@ -178,18 +180,21 @@ const TableOrCardList = ({
         {headerGroups.map(headerGroup => (
           <TableRow {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map(column => {
-            
-            return(
-
-              <TableCell
-                {...column.getHeaderProps(column.getSortByToggleProps())}
-              >
-                {column.render("Header")}
-                <span>
-                  {column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""}
-                </span>
-              </TableCell>
-            )})}
+              return (
+                <TableCell
+                  {...column.getHeaderProps(column.getSortByToggleProps())}
+                >
+                  {column.render("Header")}
+                  <span>
+                    {column.isSorted
+                      ? column.isSortedDesc
+                        ? " 🔽"
+                        : " 🔼"
+                      : ""}
+                  </span>
+                </TableCell>
+              )
+            })}
           </TableRow>
         ))}
       </TableHead>
@@ -203,7 +208,7 @@ const TableOrCardList = ({
                 onRowClick ? () => onRowClick(row.original.id) : undefined
               }
               hover
-              className={classes.CursorOnRowClick}
+              className={classes.cursorOnRowClick}
             >
               {row.cells.map(cell => {
                 return (
@@ -219,21 +224,34 @@ const TableOrCardList = ({
     </Table>
   )
 
-
   const renderCards = () => {
-    return(
+    return (
       <React.Fragment>
-        {page.map((row, i) => (
-          <Box
-            onClick={onRowClick ? () => onRowClick(row.original.id) : undefined}
-            key={row.original.id}
-            className={classes.CursorOnRowClick}
-          >
-            {renderCard(row.original, i, row)}
-          </Box>
-      ))}
+        {page.map((row, i) => {
+          prepareRow(row)
+          return (
+            <Box
+              onClick={
+                onRowClick ? () => onRowClick(row.original.id) : undefined
+              }
+              key={row.original.id}
+              className={classes.cursorOnRowClick}
+            >
+              {renderCard ? (
+                renderCard(row.original, i, row)
+              ) : (
+                <GenericCardForScreen
+                  tableColumns={tableColumns}
+                  row={row}
+                  titleKey={cardTitle}
+                />
+              )}
+            </Box>
+          )
+        })}
       </React.Fragment>
-  )}
+    )
+  }
 
   const screenAboveSm = useMediaQuery(theme.breakpoints.up("sm"))
 

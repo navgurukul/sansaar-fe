@@ -5,7 +5,6 @@ import { bindActionCreators } from "redux"
 import { compose } from "recompose"
 import tableColumns from "./table"
 import TableOrCardList from "../../../../components/TableOrCardList"
-import RenderCards from "../../../../components/TableOrCardList/RenderCards"
 import { ngFetch } from "../../../../providers/NGFetch"
 import { selectors as layoutSelectors, setMainPaneScrollToTopPending, setMainPaneLoading } from '../../../../layouts/TwoColumn/store';
 import { setAllParameters, selectors as progressSelectors } from "../../store";
@@ -30,9 +29,6 @@ function ParametersList({
     fetchData()
   }, [actions])
 
-  const progressCard = (row, key) => (
-    <RenderCards row={row} tableColumns={tableColumns} key={key} />
-  )
 
   const parameters = React.useMemo(() => Object.values(allParameters), [
     allParameters,
@@ -52,7 +48,6 @@ function ParametersList({
         tableColumns={tableColumns}
         data={parameters}
         containerWidth={mainPaneWidth}
-        renderCard={progressCard}
         onRowClick={handleRowClick}
         scrollContainerToTop={() => actions.setMainPaneScrollToTopPending(true)}
       />

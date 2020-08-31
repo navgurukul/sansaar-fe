@@ -1,10 +1,5 @@
 import React from "react"
-import {
-  withStyles,
-  Typography,
-  Box,
-  Button,
-} from "@material-ui/core"
+import { withStyles, Typography, Box, Button } from "@material-ui/core"
 
 import history from "../providers/routing/app-history"
 import Spacer from "./Spacer"
@@ -30,9 +25,7 @@ const MainPaneWithTitle = ({ children, title, addBtnLink, theme, classes }) => {
       <Box>
         {addBtnLink ? (
           <Button variant="contained" color="primary" onClick={handleAddClick}>
-            Add 
-            {' '}
-            {title}
+            {`Add ${title}`}
           </Button>
         ) : (
           ""

@@ -1,11 +1,18 @@
-import moment from "moment";
-import {toTitleCase} from '../../../helpers';
+import moment from "moment"
+import {toTitleCase} from '../../../../helpers';
 
 const tableColumns = [
   {
+    Header: "Code",
+    accessor: "code",
+    priority: 1,
+    minWidth: 200,
+    search: true,
+  },
+  {
     Header: "Name",
     accessor: "name",
-    priority: 1,
+    priority: 2,
     minWidth: 200,
     search: true,
     Cell :({value}) => {
@@ -15,20 +22,19 @@ const tableColumns = [
   {
     Header: "Description",
     accessor: "description",
-    priority: 2,
+    priority: 3,
     minWidth: 200,
   },
   {
     Header: "Created At",
     accessor: "created_at",
-    priority: 3,
+    priority: 4,
     minWidth: 200,
     // search: true,
     Cell: ({ value }) => {
       return moment(value).fromNow()
     },
     disableFilters: true,
-    getSearchText: (value) => moment(value).fromNow()
   },
 ]
 

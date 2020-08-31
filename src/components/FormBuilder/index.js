@@ -30,7 +30,7 @@ const  FormBuilder = ({
   fullWidth = true,
   fullWidthSubmitBtn = true,
   submitBtnDisabled,
-  selectedType,
+  fieldsNeedToBeWatch,
 }) => {
 
   const validationSchema = React.useMemo(() => {
@@ -62,16 +62,18 @@ const  FormBuilder = ({
     },
   })
 
-
-
+  
+  const functionToWatchFields = React.useMemo(() => {
+    const keys = Object.keys(fieldsNeedToBeWatch)
+    return keys.map(key => {
+      return watch(key) && fieldsNeedToBeWatch[key](watch(key))
+    })
+  }, [fieldsNeedToBeWatch,watch])
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       {structure.map((field) => {
         const FieldComponent = COMPONENTS[field.type];
-        if (field.name === 'type') {
-          selectedType(watch('type'))
-        }
         return (
           <React.Fragment key={field.name}>
             <FieldComponent

@@ -1,15 +1,15 @@
 import React from 'react';
 import TwoColumnLayout from '../../layouts/TwoColumn';
-import PathwaysList from './PathwaysList';
-import PathwayEdit from './Edit/Pathway';
-import PathwayAdd from './Add/Pathway';
-import MilestonesList from './MilestonesList';
-import MilestoneEdit from './Edit/Milestone';
-import MilestoneAdd from './Add/Milestone';
-import CoursesList from './CoursesList';
+import PathwaysList from './Pathways/List';
+import PathwayEdit from './Pathways/Edit';
+import PathwayAdd from './Pathways/Add/Pathway';
+import MilestonesList from './Milestones/List';
+import MilestoneEdit from './Milestones/Edit';
+import MilestoneAdd from './Milestones/Add/Milestone';
+import CoursesList from './Courses/List';
 import MentorShipTree from './MentoShipTree/MentorShipTree'
-import CourseAdd from './Add/Course';
-import CourseEdit from './Edit/Course';
+import CourseAdd from './Courses/Add/Course';
+import CourseEdit from './Courses/Edit';
 
 const PathwaysSection = () => {
   const mainPaneRoutes = [
@@ -71,7 +71,7 @@ const PathwaysSection = () => {
       key: 'COURSE_ADD'
     },
     {
-      path: '/pathways/:pathwayId/courses/:PathwayCourseId/edit',
+      path: '/pathways/:pathwayId/courses/:pathwayCourseId/edit',
       exact: true,
       component: CourseEdit,
       key: 'COURSE_EDIT'

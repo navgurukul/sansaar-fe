@@ -8,7 +8,7 @@ import { withTheme } from '@material-ui/core';
 import { selectors, setMilestoneToView, addOrEditMilestone } from '../../store';
 import { selectors as layoutSelectors, setRightPaneLoading } from '../../../../layouts/TwoColumn/store';
 import { ngFetch } from '../../../../providers/NGFetch';
-import { getMilestoneEditFormStructure } from '../../forms/milestone';
+import { getMilestoneEditFormStructure } from '../form/milestone';
 import FormBuilder from '../../../../components/FormBuilder';
 import Spacer from '../../../../components/Spacer';
 import RightPaneWithTitle from '../../../../components/RightPaneWithTitle';
@@ -20,25 +20,21 @@ const MilestoneEdit = ({ rightPaneLoading, actions, match, theme }) => {
   const { enqueueSnackbar } = useSnackbar();
  
   const [milestone, setMilestone] = React.useState(null);
+  const [allMilestones, setAllMilestones] = React.useState(null);
   useEffect(() => {
     const fetchData = async () => {
       actions.setRightPaneLoading(true);
-      const response = await ngFetch(`/pathways/${pathwayId}/milestones/${milestoneId}`);
-      actions.setMilestoneToView(response.milestone);
-      setMilestone(response.milestone);
+      const responseOfMilestoneOpened = await ngFetch(`/pathways/${pathwayId}/milestones/${milestoneId}`);
+      actions.setMilestoneToView(responseOfMilestoneOpened.milestone);
+      setMilestone(responseOfMilestoneOpened.milestone);
+      const responseOfPathwayMistones = await ngFetch(`/pathways/${pathwayId}/milestones`);
+      setAllMilestones(responseOfPathwayMistones.milestones);
       actions.setRightPaneLoading(false);
     }
     fetchData();
   }, [milestoneId,pathwayId,actions]);
 
-  const [allmilestones, setallmilestones] = React.useState(null);
-  useEffect(() => {
-    const fetchallmilestones = async () => {
-      const response = await ngFetch(`/pathways/${pathwayId}/milestones`);
-      setallmilestones(response.milestones);
-    }
-    fetchallmilestones();
-  }, [pathwayId]);
+ 
 
   const [submitBtnDisabled, setSubmitBtnDisabled] = React.useState(false);
   const onSubmit = async (data) => {
@@ -61,7 +57,7 @@ const MilestoneEdit = ({ rightPaneLoading, actions, match, theme }) => {
 
   return (
     <RightPaneWithTitle title="Edit Milestone" closeLink={`/pathways/${pathwayId}/milestones`}>
-      <FormBuilder structure={getMilestoneEditFormStructure(milestone,allmilestones)} onSubmit={onSubmit} initialValues={milestone} submitBtnDisabled={submitBtnDisabled} />
+      <FormBuilder structure={getMilestoneEditFormStructure(milestone,allMilestones)} onSubmit={onSubmit} initialValues={milestone} submitBtnDisabled={submitBtnDisabled} />
       <Spacer height={theme.spacing(2)} />
     </RightPaneWithTitle>
   );

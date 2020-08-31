@@ -4,18 +4,17 @@ import { connect } from "react-redux"
 import { bindActionCreators } from "redux"
 import { compose } from "recompose"
 import { withRouter } from 'react-router';
-import TableOrCardList from "../../../components/TableOrCardList"
-import RenderCards from "../../../components/TableOrCardList/RenderCards";
-import { ngFetch } from "../../../providers/NGFetch";
+import TableOrCardList from "../../../../components/TableOrCardList"
+import { ngFetch } from "../../../../providers/NGFetch";
 import tableColumns from "./table"
-import history from "../../../providers/routing/app-history"
+import history from "../../../../providers/routing/app-history"
 import {
   selectors as layoutSelectors,
   setMainPaneScrollToTopPending,
   setMainPaneLoading,
-} from "../../../layouts/TwoColumn/store"
-import { setAllCourses, selectors as userSelectors } from "../store";
-import MainPaneWithTitle from '../../../components/MainPaneWithTitle';
+} from "../../../../layouts/TwoColumn/store"
+import { setAllCourses, selectors as userSelectors } from "../../store";
+import MainPaneWithTitle from '../../../../components/MainPaneWithTitle';
 
 function CoursesList({
   match,
@@ -37,16 +36,13 @@ function CoursesList({
     fetchData()
   }, [actions,pathwayId],match.path)
 
-  const CoursesCard = (row, key) => (
-    <RenderCards row={row} key={key} titleKey={row.id} tableColumns={tableColumns} />
-  )
 
   const courses = React.useMemo(() => Object.values(allCourses), [
     allCourses,
   ])
 
-  const handleRowClick = PathwayCourseId => {
-    history.push(`/pathways/${pathwayId}/courses/${PathwayCourseId}/edit`)
+  const handleRowClick = pathwayCourseId => {
+    history.push(`/pathways/${pathwayId}/courses/${pathwayCourseId}/edit`)
   }
 
 
@@ -58,9 +54,9 @@ function CoursesList({
         tableColumns={tableColumns}
         data={courses}
         containerWidth={mainPaneWidth}
-        renderCard={CoursesCard}
         onRowClick={handleRowClick}
         scrollContainerToTop={() => actions.setMainPaneScrollToTopPending(true)}
+        cardTitle='name'
       />
     </MainPaneWithTitle>
 

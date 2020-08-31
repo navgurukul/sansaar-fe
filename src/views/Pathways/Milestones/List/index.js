@@ -4,18 +4,17 @@ import { connect } from "react-redux"
 import { bindActionCreators } from "redux"
 import { compose } from "recompose"
 import { withRouter } from 'react-router';
-import TableOrCardList from "../../../components/TableOrCardList"
-import RenderCards from "../../../components/TableOrCardList/RenderCards";
-import { ngFetch } from "../../../providers/NGFetch";
+import TableOrCardList from "../../../../components/TableOrCardList"
+import { ngFetch } from "../../../../providers/NGFetch";
 import tableColumns from "./table"
-import history from "../../../providers/routing/app-history"
+import history from "../../../../providers/routing/app-history"
 import {
   selectors as layoutSelectors,
   setMainPaneScrollToTopPending,
   setMainPaneLoading,
-} from "../../../layouts/TwoColumn/store"
-import { setAllMilestones, selectors as userSelectors } from "../store";
-import MainPaneWithTitle from '../../../components/MainPaneWithTitle';
+} from "../../../../layouts/TwoColumn/store"
+import { setAllMilestones, selectors as userSelectors } from "../../store";
+import MainPaneWithTitle from '../../../../components/MainPaneWithTitle';
 
 function MilestonesList({
   match,
@@ -37,9 +36,6 @@ function MilestonesList({
     fetchData()
   }, [actions,pathwayId],match.path)
 
-  const MileStoneCard = (row, key) => (
-    <RenderCards row={row} key={key} titleKey={row.id} tableColumns={tableColumns} />
-  )
 
   const milestones = React.useMemo(() => Object.values(allMilestones), [
     allMilestones,
@@ -57,9 +53,9 @@ function MilestonesList({
         tableColumns={tableColumns}
         data={milestones}
         containerWidth={mainPaneWidth}
-        renderCard={MileStoneCard}
         onRowClick={handleRowClick}
         scrollContainerToTop={() => actions.setMainPaneScrollToTopPending(true)}
+        cardTitle='name'
       />
     </MainPaneWithTitle>
   )

@@ -3,7 +3,7 @@ import { Controller } from "react-hook-form"
 import { Switch, FormLabel, FormControl } from "@material-ui/core"
 
 
-const NGSlider = ({ control, field, errors }) => {
+const NGSwitch = ({ control, field, errors }) => {
   return (
     <FormControl error={Boolean(errors[field.name])} style={{ width: 200 }}>
       <FormLabel component="legend">{field.name}</FormLabel>
@@ -22,4 +22,4 @@ const NGSlider = ({ control, field, errors }) => {
   )
 }
 
-export default NGSlider
+export default NGSwitch

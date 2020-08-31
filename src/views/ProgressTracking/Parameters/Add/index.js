@@ -28,13 +28,18 @@ const ParamterAdd = ({ actions }) => {
   };
 
   const selectedType = (v) => {
+    console.log(v, 'typetype')
     setType(v)
   }
+
+
   const parameter =''
-  
+  const fieldsNeedToBeWatch ={
+    type:selectedType,
+  }
   return (
     <RightPaneWithTitle title="Add Parameter" closeLink="/progressTracking/parameters">
-      <FormBuilder structure={getParameterAddFormStructure(parameter,type)} onSubmit={onSubmit} submitBtnDisabled={submitBtnDisabled} selectedType={selectedType} />
+      <FormBuilder structure={getParameterAddFormStructure(parameter,type)} onSubmit={onSubmit} submitBtnDisabled={submitBtnDisabled} fieldsNeedToBeWatch={fieldsNeedToBeWatch} />
     </RightPaneWithTitle>
   );
 };

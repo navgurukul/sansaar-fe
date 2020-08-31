@@ -9,7 +9,7 @@ import {find} from 'lodash';
 import { selectors, setCourseToView, addOrEditCourse } from '../../store';
 import { selectors as layoutSelectors, setRightPaneLoading } from '../../../../layouts/TwoColumn/store';
 import { ngFetch } from '../../../../providers/NGFetch';
-import { getCourseEditFormStructure } from '../../forms/course';
+import { getCourseEditFormStructure } from '../form/course';
 import FormBuilder from '../../../../components/FormBuilder';
 import Spacer from '../../../../components/Spacer';
 import RightPaneWithTitle from '../../../../components/RightPaneWithTitle';
@@ -17,51 +17,34 @@ import history from '../../../../providers/routing/app-history';
 
 const PathwayCourseEdit = ({ rightPaneLoading, actions, match, theme }) => {
 
-  const { PathwayCourseId, pathwayId } = match.params;
+  const { pathwayCourseId, pathwayId } = match.params;
   const { enqueueSnackbar } = useSnackbar();
- 
 
-  const [CoursesAlreadyPresent, setCoursesAlreadyPresent] = React.useState(null);
-  useEffect(() => {
-    const fetchallCourses = async () => {
-      actions.setRightPaneLoading(true);
-      const response = await ngFetch(`/pathways/${pathwayId}/courses`);
-      setCoursesAlreadyPresent(response);
-      actions.setRightPaneLoading(false);
-    }
-    fetchallCourses();
-  }, [actions,pathwayId]);
+  const [coursesAlreadyPresent, setCoursesAlreadyPresent] = React.useState(null);
 
-
+  const [allCourses, setAllCourses] = React.useState(null);
   const [course, setCourse] = React.useState(null);
-  useEffect(() => {
-    const fetchData = async () => {
-      actions.setRightPaneLoading(true);
-      const response = await ngFetch(`/pathways/${pathwayId}/courses/${PathwayCourseId}`);
-      actions.setCourseToView(response.pathwayCourse);
-      setCourse(response.pathwayCourse);
-      actions.setRightPaneLoading(false);
-    }
-    fetchData();
-  }, [PathwayCourseId,pathwayId,actions]);
 
-  const [allCourses, setallCourses] = React.useState(null);
   useEffect(() => {
     const fetchallCourses = async () => {
       actions.setRightPaneLoading(true);
-      const response = await ngFetch(`/courses`);
-      setallCourses(response.availableCourses);
+      const responseOfCourses = await ngFetch(`/courses`);
+      setAllCourses(responseOfCourses.availableCourses);
+      const responseOfPathwayCourses = await ngFetch(`/pathways/${pathwayId}/courses`);
+      setCoursesAlreadyPresent(responseOfPathwayCourses);
+      const responseOfOpenedCourse = await ngFetch(`/pathways/${pathwayId}/courses/${pathwayCourseId}`);
+      setCourse(responseOfOpenedCourse.pathwayCourse)
       actions.setRightPaneLoading(false);
     }
     fetchallCourses();
-  }, [actions]);
+  }, [actions,pathwayId,pathwayCourseId]);
+
 
   const [submitBtnDisabled, setSubmitBtnDisabled] = React.useState(false);
   const onSubmit = async (data) => {
-    // setSubmitBtnDisabled(true);
-    {find(CoursesAlreadyPresent,{course_id: parseInt(data.course_id, 10) }) && enqueueSnackbar('Course is already there.', { variant: 'failed' }) } 
+    {find(coursesAlreadyPresent,{course_id: parseInt(data.course_id, 10) }) && enqueueSnackbar('Course is already there.', { variant: 'failed' }) } 
     delete data.createdAt
-    const response = await ngFetch(`/pathways/${pathwayId}/courses/${PathwayCourseId}`, {
+    const response = await ngFetch(`/pathways/${pathwayId}/courses/${pathwayCourseId}`, {
       method: 'PUT',
       body: data,
     });

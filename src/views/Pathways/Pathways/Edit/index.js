@@ -8,7 +8,7 @@ import { withTheme, Button,Typography } from '@material-ui/core';
 import { selectors, setPathwayToView, addOrEditPathway } from '../../store';
 import { selectors as layoutSelectors, setRightPaneLoading } from '../../../../layouts/TwoColumn/store';
 import { ngFetch } from '../../../../providers/NGFetch';
-import { getPathwayEditFormStructure } from '../../forms/pathway';
+import { getPathwayEditFormStructure } from '../form/pathway';
 import FormBuilder from '../../../../components/FormBuilder';
 import Spacer from '../../../../components/Spacer';
 import RightPaneWithTitle from '../../../../components/RightPaneWithTitle';
@@ -62,7 +62,7 @@ const PathwayEdit = ({ rightPaneLoading, actions, match, theme }) => {
       <Spacer height={theme.spacing(2)} />
       <Typography variant="h5">Mentorship Tree</Typography>
       <Spacer height={theme.spacing(1)} />
-      <Button fullWidth variant="contained" disableElevation color="primary" onClick={() => ViewMentorTree()}>View MentorTree</Button>
+      <Button fullWidth variant="contained" disableElevation color="primary" onClick={() => ViewMentorTree()}>View Mentor Tree</Button>
       <Courses pathway={pathway} />
       <Milestones pathway={pathway} />
     </RightPaneWithTitle>

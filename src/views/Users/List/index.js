@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 import { compose } from 'recompose';
 import tableColumns from './table';
 import TableOrCardList from '../../../components/TableOrCardList';
-import RenderCards from '../../../components/TableOrCardList/RenderCards';
 import { ngFetch } from '../../../providers/NGFetch';
 import { selectors as layoutSelectors, setMainPaneScrollToTopPending, setMainPaneLoading } from '../../../layouts/TwoColumn/store';
 import { setAllUsers, selectors as userSelectors } from '../store';
@@ -25,9 +24,6 @@ function UserList({ mainPaneWidth, actions, allUsers, mainPaneLoading }) {
     fetchData();
   }, [actions]);
 
-  const userCard = (row, key) => (
-    <RenderCards row={row} tableColumns={tableColumns} key={key} />
-  )
 
   const users = React.useMemo(() => Object.values(allUsers), [allUsers]);
 
@@ -43,9 +39,9 @@ function UserList({ mainPaneWidth, actions, allUsers, mainPaneLoading }) {
         tableColumns={tableColumns}
         data={users}
         containerWidth={mainPaneWidth}
-        renderCard={userCard}
         onRowClick={handleRowClick}
         scrollContainerToTop={() => actions.setMainPaneScrollToTopPending(true)}
+        cardTitle='name'
       />
     </MainPaneWithTitle>
   )

@@ -55,9 +55,12 @@ const PathwayEdit = ({ rightPaneLoading, actions, match, theme }) => {
   const selectedType = (v) => {
     setType(v)
   }
+  const fieldsNeedToBeWatch ={
+    type:selectedType,
+  }
   return (
     <RightPaneWithTitle title="Edit Parameter" closeLink="/progressTracking/parameters/">
-      <FormBuilder structure={getParameterEditFormStructure(parameter,type)} onSubmit={onSubmit} initialValues={parameter} submitBtnDisabled={submitBtnDisabled} selectedType={selectedType} />
+      <FormBuilder structure={getParameterEditFormStructure(parameter,type)} onSubmit={onSubmit} initialValues={parameter} submitBtnDisabled={submitBtnDisabled} fieldsNeedToBeWatch={fieldsNeedToBeWatch} />
       <Spacer height={theme.spacing(2)} />
     </RightPaneWithTitle>
   );

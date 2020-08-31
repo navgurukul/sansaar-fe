@@ -85,7 +85,6 @@ const UserRoleOrPathwayChips = ({
         method: "DELETE",
         body: { rolesList: [role] },
       })
-      console.log(rolesList.filter(r => r !== role), 'kuma')
       setUserRolesList({ rolesList: rolesList.filter(r => r !== role), userId })
       if (currentUser.id === userId) refreshUserDetails()
     }

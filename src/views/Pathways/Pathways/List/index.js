@@ -4,18 +4,17 @@ import { connect } from "react-redux"
 import { bindActionCreators } from "redux"
 import { compose } from "recompose"
 import { withRouter } from 'react-router';
-import TableOrCardList from "../../../components/TableOrCardList"
-import { ngFetch } from "../../../providers/NGFetch"
+import TableOrCardList from "../../../../components/TableOrCardList"
+import { ngFetch } from "../../../../providers/NGFetch"
 import tableColumns from "./table"
-import history from "../../../providers/routing/app-history"
+import history from "../../../../providers/routing/app-history"
 import {
   selectors as layoutSelectors,
   setMainPaneScrollToTopPending,
   setMainPaneLoading,
-} from "../../../layouts/TwoColumn/store"
-import { setAllPathways, selectors as userSelectors } from "../store"
-import MainPaneWithTitle from '../../../components/MainPaneWithTitle';
-import RenderCards from "../../../components/TableOrCardList/RenderCards";
+} from "../../../../layouts/TwoColumn/store"
+import { setAllPathways, selectors as userSelectors } from "../../store"
+import MainPaneWithTitle from '../../../../components/MainPaneWithTitle';
 
 
 function PathwaysList({ mainPaneWidth, actions, allPathways,mainPaneLoading }) {
@@ -29,11 +28,6 @@ function PathwaysList({ mainPaneWidth, actions, allPathways,mainPaneLoading }) {
     fetchData()
   }, [actions])
 
-  const pathwayCard = (row, key) => {
-    return(
-      <RenderCards row={row} key={key} titleKey={row.id} tableColumns={tableColumns} />
-    )
-  }
   
   
 
@@ -53,9 +47,9 @@ function PathwaysList({ mainPaneWidth, actions, allPathways,mainPaneLoading }) {
         tableColumns={tableColumns}
         data={pathways}
         containerWidth={mainPaneWidth}
-        renderCard={pathwayCard}
         onRowClick={handleRowClick}
         scrollContainerToTop={() => actions.setMainPaneScrollToTopPending(true)}
+        cardTitle='code'
       />
     </MainPaneWithTitle>
   )
