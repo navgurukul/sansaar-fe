@@ -64,7 +64,10 @@ const  FormBuilder = ({
 
   
   const functionToWatchFields = React.useMemo(() => {
-    const keys = Object.keys(fieldsNeedToBeWatch)
+    if (!fieldsNeedToBeWatch){
+      return null
+    }
+    const keys = fieldsNeedToBeWatch ? Object.keys(fieldsNeedToBeWatch) : ''
     return keys.map(key => {
       return watch(key) && fieldsNeedToBeWatch[key](watch(key))
     })
