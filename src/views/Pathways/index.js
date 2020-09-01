@@ -2,13 +2,13 @@ import React from 'react';
 import TwoColumnLayout from '../../layouts/TwoColumn';
 import PathwaysList from './Pathways/List';
 import PathwayEdit from './Pathways/Edit';
-import PathwayAdd from './Pathways/Add/Pathway';
+import PathwayAdd from './Pathways/Add';
 import MilestonesList from './Milestones/List';
 import MilestoneEdit from './Milestones/Edit';
-import MilestoneAdd from './Milestones/Add/Milestone';
+import MilestoneAdd from './Milestones/Add';
 import CoursesList from './Courses/List';
-import MentorShipTree from './MentoShipTree/MentorShipTree'
-import CourseAdd from './Courses/Add/Course';
+import MentorshipTree from './MentoshipTree'
+import CourseAdd from './Courses/Add';
 import CourseEdit from './Courses/Edit';
 
 const PathwaysSection = () => {
@@ -29,7 +29,7 @@ const PathwaysSection = () => {
       path: '/pathways/:pathwayId/mentorTree',
       auth: true,
       key: 'MENTORSHIP_TREE_SECTION',
-      component: MentorShipTree,
+      component: MentorshipTree,
     },  
     {
       path: '/pathways',

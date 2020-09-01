@@ -19,10 +19,10 @@ import { fromPairs, map, isEmpty, difference } from "lodash"
 
 import AllFilters, { FILTER_COMPONENTS, FILTER_TYPES } from "./filters"
 import Spacer from "../Spacer"
-import GenericCardForScreen from "./GenericCardForScreens"
+import GenericCard from "./GenericCard"
 
 const styles = () => ({
-  cursorOnRowClick: {
+  tableRow: {
     cursor: "pointer",
   },
 })
@@ -208,7 +208,7 @@ const TableOrCardList = ({
                 onRowClick ? () => onRowClick(row.original.id) : undefined
               }
               hover
-              className={classes.cursorOnRowClick}
+              className={classes.tableRow}
             >
               {row.cells.map(cell => {
                 return (
@@ -232,15 +232,15 @@ const TableOrCardList = ({
           return (
             <Box
               onClick={
-                onRowClick ? () => onRowClick(row.original.id) : undefined
+                onRowClick && (() => onRowClick(row.original.id)) 
               }
               key={row.original.id}
-              className={classes.cursorOnRowClick}
+              className={classes.tableRow}
             >
               {renderCard ? (
                 renderCard(row.original, i, row)
               ) : (
-                <GenericCardForScreen
+                <GenericCard
                   tableColumns={tableColumns}
                   row={row}
                   titleKey={cardTitle}

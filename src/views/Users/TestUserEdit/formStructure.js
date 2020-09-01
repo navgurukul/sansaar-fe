@@ -9,7 +9,6 @@ const FormData = [
       .required("Required")
       .max(15, "Must be 15 characters or less"),
     customProps: {
-      variant: "outlined",
       id: "name",
       defaultValue: "default Name",
       placeholder: "Enter a name",
@@ -25,7 +24,6 @@ const FormData = [
       .email("Invalid email address")
       .required("Required"),
     customProps: {
-      variant: "outlined",
       id: "email",
       defaultValue: "default@navgurukul.org",
       placeholder: "kumar19@navgurukul.org",

@@ -30,14 +30,13 @@ export const getParameterAddFormStructure = (parameter,type) => {
       type: "select",
       validation: yup
         .string()
-        .oneOf(["boolean", "range"], "please select one")
+        .oneOf(["boolean", "range"], "Please select one")
         .required("Required"),
       options: [
         { name: "boolean", value: "Boolean" },
         { name: "range", value: "Range" },
       ],
       customProps: {
-        variant: "outlined",
         id: "",
         label: "select a type",
         defaultValue: "",

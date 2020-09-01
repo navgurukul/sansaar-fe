@@ -10,9 +10,7 @@ import {
 } from "@material-ui/core"
 import Autocomplete from "@material-ui/lab/Autocomplete"
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
-import Avatar from "@material-ui/core/Avatar"
 import IconButton from "@material-ui/core/IconButton"
-import PersonIcon from "@material-ui/icons/Person"
 import DeleteIcon from "@material-ui/icons/Delete"
 import { connect } from "react-redux"
 import { bindActionCreators, compose } from "redux"
@@ -25,19 +23,8 @@ import {
 } from "../store"
 import Spacer from "../../../components/Spacer"
 import { ngFetch } from "../../../providers/NGFetch"
+import UserAvatar from '../components/UserCard/UserAvatar';
 
-const styles = theme => ({
-    chipContainer: {
-      "& > *": {
-        margin: theme.spacing(0.5),
-      },
-    },
-    chip: {
-      "&:nth-child(1)": {
-        marginLeft: 0,
-      },
-    },
-  })
 const MenteesList = ({ actions, allMentees, pathwayId, user, theme ,allUsers }) => {
   useEffect(() => {
     const fetchData = async () => {
@@ -62,13 +49,13 @@ const MenteesList = ({ actions, allMentees, pathwayId, user, theme ,allUsers }) 
   }, [actions,pathwayId,allMentees]);
 
 
-  const StudentsAlreadyInTree=[]
+  const studentsAlreadyInTree=[]
 
   const Students =(tree) =>{
-    tree ? tree.map((each) =>{ StudentsAlreadyInTree.push(each);each.mentees.length===0?'':Students(each.mentees)}) :''
+    tree ? tree.map((each) =>{ studentsAlreadyInTree.push(each);each.mentees.length===0?'':Students(each.mentees)}) :''
   }
 
-  const IdsInTree = Students(tree)
+  const idsInTree = Students(tree)
 
 
   const handleAddMentees = async value => {
@@ -85,24 +72,24 @@ const MenteesList = ({ actions, allMentees, pathwayId, user, theme ,allUsers }) 
 
   const mentees = React.useMemo(() => Object.values(allMentees), [allMentees])
 
-  const Users = React.useMemo(() => Object.values(allUsers), [allUsers])
-  const UserswithSamePathway = []
+  const users = React.useMemo(() => Object.values(allUsers), [allUsers])
+  const usersWithSamePathway = []
 
     const newData = React.useMemo(() => {
-    const Data=
-    Users && pathwayId
-      ? Users.map(eachuser =>
+    const data=
+    users && pathwayId
+      ? users.map(eachuser =>
           eachuser.pathways.length && eachuser.id !== user.id
             ? eachuser.pathways.map(eachPathway =>
                 eachPathway.id === pathwayId
-                  ? UserswithSamePathway.push(eachuser)
+                  ? usersWithSamePathway.push(eachuser)
                   : ""
               )
             : ""
         )
       : ""
       
-    }, [Users,pathwayId,UserswithSamePathway,user.id])
+    }, [users,pathwayId,usersWithSamePathway,user.id])
 
 
 
@@ -128,9 +115,7 @@ const MenteesList = ({ actions, allMentees, pathwayId, user, theme ,allUsers }) 
           ? mentees.map(eachMentee => (
             <ListItem key={eachMentee.id}>
               <ListItemAvatar>
-                <Avatar>
-                  <PersonIcon />
-                </Avatar>
+                <UserAvatar name={eachMentee.name} profilePicture={eachMentee.profile_picture} />
               </ListItemAvatar>
               <ListItemText primary={eachMentee.name} />
               <ListItemSecondaryAction onClick={() => handleDeleteMentee(eachMentee)}>
@@ -150,7 +135,7 @@ const MenteesList = ({ actions, allMentees, pathwayId, user, theme ,allUsers }) 
               setValue([newValue])
             }}
         id="multiple-limit-tags"
-        options={pullAllBy(UserswithSamePathway,StudentsAlreadyInTree, "id")}
+        options={pullAllBy(usersWithSamePathway,studentsAlreadyInTree, "id")}
         noOptionsText=' No students are there'
         getOptionLabel={option => option.name}
         renderInput={params => (
@@ -190,5 +175,5 @@ const mapDispatchToProps = dispatch => ({
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  withStyles(styles,{ withTheme: true })
+  withStyles({ withTheme: true })
 )(MenteesList)

@@ -3,9 +3,9 @@ import { Controller } from "react-hook-form"
 import { Slider, FormLabel, FormControl } from "@material-ui/core"
 
 
-const NGSlider = ({ control, field, errors }) => {
+const NGSlider = ({ control, field, errors,fullWidth }) => {
   return (
-    <FormControl error={Boolean(errors[field.name])} style={{ width: 200 }}>
+    <FormControl error={Boolean(errors[field.name])} fullWidth={fullWidth}>
       <FormLabel component="legend">{field.name}</FormLabel>
       <Controller
         name={field.name}

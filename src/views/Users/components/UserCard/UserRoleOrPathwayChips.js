@@ -32,6 +32,9 @@ const styles = theme => ({
       marginLeft: 0,
     },
   },
+  formControl:{
+    width:"100%"
+  }
 })
 
 const getEditableRoles = currentRoles => {
@@ -135,7 +138,7 @@ const UserRoleOrPathwayChips = ({
                 <DialogContentText>
                   Select the roles you want to add to the selected user here.
                 </DialogContentText>
-                <FormControl variant="outlined" style={{ width: "100%" }}>
+                <FormControl variant="outlined" className={classes.formControl}>
                   <InputLabel id="new-roles-label">Select Roles</InputLabel>
                   <Select
                     labelId="new-roles-label"
@@ -232,7 +235,7 @@ const UserRoleOrPathwayChips = ({
                 <DialogContentText>
                   Select the Pathways you want to add to the selected user here.
                 </DialogContentText>
-                <FormControl variant="outlined" style={{ width: "100%" }}>
+                <FormControl variant="outlined" className={classes.formControl}>
                   <InputLabel id="new-roles-label">Select Pathways</InputLabel>
                   <Select
                     labelId="new-pathways-label"

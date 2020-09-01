@@ -4,13 +4,13 @@ import { withRouter } from 'react-router';
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { compose } from 'recompose';
-import { addOrEditParameter } from '../../store';
-import { selectors as layoutSelectors, setRightPaneLoading } from '../../../../layouts/TwoColumn/store';
-import RightPaneWithTitle from '../../../../components/RightPaneWithTitle';
-import FormBuilder from '../../../../components/FormBuilder';
-import history from '../../../../providers/routing/app-history';
-import { getParameterAddFormStructure } from '../form';
-import { ngFetch } from '../../../../providers/NGFetch';
+import { addOrEditParameter } from '../store';
+import { selectors as layoutSelectors, setRightPaneLoading } from '../../../layouts/TwoColumn/store';
+import RightPaneWithTitle from '../../../components/RightPaneWithTitle';
+import FormBuilder from '../../../components/FormBuilder';
+import history from '../../../providers/routing/app-history';
+import { getParameterAddFormStructure } from './form';
+import { ngFetch } from '../../../providers/NGFetch';
 
 
 const ParamterAdd = ({ actions }) => {
@@ -28,18 +28,17 @@ const ParamterAdd = ({ actions }) => {
   };
 
   const selectedType = (v) => {
-    console.log(v, 'typetype')
     setType(v)
   }
 
 
   const parameter =''
-  const fieldsNeedToBeWatch ={
+  const fieldsToWatch ={
     type:selectedType,
   }
   return (
     <RightPaneWithTitle title="Add Parameter" closeLink="/progressTracking/parameters">
-      <FormBuilder structure={getParameterAddFormStructure(parameter,type)} onSubmit={onSubmit} submitBtnDisabled={submitBtnDisabled} fieldsNeedToBeWatch={fieldsNeedToBeWatch} />
+      <FormBuilder structure={getParameterAddFormStructure(parameter,type)} onSubmit={onSubmit} submitBtnDisabled={submitBtnDisabled} fieldsToWatch={fieldsToWatch} />
     </RightPaneWithTitle>
   );
 };

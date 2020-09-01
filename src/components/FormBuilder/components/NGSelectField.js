@@ -18,9 +18,7 @@ const SelectField = ({
     <section key={field.name}>
       <FormControl
         error={Boolean(errors[field.name])}
-        variant={
-          field.customProps.variant ? field.customProps.variant : "standard"
-        }
+        variant="outlined"
         fullWidth={fullWidth}
       >
         <InputLabel>

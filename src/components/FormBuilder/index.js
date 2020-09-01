@@ -30,7 +30,7 @@ const  FormBuilder = ({
   fullWidth = true,
   fullWidthSubmitBtn = true,
   submitBtnDisabled,
-  fieldsNeedToBeWatch,
+  fieldsToWatch,
 }) => {
 
   const validationSchema = React.useMemo(() => {
@@ -63,15 +63,15 @@ const  FormBuilder = ({
   })
 
   
-  const functionToWatchFields = React.useMemo(() => {
-    if (!fieldsNeedToBeWatch){
+   const functionToWatchFields = React.useMemo(() => {
+    if (!fieldsToWatch){
       return null
     }
-    const keys = fieldsNeedToBeWatch ? Object.keys(fieldsNeedToBeWatch) : ''
+    const keys = Object.keys(fieldsToWatch)
     return keys.map(key => {
-      return watch(key) && fieldsNeedToBeWatch[key](watch(key))
+      return watch(key) && fieldsToWatch[key](watch(key))
     })
-  }, [fieldsNeedToBeWatch,watch])
+  }, [fieldsToWatch,watch])
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

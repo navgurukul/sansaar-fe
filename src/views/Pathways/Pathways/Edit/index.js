@@ -4,16 +4,17 @@ import { withRouter } from 'react-router';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { useSnackbar } from 'notistack';
-import { withTheme, Button,Typography } from '@material-ui/core';
+import { withTheme} from '@material-ui/core';
 import { selectors, setPathwayToView, addOrEditPathway } from '../../store';
 import { selectors as layoutSelectors, setRightPaneLoading } from '../../../../layouts/TwoColumn/store';
 import { ngFetch } from '../../../../providers/NGFetch';
-import { getPathwayEditFormStructure } from '../form/pathway';
+import { getPathwayEditFormStructure } from '../form';
 import FormBuilder from '../../../../components/FormBuilder';
 import Spacer from '../../../../components/Spacer';
 import RightPaneWithTitle from '../../../../components/RightPaneWithTitle';
 import Milestones from './Milestones';
-import history from '../../../../providers/routing/app-history';
+// import history from '../../../../providers/routing/app-history';
+import MentorshipTree from './MentorshipTree';
 import Courses from './Courses';
 
 const PathwayEdit = ({ rightPaneLoading, actions, match, theme }) => {
@@ -41,7 +42,7 @@ const PathwayEdit = ({ rightPaneLoading, actions, match, theme }) => {
       method: 'PUT',
       body: data,
     });
-    actions.addOrEditPathway({pathway: response.pathway, pathwayId:response.id})
+    actions.addOrEditPathway({pathway: response.pathway, pathwayId})
     setPathway(response.pathway);
     enqueueSnackbar("Pathway details saved.", { variant: 'success' });
     setSubmitBtnDisabled(false);
@@ -51,18 +52,12 @@ const PathwayEdit = ({ rightPaneLoading, actions, match, theme }) => {
     return <React.Fragment />
   }
 
-  const ViewMentorTree =() =>{
-    history.push(`/pathways/${pathwayId}/mentorTree`)
-  }
-
 
   return (
     <RightPaneWithTitle title="Edit Pathway" closeLink="/pathways">
       <FormBuilder structure={getPathwayEditFormStructure(pathway)} onSubmit={onSubmit} initialValues={pathway} submitBtnDisabled={submitBtnDisabled} />
-      <Spacer height={theme.spacing(2)} />
-      <Typography variant="h5">Mentorship Tree</Typography>
       <Spacer height={theme.spacing(1)} />
-      <Button fullWidth variant="contained" disableElevation color="primary" onClick={() => ViewMentorTree()}>View Mentor Tree</Button>
+      <MentorshipTree pathway={pathway} />
       <Courses pathway={pathway} />
       <Milestones pathway={pathway} />
     </RightPaneWithTitle>

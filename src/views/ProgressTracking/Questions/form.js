@@ -11,7 +11,7 @@ const createdAtField = {
   },
 }
 
-export const getQuestionAddFormStructure = (question, type) => {
+export const getQuestionAddFormStructure = () => {
   return [
     {
       name: "name",
@@ -30,13 +30,12 @@ export const getQuestionAddFormStructure = (question, type) => {
       type: "select",
       validation: yup
         .string()
-        .oneOf(["text"], "please select one")
+        .oneOf(["text"], "Please select one")
         .required("Required"),
       options: [
         { name: "text", value: "Text" },
       ],
       customProps: {
-        variant: "outlined",
         id: "",
         label: "select a type",
         defaultValue: "text",

@@ -49,11 +49,11 @@ export const getMilestoneAddFormStructure = (milestone,allMilestones) => {
       .typeError('select one')
       .oneOf(
         optionsCanSelect,
-        "please select one"
+        "Please select one"
       )
       .required("Required"),
     options: optionsToChoose,
-    customProps: { variant: "outlined", id: "", label: "Next milestone", defaultValue: '', disabled: optionsToChoose.length ===1 || milestone.position === 0 },
+    customProps: {  id: "", label: "Next milestone", defaultValue: '', disabled: optionsToChoose.length ===1 || milestone.position === 0 },
   },
   
 ])}

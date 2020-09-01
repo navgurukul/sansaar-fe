@@ -23,12 +23,10 @@ const MainPaneWithTitle = ({ children, title, addBtnLink, theme, classes }) => {
       </Box>
       <Spacer height={theme.spacing(1)} />
       <Box>
-        {addBtnLink ? (
+        {addBtnLink && (
           <Button variant="contained" color="primary" onClick={handleAddClick}>
             {`Add ${title}`}
           </Button>
-        ) : (
-          ""
         )}
       </Box>
       <Spacer height={theme.spacing(3)} />

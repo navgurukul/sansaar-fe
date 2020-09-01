@@ -4,13 +4,13 @@ import { withRouter } from 'react-router';
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { compose } from 'recompose';
-import { addOrEditMilestone } from '../../store';
-import { selectors as layoutSelectors, setRightPaneLoading } from '../../../../layouts/TwoColumn/store';
-import RightPaneWithTitle from '../../../../components/RightPaneWithTitle';
-import FormBuilder from '../../../../components/FormBuilder';
-import history from '../../../../providers/routing/app-history';
-import { getMilestoneAddFormStructure } from '../form/milestone';
-import { ngFetch } from '../../../../providers/NGFetch';
+import { addOrEditMilestone } from '../store';
+import { selectors as layoutSelectors, setRightPaneLoading } from '../../../layouts/TwoColumn/store';
+import RightPaneWithTitle from '../../../components/RightPaneWithTitle';
+import FormBuilder from '../../../components/FormBuilder';
+import history from '../../../providers/routing/app-history';
+import { getMilestoneAddFormStructure } from './form';
+import { ngFetch } from '../../../providers/NGFetch';
 
 
 const MilestoneAdd = ({ actions, match }) => {

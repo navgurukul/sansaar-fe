@@ -6,7 +6,6 @@ import NG_CONSTANTS from 'ng-constants';
 import UserRoleOrPathwayChips from '../components/UserCard/UserRoleOrPathwayChips';
 import UserAvatar from '../components/UserCard/UserAvatar';
 
-
 const tableColumns = [
     {
       Header: '',
@@ -47,8 +46,6 @@ const tableColumns = [
         <UserRoleOrPathwayChips header="roles" rolesList={value} />
       ),
       disableFilters: false,
-      filter: 'onFilterableValue',
-      // filter: 'text',
       filterElType: 'select',
       getSearchText: (value) => value.map(v => NG_CONSTANTS.roleNames[v].toLowerCase()),
       getSelectMapping: (values) => fromPairs(values.map(v => ( [v, NG_CONSTANTS.roleNames[v]] )))

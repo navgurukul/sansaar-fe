@@ -36,14 +36,12 @@ const styles = () => ({
 
 function UserView({ match, classes, theme, actions, user, rightPaneLoading, allUsers }) {
   const { userId } = match.params
-  const [userLoading, setUserLoading] = React.useState(true)
+
   useEffect(() => {
-    setUserLoading(true)
     const fetchData = async () => {
       actions.setRightPaneLoading(true)
       const response = await ngFetch(`/users/${userId}`)
       actions.setUserToView(response.user)
-      setUserLoading(false)
       actions.setRightPaneLoading(false)
     }
     fetchData()

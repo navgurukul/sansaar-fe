@@ -12,26 +12,16 @@ const styles = theme => ({
   container: {
     marginBottom: theme.spacing(2),
   },
-  header: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  nameContainer: {
-    // marginLeft: theme.spacing(2),
-  },
 })
 
-const GenericCardForScreen = ({
-  key,
+const GenericCard = ({
   row,
   classes,
   theme,
   titleKey
 }) => {
-
   return(
-    <Card key={key || undefined} className={classes.container} variant="outlined">
+    <Card className={classes.container} variant="outlined">
       <CardContent>
         <Typography component="div" variant="h4">{row.original[titleKey]}</Typography>
         <Spacer height={theme.spacing(1)} />
@@ -50,4 +40,4 @@ const GenericCardForScreen = ({
     </Card>
 )}
 
-export default withStyles(styles, { withTheme: true })(GenericCardForScreen)
+export default withStyles(styles, { withTheme: true })(GenericCard)

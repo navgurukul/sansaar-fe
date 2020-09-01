@@ -14,9 +14,10 @@ const createdAtField = {
 export const getCourseAddFormStructure = (course,allCourses) => {
 
   const optionsList=[]
-  let optionsToChoose= allCourses ? allCourses.map(eachcourse => optionsList.push({value: eachcourse.name, name:eachcourse.id })) : []
+ let options = allCourses ? allCourses.forEach(eachcourse => optionsList.push({value: eachcourse.name, name:eachcourse.id })) : []
+
   const optionsCanSelect= optionsList ? optionsList.map(option => option.name) : [];
-  optionsToChoose =[...optionsList]
+  options =[...optionsList]
 
   return [
     {
@@ -26,10 +27,10 @@ export const getCourseAddFormStructure = (course,allCourses) => {
       .string().typeError('select something').required('required')
       .oneOf(
         optionsCanSelect,
-        "please select one"
+        "Please select one"
       ),
-    options: optionsToChoose,
-    customProps: { variant: "outlined", id: "", label: "Select a course", defaultValue: '' },
+    options,
+    customProps: { id: "", label: "Select a course", defaultValue: '' },
     },
 
   ]

@@ -3,9 +3,9 @@ import { Controller } from "react-hook-form"
 import { Switch, FormLabel, FormControl } from "@material-ui/core"
 
 
-const NGSwitch = ({ control, field, errors }) => {
+const NGSwitch = ({ control, field, errors,fullWidth }) => {
   return (
-    <FormControl error={Boolean(errors[field.name])} style={{ width: 200 }}>
+    <FormControl error={Boolean(errors[field.name])} fullWidth={fullWidth}>
       <FormLabel component="legend">{field.name}</FormLabel>
       <Controller
         name={field.name}

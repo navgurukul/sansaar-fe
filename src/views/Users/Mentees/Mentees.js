@@ -32,8 +32,8 @@ const styles = theme => ({
       marginLeft: 0,
     },
   },
-  helperText:{
-    color:'red',
+  formControl:{
+    width:"100%",
   }
 })
 const Mentees = ({ allUsers, user, theme, classes }) => {
@@ -45,7 +45,7 @@ const Mentees = ({ allUsers, user, theme, classes }) => {
       {user.pathways.length > 0 ? (
         <React.Fragment>
           <Spacer height={theme.spacing(2)} />
-          <FormControl variant="outlined" style={{ width: "100%" }}>
+          <FormControl variant="outlined" className={classes.formControl}>
             <InputLabel id="new-roles-label">Select pathways</InputLabel>
             <Select
               labelId="new-pathways-label"
@@ -63,7 +63,7 @@ const Mentees = ({ allUsers, user, theme, classes }) => {
               })}
             </Select>
             <Spacer height={theme.spacing(1)} />
-            {pathwayId === '' ? <Chip label="No Pathways selected" /> : ''}
+            {pathwayId === '' && <Chip label="No Pathways selected" />}
           </FormControl>
           <Spacer height={theme.spacing(1)} />
           {user.id && pathwayId ? <MenteesList user={user} pathwayId={pathwayId} allUsers={allUsers} /> : ''}

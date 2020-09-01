@@ -5,14 +5,14 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { withTheme } from '@material-ui/core';
-import { selectors, setQuestionToView, addOrEditQuestion } from '../../store';
-import { selectors as layoutSelectors, setRightPaneLoading } from '../../../../layouts/TwoColumn/store';
-import { ngFetch } from '../../../../providers/NGFetch';
-import { getQuestionEditFormStructure } from '../form';
-import FormBuilder from '../../../../components/FormBuilder';
-import Spacer from '../../../../components/Spacer';
-import RightPaneWithTitle from '../../../../components/RightPaneWithTitle';
-import history from '../../../../providers/routing/app-history';
+import { selectors, setQuestionToView, addOrEditQuestion } from '../store';
+import { selectors as layoutSelectors, setRightPaneLoading } from '../../../layouts/TwoColumn/store';
+import { ngFetch } from '../../../providers/NGFetch';
+import { getQuestionEditFormStructure } from './form';
+import FormBuilder from '../../../components/FormBuilder';
+import Spacer from '../../../components/Spacer';
+import RightPaneWithTitle from '../../../components/RightPaneWithTitle';
+import history from '../../../providers/routing/app-history';
 
 const OuestionEdit = ({ rightPaneLoading, actions, match, theme }) => {
 

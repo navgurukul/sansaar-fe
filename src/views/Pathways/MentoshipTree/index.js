@@ -11,7 +11,7 @@ import { Box } from "@material-ui/core"
 import { ngFetch } from "../../../providers/NGFetch"
 import { setMainPaneLoading } from "../../../layouts/TwoColumn/store"
 
-const MentorShipTree = ({ match, actions }) => {
+const MentorshipTree = ({ match, actions }) => {
   const { pathwayId } = match.params
 
   const [tree, setTree] = React.useState(null)
@@ -33,7 +33,7 @@ const MentorShipTree = ({ match, actions }) => {
               <Box>
                 <TreeItem
                   label={`${each.name} (${each.email})`}
-                  nodeId={each.name}
+                  nodeId={each.id}
                 >
                   {each.mentees.length === 0 ? "" : treeView(each.mentees)}
                 </TreeItem>
@@ -47,7 +47,7 @@ const MentorShipTree = ({ match, actions }) => {
   }
   return (
     <React.Fragment>
-      <h1>MentorShipTree</h1>
+      <h1>MentorshipTree</h1>
       <TreeView
         defaultCollapseIcon={<ExpandMoreIcon />}
         defaultExpandIcon={<ChevronRightIcon />}
@@ -65,4 +65,4 @@ const mapDispatchToProps = dispatch => ({
 export default compose(
   connect(null, mapDispatchToProps),
   withRouter
-)(MentorShipTree)
+)(MentorshipTree)

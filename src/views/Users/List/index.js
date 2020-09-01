@@ -10,6 +10,7 @@ import { selectors as layoutSelectors, setMainPaneScrollToTopPending, setMainPan
 import { setAllUsers, selectors as userSelectors } from '../store';
 import history from '../../../providers/routing/app-history';
 import MainPaneWithTitle from '../../../components/MainPaneWithTitle';
+import UserCard from '../components/UserCard';
 
 
 function UserList({ mainPaneWidth, actions, allUsers, mainPaneLoading }) {
@@ -31,6 +32,18 @@ function UserList({ mainPaneWidth, actions, allUsers, mainPaneLoading }) {
     history.push(`/users/${userId}`)
   }
 
+  const userCard = (user, key) => (
+    <UserCard
+      key={key}
+      id={user.id}
+      name={user.name}
+      profilePicture={user.profile_picture}
+      rolesList={user.rolesList}
+      eMail={user.email}
+      joinedAt={user.createdAt}
+    />
+  )
+
   return (
 
     <MainPaneWithTitle title='Users'>
@@ -38,10 +51,10 @@ function UserList({ mainPaneWidth, actions, allUsers, mainPaneLoading }) {
         loading={mainPaneLoading}
         tableColumns={tableColumns}
         data={users}
+        renderCard={userCard}
         containerWidth={mainPaneWidth}
         onRowClick={handleRowClick}
         scrollContainerToTop={() => actions.setMainPaneScrollToTopPending(true)}
-        cardTitle='name'
       />
     </MainPaneWithTitle>
   )
