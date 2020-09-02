@@ -13,7 +13,6 @@ import FormBuilder from '../../../../components/FormBuilder';
 import Spacer from '../../../../components/Spacer';
 import RightPaneWithTitle from '../../../../components/RightPaneWithTitle';
 import Milestones from './Milestones';
-// import history from '../../../../providers/routing/app-history';
 import MentorshipTree from './MentorshipTree';
 import Courses from './Courses';
 

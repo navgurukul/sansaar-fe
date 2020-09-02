@@ -8,7 +8,8 @@ import { connect } from "react-redux"
 
 import RightPaneWithTitle from "../../components/RightPaneWithTitle"
 import UserAvatar from "./components/UserCard/UserAvatar"
-import UserRoleOrPathwayChips from "./components/UserCard/UserRoleOrPathwayChips"
+import UserRoleChips from "./components/UserCard/UserRoleChips"
+import PathwayChips from "./components/UserCard/PathwayChips"
 import Spacer from "../../components/Spacer"
 import {
   selectors,
@@ -88,7 +89,7 @@ function UserView({ match, classes, theme, actions, user, rightPaneLoading, allU
       </Typography>
       <Spacer height={theme.spacing(1)} />
       <Typography variant="overline">ROLES</Typography>
-      <UserRoleOrPathwayChips
+      <UserRoleChips
         rolesList={user.rolesList}
         header="roles"
         edit
@@ -97,7 +98,7 @@ function UserView({ match, classes, theme, actions, user, rightPaneLoading, allU
       />
       <Spacer height={theme.spacing(1)} />
       <Typography variant="overline">Pathways</Typography>
-      <UserRoleOrPathwayChips
+      <PathwayChips
         pathwaysList={user.pathways}
         header="pathways"
         edit

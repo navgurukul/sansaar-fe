@@ -3,7 +3,7 @@ import moment from 'moment';
 import { fromPairs } from 'lodash';
 // import { getInitialsFromName } from '../../../helpers';
 import NG_CONSTANTS from 'ng-constants';
-import UserRoleOrPathwayChips from '../components/UserCard/UserRoleOrPathwayChips';
+import UserRoleChips from '../components/UserCard/UserRoleChips';
 import UserAvatar from '../components/UserCard/UserAvatar';
 
 const tableColumns = [
@@ -43,7 +43,7 @@ const tableColumns = [
       minWidth: 200,
       search: true,
       Cell: ({ value }) => (
-        <UserRoleOrPathwayChips header="roles" rolesList={value} />
+        <UserRoleChips header="roles" rolesList={value} />
       ),
       disableFilters: false,
       filterElType: 'select',

@@ -23,7 +23,6 @@ const tableColumns = [
     accessor: "created_at",
     priority: 3,
     minWidth: 200,
-    // search: true,
     Cell: ({ value }) => {
       return moment(value).fromNow()
     },

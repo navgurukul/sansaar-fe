@@ -25,7 +25,14 @@ import Spacer from "../../../components/Spacer"
 import { ngFetch } from "../../../providers/NGFetch"
 import UserAvatar from '../components/UserCard/UserAvatar';
 
-const MenteesList = ({ actions, allMentees, pathwayId, user, theme ,allUsers }) => {
+
+const styles = () => ({
+  button: {
+    width: "100%"
+  },
+})
+
+const MenteesList = ({ actions, allMentees, pathwayId, user, theme ,allUsers, classes }) => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await ngFetch(
@@ -78,11 +85,11 @@ const MenteesList = ({ actions, allMentees, pathwayId, user, theme ,allUsers }) 
     const newData = React.useMemo(() => {
     const data=
     users && pathwayId
-      ? users.map(eachuser =>
-          eachuser.pathways.length && eachuser.id !== user.id
-            ? eachuser.pathways.map(eachPathway =>
+      ? users.map(eachUser =>
+          eachUser.pathways.length && eachUser.id !== user.id
+            ? eachUser.pathways.map(eachPathway =>
                 eachPathway.id === pathwayId
-                  ? usersWithSamePathway.push(eachuser)
+                  ? usersWithSamePathway.push(eachUser)
                   : ""
               )
             : ""
@@ -128,7 +135,6 @@ const MenteesList = ({ actions, allMentees, pathwayId, user, theme ,allUsers }) 
           : ""}
       </List>
       <Autocomplete
-
         multiple
         limitTags={2}
         onChange={(event, newValue) => {
@@ -147,8 +153,9 @@ const MenteesList = ({ actions, allMentees, pathwayId, user, theme ,allUsers }) 
           />
             )}
       />
-      <Spacer height={theme.spacing(2)} />
+      <Spacer height={theme.spacing(1)} />
       <Button
+        className={classes.button}
         disableElevation
         color="primary"
         size="small"
@@ -175,5 +182,5 @@ const mapDispatchToProps = dispatch => ({
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  withStyles({ withTheme: true })
+  withStyles(styles, { withTheme: true })
 )(MenteesList)
