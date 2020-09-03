@@ -1,13 +1,11 @@
 import React from "react"
-import {
-  withStyles,
-} from "@material-ui/core"
+import { withStyles } from "@material-ui/core"
 import { flatten, uniq, map, pullAll, fromPairs } from "lodash"
 import { compose } from "redux"
 import NG_CONSTANTS from "ng-constants"
 import withUserContext from "../../../../providers/UserAuth/withUserContext"
 import { ngFetch } from "../../../../providers/NGFetch"
-import RenderChips from "./RenderChips"
+import ChipList from "./ChipList"
 
 const styles = theme => ({
   chipContainer: {
@@ -36,12 +34,10 @@ const UserRoleChips = ({
   setUserRolesList,
   userContext,
 }) => {
-
-
   const { user: currentUser, refreshUserDetails } = userContext
   const editableRoles = React.useMemo(
     () => getEditableRoles(currentUser.rolesList),
-    [currentUser]
+    [currentUser,rolesList]
   )
 
   const optionsList = React.useMemo(
@@ -50,13 +46,7 @@ const UserRoleChips = ({
     [rolesList]
   )
 
-  const [newChips, setNewChips] = React.useState([])
 
-  const [addDialog, setAddDialog] = React.useState(false)
-  const handleDialogClose = () => {
-    setAddDialog(false)
-    setNewChips([])
-  }
   const handleDelete = async role => {
     await ngFetch(`/users/${userId}/roles`, {
       method: "DELETE",
@@ -66,7 +56,7 @@ const UserRoleChips = ({
     if (currentUser.id === userId) refreshUserDetails()
   }
 
-  const handleAddNewRoles = async () => {
+  const handleAddNewRoles = async (newChips,setAddDialog,setNewChips) => {
     const response = await ngFetch(`/users/${userId}/roles`, {
       method: "POST",
       body: { rolesList: newChips },
@@ -79,24 +69,23 @@ const UserRoleChips = ({
 
   const getAddSelectOptions = React.useMemo(
     () =>
-      fromPairs(map(pullAll(editableRoles, rolesList), role => [role, NG_CONSTANTS.roleNames[role]])),
-    [rolesList,editableRoles]
+      fromPairs(
+        map(pullAll(editableRoles, rolesList), role => [
+          role,
+          NG_CONSTANTS.roleNames[role],
+        ])
+      ),
+    [rolesList, editableRoles]
   )
-
 
   return (
     <React.Fragment>
-      <RenderChips
+      <ChipList
         optionsList={optionsList}
         edit={edit}
         onRemove={handleDelete}
         onAdd={handleAddNewRoles}
         title="roles"
-        setNewChips={setNewChips}
-        handleDialogClose={handleDialogClose}
-        addDialog={addDialog}
-        setAddDialog={setAddDialog}
-        newChips={newChips}
         getAddSelectOptions={getAddSelectOptions}
       />
     </React.Fragment>

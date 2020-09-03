@@ -1,84 +1,81 @@
-import React from 'react';
-import TwoColumnLayout from '../../layouts/TwoColumn';
-import PathwaysList from './Pathways/List';
-import PathwayEdit from './Pathways/Edit';
-import PathwayAdd from './Pathways/Add';
-import MilestonesList from './Milestones/List';
-import MilestoneEdit from './Milestones/Edit';
-import MilestoneAdd from './Milestones/Add';
-import CoursesList from './Courses/List';
-import MentorshipTree from './MentoshipTree'
-import CourseAdd from './Courses/Add';
-import CourseEdit from './Courses/Edit';
+import React from "react"
+import TwoColumnLayout from "../../layouts/TwoColumn"
+import PathwaysList from "./Pathways/List"
+import PathwayEdit from "./Pathways/Edit"
+import PathwayAdd from "./Pathways/Add"
+import MilestonesList from "./Milestones/List"
+import MilestoneEdit from "./Milestones/Edit"
+import MilestoneAdd from "./Milestones/Add"
+import CoursesList from "./Courses/List"
+import MentorshipTree from "./MentorshipTree"
+import CourseAdd from "./Courses/Add"
 
 const PathwaysSection = () => {
   const mainPaneRoutes = [
     {
-      path: '/pathways/:pathwayId/courses',
+      path: "/pathways/:pathwayId/courses",
       exact: false,
       component: CoursesList,
-      key: 'COURSES_LIST'
+      key: "COURSES_LIST",
     },
     {
-      path: '/pathways/:pathwayId/milestones',
+      path: "/pathways/:pathwayId/milestones",
       exact: false,
       component: MilestonesList,
-      key: 'MILESTONES_LIST',
+      key: "MILESTONES_LIST",
     },
     {
-      path: '/pathways/:pathwayId/mentorTree',
+      path: "/pathways/:pathwayId/mentorTree",
       auth: true,
-      key: 'MENTORSHIP_TREE_SECTION',
+      key: "MENTORSHIP_TREE_SECTION",
       component: MentorshipTree,
-    },  
+    },
     {
-      path: '/pathways',
+      path: "/pathways",
       exact: false,
       component: PathwaysList,
-      key: 'PATHWAYS_LIST'
+      key: "PATHWAYS_LIST",
     },
-
-  ];
+  ]
   const rightPaneRoutes = [
     {
-      path: '/pathways/add',
+      path: "/pathways/add",
       exact: true,
       component: PathwayAdd,
-      key: 'PATHWAY_ADD'
+      key: "PATHWAY_ADD",
     },
     {
-      path: '/pathways/:pathwayId',
+      path: "/pathways/:pathwayId",
       exact: true,
       component: PathwayEdit,
-      key: 'PATHWAY_EDIT'
+      key: "PATHWAY_EDIT",
     },
     {
-      path: '/pathways/:pathwayId/milestones/add',
+      path: "/pathways/:pathwayId/milestones/add",
       exact: true,
       component: MilestoneAdd,
-      key: 'MILESTONE_ADD'
+      key: "MILESTONE_ADD",
     },
     {
-      path: '/pathways/:pathwayId/milestones/:milestoneId',
+      path: "/pathways/:pathwayId/milestones/:milestoneId",
       exact: true,
       component: MilestoneEdit,
-      key: 'MILESTONE_ADD'
+      key: "MILESTONE_ADD",
     },
     {
-      path: '/pathways/:pathwayId/courses/add',
+      path: "/pathways/:pathwayId/courses/add",
       exact: true,
       component: CourseAdd,
-      key: 'COURSE_ADD'
+      key: "COURSE_ADD",
     },
-    {
-      path: '/pathways/:pathwayId/courses/:pathwayCourseId/edit',
-      exact: true,
-      component: CourseEdit,
-      key: 'COURSE_EDIT'
-    },
-  ];
+  ]
 
-  return <TwoColumnLayout mainPaneRoutes={mainPaneRoutes} rightPaneRoutes={rightPaneRoutes} />
-};
+  return (
+    <TwoColumnLayout
+      mainPaneRoutes={mainPaneRoutes}
+      rightPaneRoutes={rightPaneRoutes}
+    />
+  )
+}
 
-export default PathwaysSection;
+export default PathwaysSection

@@ -40,6 +40,7 @@ const  FormBuilder = ({
         schema.fields[ field.name ] = field.validation;
         schema._nodes.push(field.name);
       }
+      return null
     });
     return schema;
   }, [structure]);

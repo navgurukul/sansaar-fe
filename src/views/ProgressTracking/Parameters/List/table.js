@@ -29,8 +29,8 @@ const tableColumns = [
     minWidth: 200,
     disableFilters: true,
     Cell: ({ row, value }) => {
-      const {type} = row.original
-      return (type === 'boolean' ? null : value)
+      const { type } = row.original
+      return type === "boolean" ? null : value
     },
   },
   {
@@ -40,8 +40,8 @@ const tableColumns = [
     minWidth: 200,
     disableFilters: true,
     Cell: ({ row, value }) => {
-      const {type} = row.original
-      return (type === 'boolean' ? null : value)
+      const { type } = row.original
+      return type === "boolean" ? null : value
     },
   },
   {

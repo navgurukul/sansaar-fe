@@ -1,5 +1,5 @@
-import moment from "moment";
-import {toTitleCase} from '../../../../helpers';
+import moment from "moment"
+import { toTitleCase } from "../../../../helpers"
 
 const tableColumns = [
   {
@@ -8,9 +8,9 @@ const tableColumns = [
     priority: 1,
     minWidth: 200,
     search: true,
-    Cell :({value}) => {
+    Cell: ({ value }) => {
       return toTitleCase(value)
-    }
+    },
   },
   {
     Header: "Description",
@@ -27,7 +27,7 @@ const tableColumns = [
       return moment(value).fromNow()
     },
     disableFilters: true,
-    getSearchText: (value) => moment(value).fromNow()
+    getSearchText: value => moment(value).fromNow(),
   },
 ]
 

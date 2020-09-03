@@ -6,8 +6,12 @@ import { compose } from "recompose"
 import tableColumns from "./table"
 import TableOrCardList from "../../../../components/TableOrCardList"
 import { ngFetch } from "../../../../providers/NGFetch"
-import { selectors as layoutSelectors, setMainPaneScrollToTopPending, setMainPaneLoading } from '../../../../layouts/TwoColumn/store';
-import { setAllParameters, selectors as progressSelectors } from "../../store";
+import {
+  selectors as layoutSelectors,
+  setMainPaneScrollToTopPending,
+  setMainPaneLoading,
+} from "../../../../layouts/TwoColumn/store"
+import { setAllParameters, selectors as progressSelectors } from "../../store"
 import history from "../../../../providers/routing/app-history"
 import MainPaneWithTitle from "../../../../components/MainPaneWithTitle"
 
@@ -28,7 +32,6 @@ function ParametersList({
     }
     fetchData()
   }, [actions])
-
 
   const parameters = React.useMemo(() => Object.values(allParameters), [
     allParameters,

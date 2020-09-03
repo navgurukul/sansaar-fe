@@ -54,10 +54,10 @@ const MainPane = ({
   }, [mainPaneScrollToTopPending,actions,mainPaneRef])
 
   useEffect(() => {
-    const setMainPaneWidth = () => actions.setMainPaneWidth(mainPaneRef.current.offsetWidth);
-    window.addEventListener('resize', setMainPaneWidth);
+    const setMainScreenPaneWidth = () => actions.setMainPaneWidth(mainPaneRef.current.offsetWidth);
+    window.addEventListener('resize', setMainScreenPaneWidth);
     return function cleanup() {
-      window.removeEventListener('resize', setMainPaneWidth);
+      window.removeEventListener('resize', setMainScreenPaneWidth);
     }
   });
   return (

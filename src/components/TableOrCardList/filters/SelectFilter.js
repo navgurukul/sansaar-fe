@@ -7,16 +7,16 @@ const defaultOptionsMapping = (values) => fromPairs(values.map(v => ([v,v])));
 const SelectFilter = ({ column: { filterValue, preFilteredRows, setFilter, Header, id, getSelectMapping } }) => {
 
   const options = React.useMemo(() => {
-    const options = new Set();
+    const optionsToVisible = new Set();
     preFilteredRows.forEach(row => {
       const value = row.values[id];
       if (Array.isArray(value)) {
-        value.forEach(v => options.add(v));
+        value.forEach(v => optionsToVisible.add(v));
       } else {
-        options.add(value)
+        optionsToVisible.add(value)
       }
     });
-    const optionsArr = [ ...options.values()]
+    const optionsArr = [ ...optionsToVisible.values()]
     return getSelectMapping ? getSelectMapping(optionsArr) : defaultOptionsMapping(optionsArr);
   }, [id, preFilteredRows,getSelectMapping]);
 

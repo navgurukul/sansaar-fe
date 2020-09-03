@@ -19,7 +19,7 @@ export const getQuestionAddFormStructure = () => {
       validation: yup
         .string()
         .required("Required")
-        .max(15, "must be less than 10"),
+        .max(15, "Must be less than 10"),
       customProps: {
         placeholder: "Question Name",
         label: "Question Name",
@@ -32,9 +32,7 @@ export const getQuestionAddFormStructure = () => {
         .string()
         .oneOf(["text"], "Please select one")
         .required("Required"),
-      options: [
-        { name: "text", value: "Text" },
-      ],
+      options: [{ name: "text", value: "Text" }],
       customProps: {
         id: "",
         label: "select a type",
@@ -55,7 +53,7 @@ export const getQuestionAddFormStructure = () => {
   ]
 }
 
-export const getQuestionEditFormStructure = (question) => {
+export const getQuestionEditFormStructure = question => {
   const fields = getQuestionAddFormStructure(question)
   fields.push(createdAtField)
   return fields

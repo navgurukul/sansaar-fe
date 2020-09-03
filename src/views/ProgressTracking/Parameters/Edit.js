@@ -14,7 +14,7 @@ import Spacer from '../../../components/Spacer';
 import RightPaneWithTitle from '../../../components/RightPaneWithTitle';
 import history from '../../../providers/routing/app-history';
 
-const PathwayEdit = ({ rightPaneLoading, actions, match, theme }) => {
+const ParameterEdit = ({ rightPaneLoading, actions, match, theme }) => {
 
   const { parameterId } = match.params;
   const { enqueueSnackbar } = useSnackbar();
@@ -79,4 +79,4 @@ export default compose(
   withTheme,
   withRouter,
   connect(mapStateToProps, mapDispatchToProps),
-)(PathwayEdit);
+)(ParameterEdit);

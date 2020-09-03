@@ -11,33 +11,36 @@ const createdAtField = {
   },
 }
 
-export const getCourseAddFormStructure = (course,allCourses) => {
+export const getCourseAddFormStructure = (course, allCourses) => {
+  const optionsList = []
+  let options = allCourses
+    ? allCourses.forEach(eachCourse =>
+        optionsList.push({ value: eachCourse.name, name: eachCourse.id })
+      )
+    : []
 
-  const optionsList=[]
- let options = allCourses ? allCourses.forEach(eachcourse => optionsList.push({value: eachcourse.name, name:eachcourse.id })) : []
-
-  const optionsCanSelect= optionsList ? optionsList.map(option => option.name) : [];
-  options =[...optionsList]
+  const optionsCanSelect = optionsList
+    ? optionsList.map(option => option.name)
+    : []
+  options = [...optionsList]
 
   return [
     {
       name: "course_id",
       type: "select",
-      'validation': yup
-      .string().typeError('select something').required('required')
-      .oneOf(
-        optionsCanSelect,
-        "Please select one"
-      ),
-    options,
-    customProps: { id: "", label: "Select a course", defaultValue: '' },
+      validation: yup
+        .string()
+        .typeError("Select something")
+        .required("Required")
+        .oneOf(optionsCanSelect, "Please select one"),
+      options,
+      customProps: { id: "", label: "Select a course", defaultValue: "" },
     },
-
   ]
 }
 
-export const getCourseEditFormStructure = (course,allCourses) => {
-  const fields = getCourseAddFormStructure(course,allCourses)
+export const getCourseEditFormStructure = (course, allCourses) => {
+  const fields = getCourseAddFormStructure(course, allCourses)
   fields.push(createdAtField)
   return fields
 }

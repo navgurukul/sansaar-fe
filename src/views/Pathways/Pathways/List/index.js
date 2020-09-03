@@ -1,9 +1,9 @@
 import React, { useEffect } from "react"
-import {  withTheme } from "@material-ui/core"
+import { withTheme } from "@material-ui/core"
 import { connect } from "react-redux"
 import { bindActionCreators } from "redux"
 import { compose } from "recompose"
-import { withRouter } from 'react-router';
+import { withRouter } from "react-router"
 import TableOrCardList from "../../../../components/TableOrCardList"
 import { ngFetch } from "../../../../providers/NGFetch"
 import tableColumns from "./table"
@@ -14,23 +14,23 @@ import {
   setMainPaneLoading,
 } from "../../../../layouts/TwoColumn/store"
 import { setAllPathways, selectors as userSelectors } from "../../store"
-import MainPaneWithTitle from '../../../../components/MainPaneWithTitle';
+import MainPaneWithTitle from "../../../../components/MainPaneWithTitle"
 
-
-function PathwaysList({ mainPaneWidth, actions, allPathways,mainPaneLoading }) {
+function PathwaysList({
+  mainPaneWidth,
+  actions,
+  allPathways,
+  mainPaneLoading,
+}) {
   useEffect(() => {
     const fetchData = async () => {
-      actions.setMainPaneLoading(true);
+      actions.setMainPaneLoading(true)
       const response = await ngFetch("/pathways", { method: "GET" })
       actions.setAllPathways(response.pathways)
-      actions.setMainPaneLoading(false);
+      actions.setMainPaneLoading(false)
     }
     fetchData()
   }, [actions])
-
-  
-  
-
 
   const pathways = React.useMemo(() => Object.values(allPathways), [
     allPathways,
@@ -41,7 +41,7 @@ function PathwaysList({ mainPaneWidth, actions, allPathways,mainPaneLoading }) {
   }
 
   return (
-    <MainPaneWithTitle addBtnLink='/pathways/add' title='Pathways'>
+    <MainPaneWithTitle addBtnLink="/pathways/add" title="Pathways">
       <TableOrCardList
         loading={mainPaneLoading}
         tableColumns={tableColumns}
@@ -49,7 +49,7 @@ function PathwaysList({ mainPaneWidth, actions, allPathways,mainPaneLoading }) {
         containerWidth={mainPaneWidth}
         onRowClick={handleRowClick}
         scrollContainerToTop={() => actions.setMainPaneScrollToTopPending(true)}
-        cardTitle='code'
+        cardTitle="code"
       />
     </MainPaneWithTitle>
   )
@@ -63,7 +63,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
-    { setAllPathways, setMainPaneScrollToTopPending,setMainPaneLoading },
+    { setAllPathways, setMainPaneScrollToTopPending, setMainPaneLoading },
     dispatch
   ),
 })
@@ -71,5 +71,5 @@ const mapDispatchToProps = dispatch => ({
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withTheme,
-  withRouter,
+  withRouter
 )(PathwaysList)

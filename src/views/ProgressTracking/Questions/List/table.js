@@ -1,6 +1,4 @@
-// import React from "react"
 import moment from "moment"
-// import { fromPairs } from "lodash"
 
 const tableColumns = [
   {

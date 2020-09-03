@@ -23,16 +23,23 @@ import {
 } from "../store"
 import Spacer from "../../../components/Spacer"
 import { ngFetch } from "../../../providers/NGFetch"
-import UserAvatar from '../components/UserCard/UserAvatar';
-
+import UserAvatar from "../components/UserCard/UserAvatar"
 
 const styles = () => ({
   button: {
-    width: "100%"
+    width: "100%",
   },
 })
 
-const MenteesList = ({ actions, allMentees, pathwayId, user, theme ,allUsers, classes }) => {
+const MenteesList = ({
+  actions,
+  allMentees,
+  pathwayId,
+  user,
+  theme,
+  allUsers,
+  classes,
+}) => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await ngFetch(
@@ -46,27 +53,31 @@ const MenteesList = ({ actions, allMentees, pathwayId, user, theme ,allUsers, cl
     fetchData()
   }, [pathwayId, user.id, actions])
 
-  const [tree, setTree] = React.useState(null);
+  const [tree, setTree] = React.useState(null)
   useEffect(() => {
     const fetchData = async () => {
-      const response = await ngFetch(`/pathways/${pathwayId}/mentorship/tree`);
-      setTree(response.tree);
+      const response = await ngFetch(`/pathways/${pathwayId}/mentorship/tree`)
+      setTree(response.tree)
     }
-    fetchData();
-  }, [actions,pathwayId,allMentees]);
+    fetchData()
+  }, [actions, pathwayId, allMentees])
 
+  const studentsAlreadyInTree = []
 
-  const studentsAlreadyInTree=[]
-
-  const Students =(tree) =>{
-    tree ? tree.map((each) =>{ studentsAlreadyInTree.push(each);each.mentees.length===0?'':Students(each.mentees)}) :''
+  const Students = mentorTree => {
+    mentorTree
+      ? mentorTree.forEach(student => {
+          studentsAlreadyInTree.push(student)
+          student.mentees.length === 0 ? "" : Students(student.mentees)
+        })
+      : ""
   }
 
   const idsInTree = Students(tree)
-
+  const [value, setValue] = React.useState([])
 
   const handleAddMentees = async value => {
-    const menteesIds = value[0].map(eachMentee => eachMentee.id)
+    const menteesIds = value[0].map(mentee => mentee.id)
     const response = await ngFetch(
       `/pathways/${pathwayId}/mentorship/users/${user.id}/mentees`,
       {
@@ -74,7 +85,8 @@ const MenteesList = ({ actions, allMentees, pathwayId, user, theme ,allUsers, cl
         body: { menteeIds: menteesIds },
       }
     )
-    actions.setUserMenteesList({mentees :response.mentees, userId: user.id})
+    setValue(null)
+    actions.setUserMenteesList({ mentees: response.mentees, userId: user.id })
   }
 
   const mentees = React.useMemo(() => Object.values(allMentees), [allMentees])
@@ -82,67 +94,65 @@ const MenteesList = ({ actions, allMentees, pathwayId, user, theme ,allUsers, cl
   const users = React.useMemo(() => Object.values(allUsers), [allUsers])
   const usersWithSamePathway = []
 
-    const newData = React.useMemo(() => {
-    const data=
-    users && pathwayId
-      ? users.map(eachUser =>
-          eachUser.pathways.length && eachUser.id !== user.id
-            ? eachUser.pathways.map(eachPathway =>
-                eachPathway.id === pathwayId
-                  ? usersWithSamePathway.push(eachUser)
-                  : ""
-              )
-            : ""
-        )
-      : ""
-      
-    }, [users,pathwayId,usersWithSamePathway,user.id])
-
-
-
-  const [value, setValue] = React.useState([])
+  const newData = React.useMemo(() => {
+    if (users && pathwayId) {
+      users.forEach(u => {
+          if (u.pathways.length && u.id !== user.id) {
+            u.pathways.map(eachPathway =>
+                  eachPathway.id === pathwayId
+                    ? usersWithSamePathway.push(u)
+                    : ""
+                )
+          }
+      })
+  }
+  }, [users, pathwayId, usersWithSamePathway, user.id])
 
   
 
-
-  const handleDeleteMentee = async eachMentee => {
+  const handleDeleteMentee = async mentee => {
     const response = await ngFetch(
       `/pathways/${pathwayId}/mentorship/users/${user.id}/mentees`,
       {
         method: "DELETE",
-        body: { menteeIds: [eachMentee.id] },
+        body: { menteeIds: [mentee.id] },
       }
     )
-    actions.setUserMenteesList({mentees:response.mentees, userId: user.id})
+    actions.setUserMenteesList({ mentees: response.mentees, userId: user.id })
   }
+
+  const showMenteesList = students => {
+    return students.map(mentee => (
+      <ListItem key={mentee.id}>
+        <ListItemAvatar>
+          <UserAvatar
+            name={mentee.name}
+            profilePicture={mentee.profile_picture}
+          />
+        </ListItemAvatar>
+        <ListItemText primary={mentee.name} />
+        <ListItemSecondaryAction onClick={() => handleDeleteMentee(mentee)}>
+          <IconButton edge="end" aria-label="delete">
+            <DeleteIcon />
+          </IconButton>
+        </ListItemSecondaryAction>
+      </ListItem>
+    ))
+  }
+
   return (
     <React.Fragment>
-      <List>
-        {mentees
-          ? mentees.map(eachMentee => (
-            <ListItem key={eachMentee.id}>
-              <ListItemAvatar>
-                <UserAvatar name={eachMentee.name} profilePicture={eachMentee.profile_picture} />
-              </ListItemAvatar>
-              <ListItemText primary={eachMentee.name} />
-              <ListItemSecondaryAction onClick={() => handleDeleteMentee(eachMentee)}>
-                <IconButton edge="end" aria-label="delete">
-                  <DeleteIcon />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-            ))
-          : ""}
-      </List>
+      <List>{mentees && showMenteesList(mentees)}</List>
       <Autocomplete
         multiple
         limitTags={2}
         onChange={(event, newValue) => {
-              setValue([newValue])
-            }}
+          setValue([newValue])
+        }}
+        value={value}
         id="multiple-limit-tags"
-        options={pullAllBy(usersWithSamePathway,studentsAlreadyInTree, "id")}
-        noOptionsText=' No students are there'
+        options={pullAllBy(usersWithSamePathway, studentsAlreadyInTree, "id")}
+        noOptionsText=" No students are there"
         getOptionLabel={option => option.name}
         renderInput={params => (
           <TextField
@@ -151,7 +161,7 @@ const MenteesList = ({ actions, allMentees, pathwayId, user, theme ,allUsers, cl
             label="Select Students to add"
             placeholder="Students"
           />
-            )}
+        )}
       />
       <Spacer height={theme.spacing(1)} />
       <Button

@@ -1,7 +1,7 @@
 import moment from "moment"
-import { fromPairs } from 'lodash';
-import NG_CONSTANTS from 'ng-constants';
-import {toTitleCase} from '../../../../helpers';
+import { fromPairs } from "lodash"
+import NG_CONSTANTS from "ng-constants"
+import { toTitleCase } from "../../../../helpers"
 
 const tableColumns = [
   {
@@ -17,9 +17,9 @@ const tableColumns = [
     priority: 2,
     minWidth: 200,
     search: true,
-    Cell :({value}) => {
+    Cell: ({ value }) => {
       return toTitleCase(value)
-    }
+    },
   },
   {
     Header: "Description",
@@ -33,9 +33,9 @@ const tableColumns = [
     priority: 4,
     minWidth: 200,
     disableFilters: true,
-    Cell :({value}) => {
-      return value === true ? "True" : 'False'
-    }
+    Cell: ({ value }) => {
+      return value === true ? "True" : "False"
+    },
   },
   {
     Header: "Tracking Frequency",
@@ -51,11 +51,12 @@ const tableColumns = [
     minWidth: 200,
     search: true,
     disableFilters: false,
-    filterElType: 'select',
-    getSelectMapping: (values) => fromPairs(values.map(v => ( [v, NG_CONSTANTS.trackingDays[v]] ))),
-    Cell :({value}) => {
+    filterElType: "select",
+    getSelectMapping: values =>
+      fromPairs(values.map(v => [v, NG_CONSTANTS.trackingDays[v]])),
+    Cell: ({ value }) => {
       return value === 0 && "Sunday"
-    }
+    },
   },
   {
     Header: "Tracking Day of lock before cycle",

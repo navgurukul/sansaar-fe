@@ -34,24 +34,27 @@ const styles = theme => ({
   },
 })
 
-const RenderChips = ({
+const ChipList = ({
   optionsList,
   classes,
   edit,
   onRemove,
   theme,
   title,
-  setNewChips,
   onAdd,
-  handleDialogClose,
-  addDialog,
-  setAddDialog,
-  newChips,
   getAddSelectOptions,
 }) => {
-
   const keys = Object.keys(optionsList)
-  const menuKeys= Object.keys(getAddSelectOptions)
+  const menuKeys = Object.keys(getAddSelectOptions)
+
+  const [newChips, setNewChips] = React.useState([])
+
+  const [addDialog, setAddDialog] = React.useState(false)
+  const handleDialogClose = () => {
+    setAddDialog(false)
+    setNewChips([])
+  }
+
   return (
     <React.Fragment>
       <Box className={classes.chipContainer}>
@@ -114,7 +117,7 @@ const RenderChips = ({
               <Button onClick={handleDialogClose} color="primary">
                 Cancel
               </Button>
-              <Button color="primary" onClick={onAdd}>
+              <Button color="primary" onClick={() => onAdd(newChips, setAddDialog, setNewChips)}>
                 Save
               </Button>
             </DialogActions>
@@ -128,4 +131,4 @@ const RenderChips = ({
 export default compose(
   withUserContext,
   withStyles(styles, { withTheme: true })
-)(RenderChips)
+)(ChipList)

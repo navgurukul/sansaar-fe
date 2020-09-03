@@ -25,17 +25,19 @@ const MentorshipTree = ({ match, actions }) => {
     fetchData()
   }, [actions, pathwayId])
 
-  const treeView = tree => {
-    const name = tree
-      ? tree.map(each => {
+  const treeView = mentorTree => {
+    const name = mentorTree
+      ? mentorTree.map(student => {
           return (
-            <React.Fragment key={each.name}>
+            <React.Fragment key={student.name}>
               <Box>
                 <TreeItem
-                  label={`${each.name} (${each.email})`}
-                  nodeId={each.id}
+                  label={`${student.name} (${student.email})`}
+                  nodeId={student.id}
                 >
-                  {each.mentees.length === 0 ? "" : treeView(each.mentees)}
+                  {student.mentees.length === 0
+                    ? ""
+                    : treeView(student.mentees)}
                 </TreeItem>
               </Box>
             </React.Fragment>
@@ -47,7 +49,7 @@ const MentorshipTree = ({ match, actions }) => {
   }
   return (
     <React.Fragment>
-      <h1>MentorshipTree</h1>
+      <h1>Mentorship Tree</h1>
       <TreeView
         defaultCollapseIcon={<ExpandMoreIcon />}
         defaultExpandIcon={<ChevronRightIcon />}

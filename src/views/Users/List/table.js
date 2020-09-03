@@ -1,7 +1,6 @@
 import React from 'react';
 import moment from 'moment';
 import { fromPairs } from 'lodash';
-// import { getInitialsFromName } from '../../../helpers';
 import NG_CONSTANTS from 'ng-constants';
 import UserRoleChips from '../components/UserCard/UserRoleChips';
 import UserAvatar from '../components/UserCard/UserAvatar';

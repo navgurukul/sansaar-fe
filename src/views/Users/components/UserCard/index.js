@@ -1,23 +1,29 @@
-import React from 'react';
-import moment from 'moment';
-import { withStyles, Card, CardContent, Typography, Box } from '@material-ui/core';
-import UserAvatar from './UserAvatar';
-import UserRoleChips from './UserRoleChips';
-import Spacer from '../../../../components/Spacer';
+import React from "react"
+import moment from "moment"
+import {
+  withStyles,
+  Card,
+  CardContent,
+  Typography,
+  Box,
+} from "@material-ui/core"
+import UserAvatar from "./UserAvatar"
+import UserRoleChips from "./UserRoleChips"
+import Spacer from "../../../../components/Spacer"
 
-const styles = (theme) => ({
+const styles = theme => ({
   container: {
     marginBottom: theme.spacing(2),
   },
   header: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
   },
   nameEmailContainer: {
-    marginLeft: theme.spacing(2)
+    marginLeft: theme.spacing(2),
   },
-});
+})
 
 const UserCard = ({
   key,
@@ -32,7 +38,11 @@ const UserCard = ({
   <Card key={key || undefined} className={classes.container} variant="outlined">
     <CardContent>
       <Box className={classes.header}>
-        <UserAvatar name={name} profilePicture={profilePicture} widthHeight={theme.spacing(6)} />
+        <UserAvatar
+          name={name}
+          profilePicture={profilePicture}
+          widthHeight={theme.spacing(6)}
+        />
         <Box className={classes.nameEmailContainer}>
           <Typography variant="h6">{name}</Typography>
           <Typography>{eMail}</Typography>
@@ -42,10 +52,10 @@ const UserCard = ({
       <UserRoleChips rolesList={rolesList} />
       <Typography variant="overline">
         Joined
-        { moment(joinedAt).fromNow() }
+        {moment(joinedAt).fromNow()}
       </Typography>
     </CardContent>
   </Card>
-);
+)
 
-export default withStyles(styles, { withTheme: true })(UserCard);
+export default withStyles(styles, { withTheme: true })(UserCard)

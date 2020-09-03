@@ -1,11 +1,11 @@
 import React, { useEffect } from "react"
-import {  withTheme } from "@material-ui/core"
+import { withTheme } from "@material-ui/core"
 import { connect } from "react-redux"
 import { bindActionCreators } from "redux"
 import { compose } from "recompose"
-import { withRouter } from 'react-router';
+import { withRouter } from "react-router"
 import TableOrCardList from "../../../../components/TableOrCardList"
-import { ngFetch } from "../../../../providers/NGFetch";
+import { ngFetch } from "../../../../providers/NGFetch"
 import tableColumns from "./table"
 import history from "../../../../providers/routing/app-history"
 import {
@@ -13,8 +13,8 @@ import {
   setMainPaneScrollToTopPending,
   setMainPaneLoading,
 } from "../../../../layouts/TwoColumn/store"
-import { setAllMilestones, selectors as userSelectors } from "../../store";
-import MainPaneWithTitle from '../../../../components/MainPaneWithTitle';
+import { setAllMilestones, selectors as userSelectors } from "../../store"
+import MainPaneWithTitle from "../../../../components/MainPaneWithTitle"
 
 function MilestonesList({
   match,
@@ -24,18 +24,21 @@ function MilestonesList({
   mainPaneLoading,
 }) {
   const { pathwayId } = match.params
-  useEffect(() => {
-    const fetchData = async () => {
-      actions.setMainPaneLoading(true);
-      const response = await ngFetch(`/pathways/${pathwayId}/milestones`, {
-        method: "GET",
-      })
-      actions.setAllMilestones(response.milestones)
-      actions.setMainPaneLoading(false);
-    }
-    fetchData()
-  }, [actions,pathwayId],match.path)
-
+  useEffect(
+    () => {
+      const fetchData = async () => {
+        actions.setMainPaneLoading(true)
+        const response = await ngFetch(`/pathways/${pathwayId}/milestones`, {
+          method: "GET",
+        })
+        actions.setAllMilestones(response.milestones)
+        actions.setMainPaneLoading(false)
+      }
+      fetchData()
+    },
+    [actions, pathwayId],
+    match.path
+  )
 
   const milestones = React.useMemo(() => Object.values(allMilestones), [
     allMilestones,
@@ -45,9 +48,11 @@ function MilestonesList({
     history.push(`/pathways/${pathwayId}/milestones/${milestoneId}`)
   }
 
-
   return (
-    <MainPaneWithTitle addBtnLink={`/pathways/${pathwayId}/milestones/add`} title='Milestones'>
+    <MainPaneWithTitle
+      addBtnLink={`/pathways/${pathwayId}/milestones/add`}
+      title="Milestones"
+    >
       <TableOrCardList
         loading={mainPaneLoading}
         tableColumns={tableColumns}
@@ -55,7 +60,7 @@ function MilestonesList({
         containerWidth={mainPaneWidth}
         onRowClick={handleRowClick}
         scrollContainerToTop={() => actions.setMainPaneScrollToTopPending(true)}
-        cardTitle='name'
+        cardTitle="name"
       />
     </MainPaneWithTitle>
   )
@@ -69,7 +74,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
-    { setAllMilestones, setMainPaneScrollToTopPending,setMainPaneLoading },
+    { setAllMilestones, setMainPaneScrollToTopPending, setMainPaneLoading },
     dispatch
   ),
 })
@@ -77,5 +82,5 @@ const mapDispatchToProps = dispatch => ({
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withTheme,
-  withRouter,
+  withRouter
 )(MilestonesList)
