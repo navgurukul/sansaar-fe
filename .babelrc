@@ -18,6 +18,7 @@
     },
   },
   "plugins": [
+    "@babel/plugin-transform-arrow-functions",
     ["typecheck", {
       "disable": {
         "production": true
