@@ -76,8 +76,8 @@ const MenteesList = ({
   const idsInTree = Students(tree)
   const [value, setValue] = React.useState([])
 
-  const handleAddMentees = async value => {
-    const menteesIds = value[0].map(mentee => mentee.id)
+  const handleAddMentees = async data => {
+    const menteesIds = data[0].map(mentee => mentee.id)
     const response = await ngFetch(
       `/pathways/${pathwayId}/mentorship/users/${user.id}/mentees`,
       {
@@ -149,7 +149,6 @@ const MenteesList = ({
         onChange={(event, newValue) => {
           setValue([newValue])
         }}
-        value={value}
         id="multiple-limit-tags"
         options={pullAllBy(usersWithSamePathway, studentsAlreadyInTree, "id")}
         noOptionsText=" No students are there"
