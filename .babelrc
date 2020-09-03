@@ -18,7 +18,7 @@
     },
   },
   "plugins": [
-    "@babel/plugin-transform-arrow-functions",
+    "babel-plugin-transform-es2015-arrow-functions",
     ["typecheck", {
       "disable": {
         "production": true
