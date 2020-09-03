@@ -4,14 +4,14 @@ import { compose } from 'recompose';
 
 import withUserContext from '../../UserAuth/withUserContext';
 
-const NGRoute = {
+const NGRoute = ({
   component: Component,
   WrapComponent,
   auth,
   userContext,
   location,
   ...route
-} => {
+}) => {
   if (auth && !userContext.authorized) {
     return <Redirect to={{ pathname: '/login', state: { from: location.pathname } }} />;
   }
