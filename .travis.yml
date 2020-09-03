@@ -1,4 +1,20 @@
 language: node_js
+os: linux
+dist: bionic
 node_js:
-  - "6"
-script: npm run test
+  12
+before_script:
+  - npm run clean && npm install
+env:
+  global:
+    secure: uNuevAoFFgELo0Ozn8LZynopnIfK2Rm2DTQqqykYYbg67UFXkY3UGibMxvmczHyR6CaRDbdHU5edkg3Q5Cf5HtwIWXKu4ZL7asPf3VnCe73B/cLeqEcNKp2J1KbJNLmGq1dLAuIilRoyYP+sxOSith8GDi71DsoBH79q4H0Qh2yZnwGyOTrw7YgCFeAPVXumpiaYLwa6hC+Bhe0CSlmj7+/fsm1cEk3yg6Hm3Yj/Toj/DuKlBxvzDn4F847Ym8NpjmYnYSHDhJfBQo5lnqtIzObxoSRz1skJTePeKqFF+TRlvvq8/DAW6WwgaCAIFTlOLbD40rojLY6MiXXEGB+Mut8HvxHo/gj+5Al2X4arxkyzvNbO5sSxjpKIvisf+eubYc6E8PVUndom5wjigN+3ClNLeyW3YrjFqQ867KhQBIqkHaYIgn8IBdiCxGzzWkB5r7iUQMCioC833y+NpKzy/d94y7R7T2OkdCLbmIW0hy7dxXngDeppad4n62ln1/BYMTsIeqyxKSURBsPv54IMCe+QBG13Kobrbjd0H16VJLJBw8VSwFx4NfJi0GNUGOLP2FRpQ2V7uau0KVRjVuxSMdP8iM7+lDYv8q2CLXuq4TiZIAsC529KqllWTVl4qNlwN9coRbAPvVRC1ovxzsp97d488kF5quRjbFJkTDgm3O8=
+script: npm run build
+deploy:
+  provider: pages
+  cleanup: false
+  keep_history: true
+  strategy: git
+  local_dir: docroot
+  on:
+    branch: dev
+  edge: true
