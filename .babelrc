@@ -20,7 +20,7 @@
   "plugins": [
     "transform-es2015-arrow-functions",
     "syntax-class-properties",
-    "proposal-object-rest-spread",
+    "transform-object-rest-spread",
     ["transform-runtime", {"regenerator": true}],
     ["typecheck", {
       "disable": {
