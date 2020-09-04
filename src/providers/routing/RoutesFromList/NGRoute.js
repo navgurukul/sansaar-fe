@@ -30,7 +30,7 @@ const NGRoute = ({
     }
   }
   return <Route {...props} />;
-}
+};
 
 export default compose(
   withRouter,

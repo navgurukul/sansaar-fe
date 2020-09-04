@@ -32,9 +32,18 @@ const tableColumns = [
     accessor: "tracking_enabled",
     priority: 4,
     minWidth: 200,
-    disableFilters: true,
+    search: true,
+    getSelectMapping: values =>
+      fromPairs(values.map(v => [v, NG_CONSTANTS.trackingEnabled[v]])),
     Cell: ({ value }) => {
-      return value === true ? "True" : "False"
+      let enabled=""
+      if (value === true ){
+        enabled ="Yes"
+      }
+      else{
+        enabled ="No"
+      }
+      return enabled
     },
   },
   {
@@ -43,6 +52,9 @@ const tableColumns = [
     priority: 5,
     minWidth: 200,
     disableFilters: true,
+    Cell: ({ row,value }) => {
+      return row.original.tracking_enabled === false ?  "" : value
+    },
   },
   {
     Header: "Tracking Day of week",
@@ -54,8 +66,8 @@ const tableColumns = [
     filterElType: "select",
     getSelectMapping: values =>
       fromPairs(values.map(v => [v, NG_CONSTANTS.trackingDays[v]])),
-    Cell: ({ value }) => {
-      return value === 0 && "Sunday"
+    Cell: ({ row,value }) => {
+      return row.original.tracking_enabled === false ?  "" : NG_CONSTANTS.trackingDays[value]
     },
   },
   {
@@ -64,6 +76,9 @@ const tableColumns = [
     priority: 7,
     minWidth: 200,
     disableFilters: true,
+    Cell: ({ row,value }) => {
+      return row.original.tracking_enabled === false ?  "" : value
+    },
   },
   {
     Header: "Created At",
@@ -77,4 +92,4 @@ const tableColumns = [
   },
 ]
 
-export default tableColumns
+export default tableColumns 

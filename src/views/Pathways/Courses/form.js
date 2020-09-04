@@ -26,7 +26,7 @@ export const getCourseAddFormStructure = (course, allCourses) => {
 
   return [
     {
-      name: "course_id",
+      name: "courseIds",
       type: "select",
       validation: yup
         .string()

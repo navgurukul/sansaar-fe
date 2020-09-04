@@ -15,7 +15,7 @@ import {
   setMainPaneScrollToTopPending,
   setMainPaneLoading,
 } from "../../../../layouts/TwoColumn/store"
-import { setAllCourses, selectors as userSelectors } from "../../store"
+import { setAllCourses, selectors as userSelectors, addOrRearrangeCourse } from "../../store"
 
 const Container = ({ pathwayId, actions, allCourses }) => {
   const [cards, setCards] = useState(null)
@@ -25,9 +25,9 @@ const Container = ({ pathwayId, actions, allCourses }) => {
       const response = await ngFetch(`/pathways/${pathwayId}/courses`, {
         method: "GET",
       })
-      actions.setAllCourses(response)
+      actions.setAllCourses(response.courses)
 
-      setCards(response)
+      setCards(response.courses)
     }
     fetchData()
   }, [actions, pathwayId])
@@ -43,18 +43,16 @@ const Container = ({ pathwayId, actions, allCourses }) => {
     }
   }
 
-  // console.log(cards, "cardscards")
 
   const handleSave = async data => {
     const courseIds = data.map(card => get(card, "course_id", ""))
-    // console.log(courseIds, "courseIdscourseIds")
+    const courseIdsToSave = {courseIds}
     const response = await ngFetch(`/pathways/${pathwayId}/courses`, {
       method: "PUT",
-      body: courseIds,
+      body: courseIdsToSave,
     })
-    actions.addOrEditCourse({
-      pathwaysCourse: response.pathwayCourse,
-      pathwaysCourseId: response.pathwayCourse.id,
+    actions.addOrRearrangeCourse({
+      pathwaysCourses: response.courses,
     })
     enqueueSnackbar("Courses rearranged.", { variant: "success" })
   }
@@ -75,10 +73,10 @@ const Container = ({ pathwayId, actions, allCourses }) => {
   const showCards = allCards => {
     return allCards.map(card => (
       <RenderCard
-        key={card.id}
+        key={card.course_id}
         id={`${card.id}`}
-        text={card.name}
-        logo={card.logo}
+        text={card.courses[0].name}
+        logo={card.courses[0].logo}
         moveCard={moveCard}
         findCard={findCard}
       />
@@ -112,7 +110,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
-    { setAllCourses, setMainPaneScrollToTopPending, setMainPaneLoading },
+    { setAllCourses, setMainPaneScrollToTopPending, setMainPaneLoading, addOrRearrangeCourse },
     dispatch
   ),
 })

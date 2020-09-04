@@ -24,7 +24,7 @@ import Milestones from "./Milestones"
 import MentorshipTree from "./MentorshipTree"
 import CoursesList from "../../Courses/List"
 import CourseAdd from "../../Courses/Add"
-import TrackingwayForm from '../../TrackingwayForm';
+import TrackingForm from '../../TrackingForm';
 
 const styles = () => ({
   tab: {
@@ -93,7 +93,7 @@ const PathwayEdit = ({ rightPaneLoading, actions, match, theme, classes }) => {
     // console.log(data, 'data going to submit')
     data.tracking_day_of_week= parseInt(data.tracking_day_of_week, 10)
     data.tracking_days_lock_before_cycle= parseInt(data.tracking_days_lock_before_cycle, 10)
-    data.tracking_enabled = data.tracking_enabled === "true"
+    data.tracking_enabled = data.tracking_enabled === "false"
     // console.log(data, 'data after changing')
     setSubmitBtnDisabled(true)
     delete data.createdAt
@@ -161,7 +161,7 @@ const PathwayEdit = ({ rightPaneLoading, actions, match, theme, classes }) => {
         </RightPaneWithTitle>
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <TrackingwayForm pathway={pathway} />
+        <TrackingForm pathway={pathway} />
       </TabPanel>
     </React.Fragment>
   )

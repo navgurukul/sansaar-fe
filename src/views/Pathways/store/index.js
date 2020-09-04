@@ -8,9 +8,10 @@ export const {
   setAllPathways,
   setAllMilestones,
   addOrEditPathway,
-  addOrEditCourse,
+  addOrRearrangeCourse,
   addOrEditMilestone,
   setAllCourses,
+  addOrEditTrackingForm,
 } = PathwaySectionSlice.actions
 
 export { PathwaySectionSlice, selectors }

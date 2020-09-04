@@ -33,7 +33,7 @@ const createdAtField = {
 }
 
 export const getPathwayAddFormStructure = (pathway, trackingEnabled) => {
-  // console.log(pathway, 'pathwaypathway')
+
   return [
     {
       name: "code",
@@ -74,28 +74,19 @@ export const getPathwayAddFormStructure = (pathway, trackingEnabled) => {
     },
     {
       name: "tracking_enabled",
-      type: "select",
-      validation: yup
-        .string()
-        .oneOf(["true", "false"], "Please select one")
-        .required("Required"),
       options: [
-        { name: "true", value: "True" },
-        { name: "false", value: "False" },
+        { value: "true", label: "YES" },
+        { label: "NO", value: "false" },
       ],
-      customProps: {
-        id: "",
-        label: "select a tracking enable",
-        defaultValue: "",
-      },
+      validation: yup.boolean().required("required"),
+      type: "radio",
+      labelText: "Tracking enabled",
+      customProps:{defaultValue:'true'}
     },
     {
       name: "tracking_frequency",
       type: "select",
-      validation: yup
-        .string()
-        .oneOf(["weekly"], "Please select one")
-        .required("Required"),
+      validation: yup.string().when("tracking_enabled",{is:Boolean(trackingEnabled), then: yup.string().required("Required").oneOf(["weekly"], "Please select one"), otherwise:""}),
       options: [{ name: "weekly", value: "weekly" }],
       customProps: {
         id: "",
@@ -107,10 +98,8 @@ export const getPathwayAddFormStructure = (pathway, trackingEnabled) => {
     {
       name: "tracking_day_of_week",
       type: "select",
-      validation: yup
-        .string()
-        .oneOf(["0", "1", "2", "3", "4", "5", "6"], "Please select one")
-        .required("Required"),
+      validation:
+      yup.string().when("tracking_enabled",{is:Boolean(trackingEnabled), then: yup.string().required("Required").oneOf(["0", "1", "2", "3", "4", "5", "6"], "Please select one"), otherwise:""}),
       options: [
         { name: "0", value: "Sunday" },
         { name: "1", value: "Monday" },
@@ -130,10 +119,7 @@ export const getPathwayAddFormStructure = (pathway, trackingEnabled) => {
     {
       name: "tracking_days_lock_before_cycle",
       type: "select",
-      validation: yup
-        .string()
-        .oneOf(["1", "2", "3", "4", "5"], "Please select one")
-        .required("Required"),
+      validation: yup.string().when("tracking_enabled",{is:Boolean(trackingEnabled), then: yup.string().required("Required").oneOf(["1", "2", "3", "4", "5"], "Please select one"), otherwise:""}),
       options: [
         { name: "1", value: "one" },
         { name: "2", value: "two" },

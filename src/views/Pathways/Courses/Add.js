@@ -4,8 +4,8 @@ import { withRouter } from "react-router"
 import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
 import { compose } from "recompose"
-import { pullAllBy } from "lodash"
-import { selectors as userSelectors,addOrEditCourse } from "../store"
+import { pullAllBy,get } from "lodash"
+import { selectors as userSelectors,addOrRearrangeCourse} from "../store"
 import {
   selectors as layoutSelectors,
   setRightPaneLoading,
@@ -24,22 +24,26 @@ const CourseAdd = ({ actions, pathwayId,allCourses }) => {
     const fetchAllCourses = async () => {
       const courses = await ngFetch(`/courses`)
       const pathwayCourses = await ngFetch(`/pathways/${pathwayId}/courses`)
+      const coursesFromPathwayCourses= pathwayCourses.courses.map(course => get(course,"courses[0]",''))
       setCoursesNeedToShow(
-        pullAllBy(courses.availableCourses, pathwayCourses, "name")
+        pullAllBy(courses.availableCourses, coursesFromPathwayCourses, "name")
       )
     }
     fetchAllCourses()
   }, [actions, pathwayId,allCourses])
 
   const onSubmit = async data => {
+
+    const pathwayCourses = await ngFetch(`/pathways/${pathwayId}/courses`)
+    const previousPathwayCourseIds= pathwayCourses.courses.map(course => get(course,"courses[0].id",''))
     setSubmitBtnDisabled(true)
+    const courseIds = {"courseIds":[...previousPathwayCourseIds,parseInt(data.courseIds,10)]}
     const response = await ngFetch(`/pathways/${pathwayId}/courses`, {
-      method: "POST",
-      body: data,
+      method: "PUT",
+      body: courseIds,
     })
-    actions.addOrEditCourse({
-      pathwaysCourse: response.pathwayCourse,
-      pathwaysCourseId: response.pathwayCourse.id,
+    actions.addOrRearrangeCourse({
+      pathwaysCourses: response.courses,
     })
     enqueueSnackbar("Course created.", { variant: "success" })
     setSubmitBtnDisabled(false)
@@ -63,7 +67,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
-    { addOrEditCourse, setRightPaneLoading },
+    { addOrRearrangeCourse, setRightPaneLoading },
     dispatch
   ),
 })

@@ -1,5 +1,8 @@
 import React, {useEffect} from "react"
+import {Button} from '@material-ui/core'
 import { ngFetch } from "../../../providers/NGFetch"
+import TackingFormQuestions from './TrackingFormQuestions'
+import TackingFormParameters from './TrackingFormParameters';
 
 const TrackingwayForm = ({ pathway }) => {
   const [trackingFormWayData, setTrackingFormWayData] = React.useState(null)
@@ -11,10 +14,12 @@ const TrackingwayForm = ({ pathway }) => {
     fetchAllMilestones()
   }, [pathway])
 
-  console.log(trackingFormWayData,'trackingFormWayData')
+
   return (
     <div>
-      <h1>TrackingformWay</h1>
+      <Button variant="contained" color="primary" fullWidth>Click here to preview</Button>
+      <TackingFormQuestions questions={trackingFormWayData} pathwayId={pathway.id} />
+      <TackingFormParameters parameters={trackingFormWayData} pathwayId={pathway.id} />
     </div>
   )
 }
