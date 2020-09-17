@@ -16,21 +16,21 @@ const NGRoute = ({
     return <Redirect to={{ pathname: '/login', state: { from: location.pathname } }} />;
   }
   const props = { ...route };
+
+  let renderMethod = null;
   if (Component) {
     if (WrapComponent) {
-      props.render = () => {
-        return (
-          <WrapComponent>
-            <Component />
-          </WrapComponent>
-        );
-      }
+      renderMethod = () => (
+        <WrapComponent>
+          <Component />
+        </WrapComponent>
+      );
     } else {
       props.component = Component;
     }
   }
-  return <Route {...props} />;
-}
+  return <Route {...props} render={renderMethod} />;
+};
 
 export default compose(
   withRouter,

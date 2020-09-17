@@ -1,11 +1,9 @@
 import React from 'react';
 import moment from 'moment';
 import { fromPairs } from 'lodash';
-// import { getInitialsFromName } from '../../../helpers';
+import NG_CONSTANTS from 'ng-constants';
 import UserRoleChips from '../components/UserCard/UserRoleChips';
 import UserAvatar from '../components/UserCard/UserAvatar';
-import NG_CONSTANTS from '../../../ngConstants';
-
 
 const tableColumns = [
     {
@@ -44,18 +42,16 @@ const tableColumns = [
       minWidth: 200,
       search: true,
       Cell: ({ value }) => (
-        <UserRoleChips rolesList={value} />
+        <UserRoleChips header="roles" rolesList={value} />
       ),
       disableFilters: false,
-      filter: 'onFilterableValue',
-      // filter: 'text',
       filterElType: 'select',
       getSearchText: (value) => value.map(v => NG_CONSTANTS.roleNames[v].toLowerCase()),
       getSelectMapping: (values) => fromPairs(values.map(v => ( [v, NG_CONSTANTS.roleNames[v]] )))
     },
     {
       Header: 'Joined On',
-      accessor: 'createdAt',
+      accessor: 'created_at',
       priority: 5,
       minWidth: 200,
       search: true,

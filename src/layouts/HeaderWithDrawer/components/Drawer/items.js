@@ -22,7 +22,7 @@ const items = [
     icon: <PeopleIcon />,
     url: '/users',
     dividerBelow: true,
-    rolesList: [ 'team', 'trainingAndPlacement', 'admissionIncharge', 'facha','dumbeldore']
+    rolesList: [ 'student','team', 'trainingAndPlacement', 'admissionIncharge', 'facha','dumbeldore']
   },
   {
     text: 'Pathways',
@@ -39,13 +39,13 @@ const items = [
         text: 'Parameters',
         icon: <TuneIcon />,
         url: '/progressTracking/parameters',
-        rolesList: [ 'team', 'trainingAndPlacement', 'admissionIncharge', 'facha','dumbeldore']
+        rolesList: [ 'student','team', 'trainingAndPlacement', 'admissionIncharge', 'facha','dumbeldore']
       },
       {
         text: 'Questions',
         icon: <HelpIcon />,
         url: '/progressTracking/questions',
-        rolesList: [ 'team', 'trainingAndPlacement', 'admissionIncharge', 'facha','dumbeldore']
+        rolesList: [ 'student','team', 'trainingAndPlacement', 'admissionIncharge', 'facha','dumbeldore']
       },
       {
         text: 'My Mentees',
