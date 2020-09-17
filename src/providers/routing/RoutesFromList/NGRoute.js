@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Route, Redirect, withRouter } from 'react-router';
 import { compose } from 'recompose';
 
@@ -20,7 +20,7 @@ const NGRoute = ({
   let renderMethod = null;
   if (Component) {
     if (WrapComponent) {
-      renderMethod = (
+      renderMethod = () => (
         <WrapComponent>
           <Component />
         </WrapComponent>

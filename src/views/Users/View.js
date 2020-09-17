@@ -36,6 +36,7 @@ const styles = () => ({
 })
 
 function UserView({ match, classes, theme, actions, user, rightPaneLoading, allUsers }) {
+  console.log("Does it come here??");
   const { userId } = match.params
 
   useEffect(() => {
