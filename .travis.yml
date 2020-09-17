@@ -10,11 +10,21 @@ env:
     secure: GY8OzVSc/HLM+63wsw08tIC2iQom5Xnvwtc/aT5OPoYXFLJetixm5uI76yTkJn0LEAOKxWZrz0wwODzNdy8l6N76SlGXbgagmX8JBnpdL88eohnTFM7FzpdCiZ40NpTrW2kJ2WoYF47aX56O1c9Qh84lf+7gYiOBiIH2c6Cr5R6e6COZUzlpErVsyFZj52Nu2wVuDNiWYX711WTqqPP0QXXu8epc9SAdBRacTZ2xpF6D6fhW4t42X7oSFV5InhTdWH25XfVOrMmNH1nhVdmO7dQqES/SQTI3RXXMTcJwE3qX7BD2w2N3WVLp5cglD+VZ+0wpNSBnk/nlw/3Mk0RRgHkJS2Zx/H5cjUaeul6zLlsZQXr8WFYhsKnuR6kQhGHUMOw6khZrnhq63+7WKEhXQscZ8G4/2qL4PtaiVTvmnYCJ3KrijQUD23sCojs1gPOGNU2XQ3wSZ5/JI8swLUtb0saJhGAKKsrY4celcrdPb2o7T69oKp5zriRUdhTkw2nidRi0PF6CKOgiC9aJT/t9igKPHiUpLB/rlnd5pow9DTfqlhox62gx01+S8b4y7b70/1M7OMlUrcb/2k5EWotjTrlQr31EdX7nTvxPxoRGPewIQ6ISCIfkCI/CM52XOgDqMNI1JIqRdUerSAVNjdpv5cWldBtwFNSHOd4XbzgO5kY=
 script: npm run build
 deploy:
-  provider: pages
-  cleanup: false
-  keep_history: true
-  strategy: git
-  local_dir: docroot
-  on:
-    branch: dev
-  edge: true
+  - provider: pages
+    cleanup: false
+    keep_history: true
+    target_branch: gh-pages-dev
+    strategy: git
+    local_dir: docroot
+    on:
+      branch: dev
+    edge: true
+  - provider: pages
+    cleanup: false
+    keep_history: true
+    strategy: git
+    target_branch: gh-pages
+    local_dir: docroot
+    on:
+      branch: master
+    edge: true
