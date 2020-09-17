@@ -4,6 +4,12 @@ import { compose } from 'recompose';
 
 import withUserContext from '../../UserAuth/withUserContext';
 
+const renderMethod = (Component, WrapComponent) => (
+  <WrapComponent>
+    <Component />
+  </WrapComponent>
+);
+
 const NGRoute = ({
   component: Component,
   WrapComponent,
@@ -17,19 +23,14 @@ const NGRoute = ({
   }
   const props = { ...route };
 
-  let renderMethod = null;
   if (Component) {
     if (WrapComponent) {
-      renderMethod = () => (
-        <WrapComponent>
-          <Component />
-        </WrapComponent>
-      );
+      props.render = renderMethod(Component, WrapComponent)
     } else {
       props.component = Component;
     }
   }
-  return <Route {...props} render={renderMethod} />;
+  return <Route {...props} />;
 };
 
 export default compose(
