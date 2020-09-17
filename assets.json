@@ -1,0 +1,15 @@
+{
+  "app": {
+    "js": "/assets/app-dc4eb4577161d659a355.js"
+  },
+  "vendors~app": {
+    "js": "/assets/1.dc4eb4577161d659a355.js"
+  },
+  "": {
+    "png": "/assets/0bb46a2109b647eccb5ddf793c1ef84e.png",
+    "html": "/index.html"
+  },
+  "metadata": {
+    "version": "1.3.4"
+  }
+}
