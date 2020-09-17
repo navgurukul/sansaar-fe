@@ -18,6 +18,10 @@
     },
   },
   "plugins": [
+    "transform-es2015-arrow-functions",
+    "syntax-class-properties",
+    "transform-object-rest-spread",
+    ["transform-runtime", {"regenerator": true}],
     ["typecheck", {
       "disable": {
         "production": true
