@@ -88,6 +88,7 @@ const TableOrCardList = ({
     })
   }, [newData, searchableKeys])
 
+
   const visibleData = React.useMemo(() => {
     if (!globalSearch) {
       return allData

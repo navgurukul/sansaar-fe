@@ -33,8 +33,7 @@ const tableColumns = [
     priority: 4,
     minWidth: 200,
     search: true,
-    getSelectMapping: values =>
-      fromPairs(values.map(v => [v, NG_CONSTANTS.trackingEnabled[v]])),
+    disableFilters: true,
     Cell: ({ value }) => {
       let enabled=""
       if (value === true ){
@@ -45,16 +44,19 @@ const tableColumns = [
       }
       return enabled
     },
+    getSearchText: (value) => value === true ? "yes" : "no",
   },
   {
     Header: "Tracking Frequency",
     accessor: "tracking_frequency",
     priority: 5,
-    minWidth: 200,
+    minWidth: 200,    
+    search: true,
     disableFilters: true,
     Cell: ({ row,value }) => {
       return row.original.tracking_enabled === false ?  "" : value
     },
+
   },
   {
     Header: "Tracking Day of week",
@@ -67,8 +69,9 @@ const tableColumns = [
     getSelectMapping: values =>
       fromPairs(values.map(v => [v, NG_CONSTANTS.trackingDays[v]])),
     Cell: ({ row,value }) => {
-      return row.original.tracking_enabled === false ?  "" : NG_CONSTANTS.trackingDays[value]
+      return row.original.tracking_enabled === false ?  "" : NG_CONSTANTS.progressTracking.trackingDayOfWeek[value]
     },
+    getSearchText: (value) => (value === 0 || value) && NG_CONSTANTS.progressTracking.trackingDayOfWeek[value].toLowerCase(),
   },
   {
     Header: "Tracking Day of lock before cycle",
@@ -76,6 +79,7 @@ const tableColumns = [
     priority: 7,
     minWidth: 200,
     disableFilters: true,
+    search: true,
     Cell: ({ row,value }) => {
       return row.original.tracking_enabled === false ?  "" : value
     },

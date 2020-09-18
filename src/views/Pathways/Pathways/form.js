@@ -33,7 +33,6 @@ const createdAtField = {
 }
 
 export const getPathwayAddFormStructure = (pathway, trackingEnabled) => {
-
   return [
     {
       name: "code",
@@ -76,22 +75,22 @@ export const getPathwayAddFormStructure = (pathway, trackingEnabled) => {
       name: "tracking_enabled",
       options: [
         { value: "true", label: "YES" },
-        { label: "NO", value: "false" },
+        { value: "false",label: "NO" },
       ],
-      validation: yup.boolean().required("required"),
+      validation: yup.string().required("required"),
       type: "radio",
       labelText: "Tracking enabled",
-      customProps:{defaultValue:'true'}
+      customProps:{defaultValue:''}
     },
     {
       name: "tracking_frequency",
       type: "select",
-      validation: yup.string().when("tracking_enabled",{is:Boolean(trackingEnabled), then: yup.string().required("Required").oneOf(["weekly"], "Please select one"), otherwise:""}),
-      options: [{ name: "weekly", value: "weekly" }],
+      validation: yup.string().when("tracking_enabled",{is:Boolean(trackingEnabled), then: yup.string().required("Required").oneOf(["weekly","fortnightly","monthly"], "Please select one"), otherwise:""}),
+      options: [{ name: "weekly", value: "weekly" },{ name: "fortnightly", value: "Fortnightly (Every 2 weeks)" },{ name: "monthly", value: "Monthly" }],
       customProps: {
         id: "",
         label: "select a tracking frequency",
-        defaultValue: "",
+        defaultValue: "weekly",
         disabled: trackingEnabled === "false",
       },
     },
@@ -112,7 +111,7 @@ export const getPathwayAddFormStructure = (pathway, trackingEnabled) => {
       customProps: {
         id: "",
         label: "select a tracking day of week",
-        defaultValue: "",
+        defaultValue: "0",
         disabled: trackingEnabled === "false",
       },
     },
@@ -130,7 +129,7 @@ export const getPathwayAddFormStructure = (pathway, trackingEnabled) => {
       customProps: {
         id: "",
         label: "select a tracking days lock before cycle",
-        defaultValue: "",
+        defaultValue: "1",
         disabled: trackingEnabled === "false",
       },
     },
