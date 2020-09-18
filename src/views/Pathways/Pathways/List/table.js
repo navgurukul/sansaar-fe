@@ -1,6 +1,6 @@
 import moment from "moment"
-import { fromPairs } from "lodash"
-import NG_CONSTANTS from "ng-constants"
+import { fromPairs } from "lodash";
+import NG_CONSTANTS from "ng-constants";
 import { toTitleCase } from "../../../../helpers"
 
 const tableColumns = [
