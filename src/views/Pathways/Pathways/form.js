@@ -1,4 +1,5 @@
 import * as yup from "yup"
+import NG_CONSTANTS from "ng-constants"
 import { ngFetch } from "../../../providers/NGFetch"
 
 yup.addMethod(yup.string, "pathwayCodeIsUnique", function CODE({
@@ -33,6 +34,29 @@ const createdAtField = {
 }
 
 export const getPathwayAddFormStructure = (pathway, trackingEnabled) => {
+  const trackingDayKeys=Object.keys(NG_CONSTANTS.progressTracking.trackingDayOfWeek)
+  const optionsListForTrackingDays = []
+  let optionsForTrackingDays= trackingDayKeys.forEach(eachKey =>
+    optionsListForTrackingDays.push({ value: NG_CONSTANTS.progressTracking.trackingDayOfWeek[eachKey], name: eachKey  })
+    )
+    const optionsCanSelectForTrackingDays = optionsListForTrackingDays
+    ? optionsListForTrackingDays.map(option => option.name)
+    : []
+
+  optionsForTrackingDays=[...optionsListForTrackingDays]
+
+  const trackingFrequencyKeys=Object.keys(NG_CONSTANTS.progressTracking.trackingFrequency)
+  const optionsListForTrackingFrequency = []
+  let optionsForTrackingFrequency= trackingFrequencyKeys.forEach(eachKey =>
+    optionsListForTrackingFrequency.push({ value: NG_CONSTANTS.progressTracking.trackingFrequency[eachKey], name: eachKey  })
+    )
+    const optionsCanSelectForTrackingFrequency = optionsListForTrackingFrequency
+    ? optionsListForTrackingFrequency.map(option => option.name)
+    : []
+
+    optionsForTrackingFrequency=[...optionsListForTrackingFrequency]
+
+
   return [
     {
       name: "code",
@@ -85,8 +109,8 @@ export const getPathwayAddFormStructure = (pathway, trackingEnabled) => {
     {
       name: "tracking_frequency",
       type: "select",
-      validation: yup.string().when("tracking_enabled",{is:Boolean(trackingEnabled), then: yup.string().required("Required").oneOf(["weekly","fortnightly","monthly"], "Please select one"), otherwise:""}),
-      options: [{ name: "weekly", value: "weekly" },{ name: "fortnightly", value: "Fortnightly (Every 2 weeks)" },{ name: "monthly", value: "Monthly" }],
+      validation: yup.string().when("tracking_enabled",{is:Boolean(trackingEnabled), then: yup.string().required("Required").oneOf(optionsCanSelectForTrackingFrequency, "Please select one"), otherwise:""}),
+      options: optionsForTrackingFrequency,
       customProps: {
         id: "",
         label: "select a tracking frequency",
@@ -98,16 +122,8 @@ export const getPathwayAddFormStructure = (pathway, trackingEnabled) => {
       name: "tracking_day_of_week",
       type: "select",
       validation:
-      yup.string().when("tracking_enabled",{is:Boolean(trackingEnabled), then: yup.string().required("Required").oneOf(["0", "1", "2", "3", "4", "5", "6"], "Please select one"), otherwise:""}),
-      options: [
-        { name: "0", value: "Sunday" },
-        { name: "1", value: "Monday" },
-        { name: "2", value: "Tuesday" },
-        { name: "3", value: "Wednesday" },
-        { name: "4", value: "Thursday" },
-        { name: "5", value: "Friday" },
-        { name: "6", value: "Saturday" },
-      ],
+      yup.string().when("tracking_enabled",{is:Boolean(trackingEnabled), then: yup.string().required("Required").oneOf(optionsCanSelectForTrackingDays, "Please select one"), otherwise:""}),
+      options:optionsForTrackingDays,
       customProps: {
         id: "",
         label: "select a tracking day of week",

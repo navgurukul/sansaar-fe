@@ -1,5 +1,4 @@
 import React from "react"
-import {Typogarphy } from '@material-ui/core'
 import CustomCard from '../../../../components/TableOrCardList/CustomCard'
 import TrackingFormQuestionAdd from './Add'
 

@@ -67,7 +67,7 @@ const tableColumns = [
     disableFilters: false,
     filterElType: "select",
     getSelectMapping: values =>
-      fromPairs(values.map(v => [v, NG_CONSTANTS.trackingDays[v]])),
+      fromPairs(values.map(v => [v, NG_CONSTANTS.progressTracking.trackingDayOfWeek[v]])),
     Cell: ({ row,value }) => {
       return row.original.tracking_enabled === false ?  "" : NG_CONSTANTS.progressTracking.trackingDayOfWeek[value]
     },
