@@ -17,11 +17,9 @@ const PathwayAdd = ({ actions }) => {
   const [submitBtnDisabled, setSubmitBtnDisabled] = React.useState(false)
 
   const onSubmit = async data => {
-    // console.log(data, 'data going to submit')
     data.tracking_day_of_week= parseInt(data.tracking_day_of_week, 10)
     data.tracking_days_lock_before_cycle= parseInt(data.tracking_days_lock_before_cycle, 10)
     data.tracking_enabled = data.tracking_enabled === "true"
-    // console.log(data, 'data after changing')
     setSubmitBtnDisabled(true)
     const response = await ngFetch("/pathways", { method: "POST", body: data })
     const pathwayId = response.pathway.id

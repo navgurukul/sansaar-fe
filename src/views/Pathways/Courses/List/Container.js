@@ -25,6 +25,7 @@ const Container = ({ pathwayId, actions, allCourses }) => {
       const response = await ngFetch(`/pathways/${pathwayId}/courses`, {
         method: "GET",
       })
+      console.log(response.courses,'(response.courses)')
       actions.setAllCourses(response.courses)
 
       setCards(response.courses)

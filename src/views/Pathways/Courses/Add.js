@@ -23,10 +23,11 @@ const CourseAdd = ({ actions, pathwayId,allCourses }) => {
   useEffect(() => {
     const fetchAllCourses = async () => {
       const courses = await ngFetch(`/courses`)
+
       const pathwayCourses = await ngFetch(`/pathways/${pathwayId}/courses`)
-      const coursesFromPathwayCourses= pathwayCourses.courses.map(course => get(course,"courses[0]",''))
+      const coursesFromPathwayCourses= pathwayCourses.courses.length && pathwayCourses.courses.map(course => get(course,"courses[0]",''))
       setCoursesNeedToShow(
-        pullAllBy(courses.availableCourses, coursesFromPathwayCourses, "name")
+        pullAllBy(courses.allCourse, coursesFromPathwayCourses, "name")
       )
     }
     fetchAllCourses()

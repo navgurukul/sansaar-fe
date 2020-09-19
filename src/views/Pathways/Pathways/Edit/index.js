@@ -82,7 +82,7 @@ const PathwayEdit = ({ rightPaneLoading, actions, match, theme, classes }) => {
       actions.setRightPaneLoading(true)
       const response = await ngFetch(`/pathways/${pathwayId}`)
       actions.setPathwayToView(response.pathway)
-      setPathway(response.pathway)
+      setPathway({...response.pathway,tracking_enabled:String(response.pathway.tracking_enabled)})
       actions.setRightPaneLoading(false)
     }
     fetchData()
@@ -90,11 +90,9 @@ const PathwayEdit = ({ rightPaneLoading, actions, match, theme, classes }) => {
 
   const [submitBtnDisabled, setSubmitBtnDisabled] = React.useState(false)
   const onSubmit = async data => {
-    // console.log(data, 'data going to submit')
     data.tracking_day_of_week= parseInt(data.tracking_day_of_week, 10)
     data.tracking_days_lock_before_cycle= parseInt(data.tracking_days_lock_before_cycle, 10)
-    data.tracking_enabled = data.tracking_enabled === "false"
-    // console.log(data, 'data after changing')
+    data.tracking_enabled = data.tracking_enabled !== "false"
     setSubmitBtnDisabled(true)
     delete data.createdAt
     const response = await ngFetch(`/pathways/${pathwayId}`, {
@@ -102,7 +100,7 @@ const PathwayEdit = ({ rightPaneLoading, actions, match, theme, classes }) => {
       body: data,
     })
     actions.addOrEditPathway({ pathway: response.pathway, pathwayId })
-    setPathway(response.pathway)
+    setPathway({...response.pathway,tracking_enabled:String(response.pathway.tracking_enabled)})
     enqueueSnackbar("Pathway details saved.", { variant: "success" })
     setSubmitBtnDisabled(false)
   }
@@ -117,7 +115,7 @@ const PathwayEdit = ({ rightPaneLoading, actions, match, theme, classes }) => {
   const fieldsToWatch = {
     tracking_enabled: selectedTrackingEnabled,
   }
-
+  
   return (
     <React.Fragment>
       <AppBar position="static">
@@ -130,9 +128,11 @@ const PathwayEdit = ({ rightPaneLoading, actions, match, theme, classes }) => {
           <Tab label="Pathways" {...a11yProps(0)} className={classes.tab} />
           <Tab label="Courses" {...a11yProps(1)} className={classes.tab} />
           <Tab
+            disabled={pathway.tracking_enabled !== "true"}
             label="Trackingway Form"
             {...a11yProps(2)}
             className={classes.tab}
+            
           />
         </Tabs>
       </AppBar>
