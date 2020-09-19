@@ -1,16 +1,16 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers"
-import * as yup from "yup";
-import { withTheme, Button } from "@material-ui/core";
-import Spacer from "../Spacer";
-import NGCheckbox from './components/NGCheckbox';
-import NGDateField from './components/NGDateField';
-import NGRadioButtons from './components/NGRadioButtons';
-import NGSelectField from './components/NGSelectField';
-import NGTextField from './components/NGTextField'
-import NGSlider from './components/NGSlider'
-import NGSwitch from './components/NGSwitch'
+import * as yup from "yup"
+import { withTheme, Button } from "@material-ui/core"
+import Spacer from "../Spacer"
+import NGCheckbox from "./components/NGCheckbox"
+import NGDateField from "./components/NGDateField"
+import NGRadioButtons from "./components/NGRadioButtons"
+import NGSelectField from "./components/NGSelectField"
+import NGTextField from "./components/NGTextField"
+import NGSlider from "./components/NGSlider"
+import NGSwitch from "./components/NGSwitch"
 
 const COMPONENTS = {
   text: NGTextField,
@@ -20,9 +20,9 @@ const COMPONENTS = {
   checkbox: NGCheckbox,
   slider: NGSlider,
   switch: NGSwitch,
-};
+}
 
-const  FormBuilder = ({
+const FormBuilder = ({
   structure,
   initialValues,
   onSubmit,
@@ -32,18 +32,17 @@ const  FormBuilder = ({
   submitBtnDisabled,
   fieldsToWatch,
 }) => {
-
   const validationSchema = React.useMemo(() => {
-    const schema = yup.object().shape({});
+    const schema = yup.object().shape({})
     structure.map(field => {
       if (field.validation) {
-        schema.fields[ field.name ] = field.validation;
-        schema._nodes.push(field.name);
+        schema.fields[field.name] = field.validation
+        schema._nodes.push(field.name)
       }
       return null
-    });
-    return schema;
-  }, [structure]);
+    })
+    return schema
+  }, [structure])
 
   const {
     register,
@@ -63,21 +62,23 @@ const  FormBuilder = ({
     },
   })
 
-  
-   const functionToWatchFields = React.useMemo(() => {
-    if (!fieldsToWatch){
-      return null
+  useEffect(() => {
+    const functionToWatchFields = () => {
+      if (!fieldsToWatch) {
+        return null
+      }
+      const keys = Object.keys(fieldsToWatch)
+      return keys.map(key => {
+        return watch(key) && fieldsToWatch[key](watch(key))
+      })
     }
-    const keys = Object.keys(fieldsToWatch)
-    return keys.map(key => {
-      return watch(key) && fieldsToWatch[key](watch(key))
-    })
-  }, [fieldsToWatch,watch])
+    functionToWatchFields()
+  }, [fieldsToWatch, watch])
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {structure.map((field) => {
-        const FieldComponent = COMPONENTS[field.type];
+      {structure.map(field => {
+        const FieldComponent = COMPONENTS[field.type]
         return (
           <React.Fragment key={field.name}>
             <FieldComponent
@@ -90,7 +91,11 @@ const  FormBuilder = ({
               register={register}
               watch={watch}
             />
-            {field.type === 'select' ? <Spacer height={theme.spacing(3)} /> : <Spacer height={theme.spacing(1)} />}
+            {field.type === "select" ? (
+              <Spacer height={theme.spacing(3)} />
+            ) : (
+              <Spacer height={theme.spacing(1)} />
+            )}
           </React.Fragment>
         )
       })}
@@ -106,7 +111,7 @@ const  FormBuilder = ({
         Submit
       </Button>
     </form>
-  );
+  )
 }
 
-export default withTheme(FormBuilder);
+export default withTheme(FormBuilder)

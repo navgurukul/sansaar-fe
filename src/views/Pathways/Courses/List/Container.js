@@ -10,6 +10,7 @@ import { get } from "lodash"
 import { ngFetch } from "../../../../providers/NGFetch"
 import { ItemTypes } from "./ItemTypes"
 import RenderCard from "./Card"
+import Dustbin from './Dustbin'
 import {
   selectors as layoutSelectors,
   setMainPaneScrollToTopPending,
@@ -25,10 +26,8 @@ const Container = ({ pathwayId, actions, allCourses }) => {
       const response = await ngFetch(`/pathways/${pathwayId}/courses`, {
         method: "GET",
       })
-      console.log(response.courses,'(response.courses)')
-      actions.setAllCourses(response.courses)
-
-      setCards(response.courses)
+      actions.setAllCourses(response.courses.courses)
+      setCards(response.courses.courses)
     }
     fetchData()
   }, [actions, pathwayId])
@@ -44,16 +43,29 @@ const Container = ({ pathwayId, actions, allCourses }) => {
     }
   }
 
-
-  const handleSave = async data => {
-    const courseIds = data.map(card => get(card, "course_id", ""))
+  const deleteCard = async id => {
+    const card = cards.filter(c => `${c.id}` !== id)
+    const courseIds = card.map(course => get(course, "id", ""))
     const courseIdsToSave = {courseIds}
     const response = await ngFetch(`/pathways/${pathwayId}/courses`, {
       method: "PUT",
       body: courseIdsToSave,
     })
     actions.addOrRearrangeCourse({
-      pathwaysCourses: response.courses,
+      pathwaysCourses: response.courses.courses,
+    })
+    enqueueSnackbar("Course deleted.", { variant: "success" })
+  }
+
+  const handleSave = async data => {
+    const courseIds = data.map(card => get(card, "id", ""))
+    const courseIdsToSave = {courseIds}
+    const response = await ngFetch(`/pathways/${pathwayId}/courses`, {
+      method: "PUT",
+      body: courseIdsToSave,
+    })
+    actions.addOrRearrangeCourse({
+      pathwaysCourses: response.courses.courses,
     })
     enqueueSnackbar("Courses rearranged.", { variant: "success" })
   }
@@ -74,29 +86,35 @@ const Container = ({ pathwayId, actions, allCourses }) => {
   const showCards = allCards => {
     return allCards.map(card => (
       <RenderCard
-        key={card.course_id}
-        id={`${card.id}`}
-        text={card.courses[0].name}
-        logo={card.courses[0].logo}
+        key={card.id}
+        id={card.id}
+        text={card.name}
+        logo={card.logo}
         moveCard={moveCard}
         findCard={findCard}
+        deleteCard={deleteCard}
       />
     ))
   }
   return (
     <React.Fragment>
       <div ref={drop}>
-        {cards && showCards(cards)}
+        {cards!== null && cards && showCards(cards)}
         {cards && cards.length === 0 ? (
           <Typography variant="h6">No courses are added</Typography>
         ) : (
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => handleSave(cards)}
-          >
-            Save
-          </Button>
+          <React.Fragment>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => handleSave(cards)}
+            >
+              Save
+            </Button>
+            <div style={{ overflow: 'hidden', clear: 'both' }}>
+              <Dustbin />
+            </div>
+          </React.Fragment>
         )}
       </div>
     </React.Fragment>
