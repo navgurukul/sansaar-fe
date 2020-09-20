@@ -26,7 +26,7 @@ const RenderCard = ({ id, text, moveCard,deleteCard, findCard, classes }) => {
         moveCard(droppedId, indexOriginal)
       }
       const dropResult = monitor.getDropResult()
-      if (item && dropResult) {
+      if (didDrop && dropResult.name ==="Dustbin" ) {
         deleteCard(item.id)
       }
     },

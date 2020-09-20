@@ -4,7 +4,7 @@ import { withRouter } from "react-router"
 import { compose } from "recompose"
 import { connect } from "react-redux"
 import { useSnackbar } from "notistack"
-import { withTheme } from "@material-ui/core"
+import { withTheme ,Container } from "@material-ui/core"
 import { selectors, setMilestoneToView, addOrEditMilestone } from "../store"
 import {
   selectors as layoutSelectors,
@@ -66,18 +66,20 @@ const MilestoneEdit = ({ rightPaneLoading, actions, match, theme }) => {
   }
 
   return (
-    <RightPaneWithTitle
-      title="Edit Milestone"
-      closeLink={`/pathways/${pathwayId}/milestones`}
-    >
-      <FormBuilder
-        structure={getMilestoneEditFormStructure(milestone, allMilestones)}
-        onSubmit={onSubmit}
-        initialValues={milestone}
-        submitBtnDisabled={submitBtnDisabled}
-      />
-      <Spacer height={theme.spacing(2)} />
-    </RightPaneWithTitle>
+    <Container>
+      <RightPaneWithTitle
+        title="Edit Milestone"
+        closeLink={`/pathways/${pathwayId}/milestones`}
+      >
+        <FormBuilder
+          structure={getMilestoneEditFormStructure(milestone, allMilestones)}
+          onSubmit={onSubmit}
+          initialValues={milestone}
+          submitBtnDisabled={submitBtnDisabled}
+        />
+        <Spacer height={theme.spacing(2)} />
+      </RightPaneWithTitle>
+    </Container>
   )
 }
 

@@ -4,7 +4,7 @@ import { withRouter } from 'react-router';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { useSnackbar } from 'notistack';
-import { withTheme } from '@material-ui/core';
+import { withTheme, Container } from '@material-ui/core';
 import { selectors, setQuestionToView, addOrEditQuestion } from '../store';
 import { selectors as layoutSelectors, setRightPaneLoading } from '../../../layouts/TwoColumn/store';
 import { ngFetch } from '../../../providers/NGFetch';
@@ -56,10 +56,12 @@ const OuestionEdit = ({ rightPaneLoading, actions, match, theme }) => {
   }
 
   return (
-    <RightPaneWithTitle title="Edit Question" closeLink="/progressTracking/questions/">
-      <FormBuilder structure={getQuestionEditFormStructure(question,type)} onSubmit={onSubmit} initialValues={question} submitBtnDisabled={submitBtnDisabled} selectedType={selectedType}  />
-      <Spacer height={theme.spacing(2)} />
-    </RightPaneWithTitle>
+    <Container>
+      <RightPaneWithTitle title="Edit Question" closeLink="/progressTracking/questions/">
+        <FormBuilder structure={getQuestionEditFormStructure(question,type)} onSubmit={onSubmit} initialValues={question} submitBtnDisabled={submitBtnDisabled} selectedType={selectedType}  />
+        <Spacer height={theme.spacing(2)} />
+      </RightPaneWithTitle>
+    </Container>
   );
 }
 

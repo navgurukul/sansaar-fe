@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { Button, Typography } from "@material-ui/core"
+import { Button, Chip, withStyles, Box} from "@material-ui/core"
 import { useSnackbar } from "notistack"
 import { useDrop } from "react-dnd"
 import update from "immutability-helper"
@@ -18,7 +18,17 @@ import {
 } from "../../../../layouts/TwoColumn/store"
 import { setAllCourses, selectors as userSelectors, addOrRearrangeCourse } from "../../store"
 
-const Container = ({ pathwayId, actions, allCourses }) => {
+const styles=() =>({
+  chip:{
+    width:"100%",
+  },
+  dustbin:{ 
+    overflow: 'hidden', 
+    clear: 'both' 
+  }
+})
+
+const Container = ({ pathwayId, actions, allCourses, classes }) => {
   const [cards, setCards] = useState(null)
   const { enqueueSnackbar } = useSnackbar()
   useEffect(() => {
@@ -82,7 +92,7 @@ const Container = ({ pathwayId, actions, allCourses }) => {
     )
   }
   const [, drop] = useDrop({ accept: ItemTypes.CARD })
-
+  console.log(cards,'cardscards');
   const showCards = allCards => {
     return allCards.map(card => (
       <RenderCard
@@ -101,19 +111,24 @@ const Container = ({ pathwayId, actions, allCourses }) => {
       <div ref={drop}>
         {cards!== null && cards && showCards(cards)}
         {cards && cards.length === 0 ? (
-          <Typography variant="h6">No courses are added</Typography>
+          <Chip
+            className={classes.chip}
+            label='No courses Created'
+            disabled
+          />
         ) : (
           <React.Fragment>
             <Button
               variant="contained"
               color="primary"
               onClick={() => handleSave(cards)}
+              fullWidth
             >
-              Save
+              Save after rearranging
             </Button>
-            <div style={{ overflow: 'hidden', clear: 'both' }}>
+            <Box className={classes.dustbin}>
               <Dustbin />
-            </div>
+            </Box>
           </React.Fragment>
         )}
       </div>
@@ -134,4 +149,4 @@ const mapDispatchToProps = dispatch => ({
   ),
 })
 
-export default compose(connect(mapStateToProps, mapDispatchToProps))(Container)
+export default compose(connect(mapStateToProps, mapDispatchToProps),withStyles(styles))(Container)
