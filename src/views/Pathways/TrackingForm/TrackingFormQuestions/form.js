@@ -24,13 +24,12 @@ export const getTrackingFormQuestionAddFormStructure = (question, allQuestions) 
     : []
   options = [...optionsList]
 
-
   return [
     {
       name: "questionIds",
       type: "select",
       validation: yup
-        .string()
+        .number()
         .typeError("Select something")
         .oneOf(optionsCanSelect, "Please select one")
         .required("Required"),

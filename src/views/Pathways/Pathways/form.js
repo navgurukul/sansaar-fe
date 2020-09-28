@@ -114,7 +114,7 @@ export const getPathwayAddFormStructure = (pathway, trackingEnabled) => {
       customProps: {
         id: "",
         label: "select a tracking frequency",
-        defaultValue: "weekly",
+        defaultValue: "",
         disabled: trackingEnabled === "false",
       },
     },
@@ -127,7 +127,7 @@ export const getPathwayAddFormStructure = (pathway, trackingEnabled) => {
       customProps: {
         id: "",
         label: "select a tracking day of week",
-        defaultValue: "0",
+        defaultValue: "",
         disabled: trackingEnabled === "false",
       },
     },
@@ -145,7 +145,7 @@ export const getPathwayAddFormStructure = (pathway, trackingEnabled) => {
       customProps: {
         id: "",
         label: "select a tracking days lock before cycle",
-        defaultValue: "1",
+        defaultValue: "",
         disabled: trackingEnabled === "false",
       },
     },

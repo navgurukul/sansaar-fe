@@ -4,11 +4,10 @@ import formStructure from './formStructure';
 
 const TestUserEdit = () => {
 
-  const onSubmit = async (data) => {
-    console.log(data, 'test user edi')
-  };
   return (
-    <FormBuilder structure={formStructure} onSubmit={onSubmit} />
+    <FormBuilder 
+      structure={formStructure}
+    />
   );
 }
 

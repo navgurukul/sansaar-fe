@@ -17,6 +17,7 @@ const styles = () => ({
 const RightPaneWithTitle = ({ children, title, closeLink, theme, classes }) => {
 
   const handleCloseClick = () => history.push(closeLink);
+  console.log('right pane rendering')
 
   return (
     <React.Fragment>

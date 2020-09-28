@@ -4,6 +4,7 @@ import { withRouter } from "react-router"
 import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
 import { compose } from "recompose"
+import {Container} from '@material-ui/core'
 import { addOrEditMilestone } from "../store"
 import {
   selectors as layoutSelectors,
@@ -50,16 +51,18 @@ const MilestoneAdd = ({ actions, match }) => {
   }
 
   return (
-    <RightPaneWithTitle
-      title="Add Milestone"
-      closeLink={`/pathways/${pathwayId}/milestones`}
-    >
-      <FormBuilder
-        structure={getMilestoneAddFormStructure(milestone, allMilestones)}
-        onSubmit={onSubmit}
-        submitBtnDisabled={submitBtnDisabled}
-      />
-    </RightPaneWithTitle>
+    <Container>
+      <RightPaneWithTitle
+        title="Add Milestone"
+        closeLink={`/pathways/${pathwayId}/milestones`}
+      >
+        <FormBuilder
+          structure={getMilestoneAddFormStructure(milestone, allMilestones)}
+          onSubmit={onSubmit}
+          submitBtnDisabled={submitBtnDisabled}
+        />
+      </RightPaneWithTitle>
+    </Container>
   )
 }
 

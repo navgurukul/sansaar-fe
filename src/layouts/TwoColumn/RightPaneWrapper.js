@@ -10,7 +10,6 @@ const styles = (theme) => ({
   rightPane: {
     position: 'fixed',
     height: '100vh',
-    padding: theme.spacing(2),
     width: '100vw',
     zIndex: 10,
     background: '#fff',

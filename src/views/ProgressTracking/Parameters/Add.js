@@ -4,6 +4,7 @@ import { withRouter } from 'react-router';
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { compose } from 'recompose';
+import {Container} from '@material-ui/core';
 import { addOrEditParameter } from '../store';
 import { selectors as layoutSelectors, setRightPaneLoading } from '../../../layouts/TwoColumn/store';
 import RightPaneWithTitle from '../../../components/RightPaneWithTitle';
@@ -37,9 +38,11 @@ const ParamterAdd = ({ actions }) => {
     type:selectedType,
   }
   return (
-    <RightPaneWithTitle title="Add Parameter" closeLink="/progressTracking/parameters">
-      <FormBuilder structure={getParameterAddFormStructure(parameter,type)} onSubmit={onSubmit} submitBtnDisabled={submitBtnDisabled} fieldsToWatch={fieldsToWatch} />
-    </RightPaneWithTitle>
+    <Container>
+      <RightPaneWithTitle title="Add Parameter" closeLink="/progressTracking/parameters">
+        <FormBuilder structure={getParameterAddFormStructure(parameter,type)} onSubmit={onSubmit} submitBtnDisabled={submitBtnDisabled} fieldsToWatch={fieldsToWatch} />
+      </RightPaneWithTitle>
+    </Container>
   );
 };
 

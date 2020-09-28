@@ -4,6 +4,7 @@ import UsersSection from '../../views/Users';
 import PathwaysSection from '../../views/Pathways';
 import ParamtersSection from '../../views/ProgressTracking/Parameters';
 import QuestionsSection from '../../views/ProgressTracking/Questions';
+import ClassesSection from "../../views/Classes";
 
 const ROUTES = [
   {
@@ -29,6 +30,12 @@ const ROUTES = [
     auth: true,
     key: 'PATHWAYS_SECTION',
     component: PathwaysSection,
+  },
+  {
+    path: '/classes',
+    auth: true,
+    key: 'CLASSES_SECTION',
+    component: ClassesSection,
   },
   {
     path: '/progressTracking/parameters',
