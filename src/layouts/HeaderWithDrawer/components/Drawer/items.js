@@ -31,6 +31,12 @@ const items = [
     rolesList: ['student', 'team', 'trainingAndPlacement', 'admissionIncharge', 'facha','dumbeldore']
   },
   {
+    text: 'Classes',
+    icon: <DirectionsBikeIcon />,
+    url: '/classes',
+    rolesList: ['student', 'team', 'trainingAndPlacement', 'admissionIncharge', 'facha','dumbeldore']
+  },
+  {
     text: 'Progress Tracking',
     icon: <TrendingUpIcon />,
     rolesList: ['student', 'team', 'trainingAndPlacement', 'admissionIncharge', 'facha','dumbeldore'],

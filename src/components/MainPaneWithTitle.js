@@ -14,6 +14,7 @@ const styles = () => ({
 })
 
 const MainPaneWithTitle = ({ children, title, addBtnLink, theme, classes }) => {
+  console.log(addBtnLink,'addBtnLink')
   const handleAddClick = () => history.push(addBtnLink)
 
   return (

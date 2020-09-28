@@ -36,8 +36,8 @@ const Container = ({ pathwayId, actions, allCourses, classes }) => {
       const response = await ngFetch(`/pathways/${pathwayId}/courses`, {
         method: "GET",
       })
-      actions.setAllCourses(response.courses.courses)
-      setCards(response.courses.courses)
+      actions.setAllCourses(response.courses)
+      setCards(response.courses)
     }
     fetchData()
   }, [actions, pathwayId])
@@ -62,7 +62,7 @@ const Container = ({ pathwayId, actions, allCourses, classes }) => {
       body: courseIdsToSave,
     })
     actions.addOrRearrangeCourse({
-      pathwaysCourses: response.courses.courses,
+      pathwaysCourses: response.courses,
     })
     enqueueSnackbar("Course deleted.", { variant: "success" })
   }
@@ -75,7 +75,7 @@ const Container = ({ pathwayId, actions, allCourses, classes }) => {
       body: courseIdsToSave,
     })
     actions.addOrRearrangeCourse({
-      pathwaysCourses: response.courses.courses,
+      pathwaysCourses: response.courses,
     })
     enqueueSnackbar("Courses rearranged.", { variant: "success" })
   }
