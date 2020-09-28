@@ -23,19 +23,19 @@ const CourseAdd = ({ actions, pathwayId,allCourses }) => {
   useEffect(() => {
     const fetchAllCourses = async () => {
       const courses = await ngFetch(`/courses`)
-      const pathwayCourses = await ngFetch(`/pathways/${pathwayId}/courses`)
-      const coursesFromPathwayCourses= pathwayCourses.courses.map(course => get(course,"courses[0]",''))
-      setCoursesNeedToShow(
-        pullAllBy(courses.availableCourses, coursesFromPathwayCourses, "name")
-      )
+      // const pathwayCourses = await ngFetch(`/pathways/${pathwayId}/courses`)
+      // const coursesFromPathwayCourses= pathwayCourses.courses.courses.length && pathwayCourses.courses.courses.map(course => course)
+      // setCoursesNeedToShow(
+      //   pullAllBy(courses.allCourse, coursesFromPathwayCourses, "name")
+      // )
+      setCoursesNeedToShow(courses.allCourses)
     }
     fetchAllCourses()
   }, [actions, pathwayId,allCourses])
 
   const onSubmit = async data => {
-
     const pathwayCourses = await ngFetch(`/pathways/${pathwayId}/courses`)
-    const previousPathwayCourseIds= pathwayCourses.courses.map(course => get(course,"courses[0].id",''))
+    const previousPathwayCourseIds= pathwayCourses.courses.length ? pathwayCourses.courses.map(course => get(course,"id",'')) : []
     setSubmitBtnDisabled(true)
     const courseIds = {"courseIds":[...previousPathwayCourseIds,parseInt(data.courseIds,10)]}
     const response = await ngFetch(`/pathways/${pathwayId}/courses`, {

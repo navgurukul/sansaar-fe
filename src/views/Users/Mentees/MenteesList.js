@@ -64,16 +64,18 @@ const MenteesList = ({
 
   const studentsAlreadyInTree = []
 
-  const Students = mentorTree => {
-    mentorTree
-      ? mentorTree.forEach(student => {
-          studentsAlreadyInTree.push(student)
-          student.mentees.length === 0 ? "" : Students(student.mentees)
-        })
-      : ""
-  }
 
-  const idsInTree = Students(tree)
+  useEffect(() => {
+    const Students = mentorTree => {
+      mentorTree
+        && mentorTree.forEach(student => {
+            studentsAlreadyInTree.push(student)
+            student.mentees.length === 0 ? "" : Students(student.mentees)
+          })
+    }
+    Students(tree)
+  }, [studentsAlreadyInTree, tree])
+
   const [value, setValue] = React.useState([])
 
   const handleAddMentees = async data => {

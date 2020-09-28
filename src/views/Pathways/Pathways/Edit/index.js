@@ -10,6 +10,8 @@ import AppBar from "@material-ui/core/AppBar"
 import Tabs from "@material-ui/core/Tabs"
 import Tab from "@material-ui/core/Tab"
 import Box from "@material-ui/core/Box"
+import Container from "@material-ui/core/Container"
+import {uniq} from 'lodash'
 import { selectors, setPathwayToView, addOrEditPathway } from "../../store"
 import {
   selectors as layoutSelectors,
@@ -24,7 +26,7 @@ import Milestones from "./Milestones"
 import MentorshipTree from "./MentorshipTree"
 import CoursesList from "../../Courses/List"
 import CourseAdd from "../../Courses/Add"
-import TrackingForm from '../../TrackingForm';
+import TrackingForm from "../../TrackingForm"
 
 const styles = () => ({
   tab: {
@@ -82,27 +84,45 @@ const PathwayEdit = ({ rightPaneLoading, actions, match, theme, classes }) => {
       actions.setRightPaneLoading(true)
       const response = await ngFetch(`/pathways/${pathwayId}`)
       actions.setPathwayToView(response.pathway)
-      setPathway(response.pathway)
+      setPathway({
+        ...response.pathway,
+        tracking_enabled: String(response.pathway.tracking_enabled),
+      })
       actions.setRightPaneLoading(false)
+      setValue(0)
     }
     fetchData()
   }, [actions, pathwayId])
 
   const [submitBtnDisabled, setSubmitBtnDisabled] = React.useState(false)
   const onSubmit = async data => {
-    // console.log(data, 'data going to submit')
-    data.tracking_day_of_week= parseInt(data.tracking_day_of_week, 10)
-    data.tracking_days_lock_before_cycle= parseInt(data.tracking_days_lock_before_cycle, 10)
-    data.tracking_enabled = data.tracking_enabled === "false"
-    // console.log(data, 'data after changing')
+    const copyData ={...data}
+    delete copyData.createdAt
+    data.tracking_day_of_week = parseInt(data.tracking_day_of_week, 10)
+    data.tracking_days_lock_before_cycle = parseInt(
+      data.tracking_days_lock_before_cycle,
+      10
+    )
+    data.tracking_enabled = data.tracking_enabled !== "false"
     setSubmitBtnDisabled(true)
+    const dataToPost = [
+      "tracking_days_lock_before_cycle",
+      "tracking_frequency",
+      "tracking_day_of_week",
+    ].map(e => {
+      delete copyData[e]
+      return copyData
+    })
     delete data.createdAt
     const response = await ngFetch(`/pathways/${pathwayId}`, {
       method: "PUT",
-      body: data,
+      body: data.tracking_enabled ? data : uniq(dataToPost)[0],
     })
     actions.addOrEditPathway({ pathway: response.pathway, pathwayId })
-    setPathway(response.pathway)
+    setPathway({
+      ...response.pathway,
+      tracking_enabled: String(response.pathway.tracking_enabled),
+    })
     enqueueSnackbar("Pathway details saved.", { variant: "success" })
     setSubmitBtnDisabled(false)
   }
@@ -130,39 +150,45 @@ const PathwayEdit = ({ rightPaneLoading, actions, match, theme, classes }) => {
           <Tab label="Pathways" {...a11yProps(0)} className={classes.tab} />
           <Tab label="Courses" {...a11yProps(1)} className={classes.tab} />
           <Tab
-            label="Trackingway Form"
+            disabled={pathway.tracking_enabled !== "true"}
+            label="Tracking form"
             {...a11yProps(2)}
             className={classes.tab}
           />
         </Tabs>
       </AppBar>
-      <TabPanel value={value} index={0}>
-        <React.Fragment>
-          <RightPaneWithTitle title="Edit Pathway" closeLink="/pathways">
-            <FormBuilder
-              structure={getPathwayEditFormStructure(pathway, trackingEnabled)}
-              onSubmit={onSubmit}
-              initialValues={pathway}
-              submitBtnDisabled={submitBtnDisabled}
-              fieldsToWatch={fieldsToWatch}
-            />
+      <Container>
+        <TabPanel value={value} index={0}>
+          <React.Fragment>
+            <RightPaneWithTitle title="Edit Pathway" closeLink="/pathways">
+              <FormBuilder
+                structure={getPathwayEditFormStructure(
+                  pathway,
+                  trackingEnabled
+                )}
+                onSubmit={onSubmit}
+                initialValues={pathway}
+                submitBtnDisabled={submitBtnDisabled}
+                fieldsToWatch={fieldsToWatch}
+              />
+              <Spacer height={theme.spacing(1)} />
+              <MentorshipTree pathway={pathway} />
+              <Spacer height={theme.spacing(1)} />
+              <Milestones pathway={pathway} />
+            </RightPaneWithTitle>
+          </React.Fragment>
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <RightPaneWithTitle title="Courses" closeLink="/pathways">
+            <CourseAdd pathwayId={pathway.id} />
             <Spacer height={theme.spacing(1)} />
-            <MentorshipTree pathway={pathway} />
-            <Spacer height={theme.spacing(1)} />
-            <Milestones pathway={pathway} />
+            <CoursesList pathwayId={pathway.id} />
           </RightPaneWithTitle>
-        </React.Fragment>
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <RightPaneWithTitle title="Courses" closeLink="/pathways">
-          <CourseAdd pathwayId={pathway.id} />
-          <Spacer height={theme.spacing(1)} />
-          <CoursesList pathwayId={pathway.id} />
-        </RightPaneWithTitle>
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        <TrackingForm pathway={pathway} />
-      </TabPanel>
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          <TrackingForm pathway={pathway} />
+        </TabPanel>
+      </Container>
     </React.Fragment>
   )
 }

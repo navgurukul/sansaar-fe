@@ -35,10 +35,11 @@ const TrackingFormQuestionAdd = ({ actions, pathwayId,trackingForm }) => {
 
   const onSubmit = async data => {
     setSubmitBtnDisabled(true)
-    const courseIds = {"questionIds":[parseInt(data.questionIds,10)], "paramIds": []}
+    // const trackingFormData = await ngFetch(`/pathways/${pathwayId}/trackingForm`)
+    const idsOfQuesAndParams = {"questionIds":[parseInt(data.questionIds,10)], "paramIds": []}
     const response = await ngFetch(`/pathways/${pathwayId}/trackingForm`, {
       method: "PUT",
-      body: courseIds,
+      body: idsOfQuesAndParams,
     })
     actions.addOrEditTrackingForm({
         trackingForm :response.form

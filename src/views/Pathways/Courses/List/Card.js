@@ -3,7 +3,6 @@ import { Card, Typography, withStyles } from "@material-ui/core"
 import { useDrag, useDrop } from "react-dnd"
 import { compose } from "recompose"
 import { ItemTypes } from "./ItemTypes"
-import UserAvatar from "../../../Users/components/UserCard/UserAvatar"
 
 const styles = () => ({
   card: {
@@ -12,18 +11,23 @@ const styles = () => ({
   cursor: "move",
 }
 })
-const RenderCard = ({ id, text, moveCard, findCard, logo, classes }) => {
+const RenderCard = ({ id, text, moveCard,deleteCard, findCard, classes }) => {
   const originalIndex = findCard(id).index
   const [{ isDragging }, drag] = useDrag({
     item: { type: ItemTypes.CARD, id, originalIndex },
     collect: monitor => ({
       isDragging: monitor.isDragging(),
     }),
-    end: (dropResult, monitor) => {
-      const { id: droppedId, originalIndex } = monitor.getItem()
+    
+    end: (item, monitor) => {
+      const { id: droppedId, indexOriginal } = monitor.getItem()
       const didDrop = monitor.didDrop()
       if (!didDrop) {
-        moveCard(droppedId, originalIndex)
+        moveCard(droppedId, indexOriginal)
+      }
+      const dropResult = monitor.getDropResult()
+      if (didDrop && dropResult.name ==="Dustbin" ) {
+        deleteCard(item.id)
       }
     },
   })
@@ -43,7 +47,6 @@ const RenderCard = ({ id, text, moveCard, findCard, logo, classes }) => {
       <Typography component="div" variant="overline">
         {text}
       </Typography>
-      <UserAvatar name={text} profilePicture={logo} />
     </Card>
   )
 }

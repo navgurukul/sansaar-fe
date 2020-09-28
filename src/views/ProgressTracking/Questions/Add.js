@@ -4,6 +4,7 @@ import { withRouter } from 'react-router';
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { compose } from 'recompose';
+import {Container} from "@material-ui/core"
 import { addOrEditQuestion } from '../store';
 import { selectors as layoutSelectors, setRightPaneLoading } from '../../../layouts/TwoColumn/store';
 import RightPaneWithTitle from '../../../components/RightPaneWithTitle';
@@ -33,9 +34,11 @@ const QuestionAdd = ({ actions }) => {
   const question =''
   
   return (
-    <RightPaneWithTitle title="Add Question" closeLink="/progressTracking/questions">
-      <FormBuilder structure={getQuestionAddFormStructure(question,type)} onSubmit={onSubmit} submitBtnDisabled={submitBtnDisabled} selectedType={selectedType} />
-    </RightPaneWithTitle>
+    <Container>
+      <RightPaneWithTitle title="Add Question" closeLink="/progressTracking/questions">
+        <FormBuilder structure={getQuestionAddFormStructure(question,type)} onSubmit={onSubmit} submitBtnDisabled={submitBtnDisabled} selectedType={selectedType} />
+      </RightPaneWithTitle>
+    </Container>
   );
 };
 

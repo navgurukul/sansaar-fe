@@ -45,6 +45,7 @@ const TableOrCardList = ({
           if (c.getSearchText) {
             return [c.accessor, c.getSearchText]
           }
+          return undefined
         })
         .filter(c => c !== undefined)
     )
@@ -136,11 +137,11 @@ const TableOrCardList = ({
 
   // Hide columns according to container size
   useEffect(() => {
-    const getVisibleColumns = (columns, numCols) => {
+    const getVisibleColumns = (allCols, numCols) => {
       if (!numCols) {
-        numCols = columns.length
+        numCols = allCols.length
       }
-      const newColumns = columns.filter(h => h.priority <= numCols)
+      const newColumns = allCols.filter(h => h.priority <= numCols)
       const tableWidth = newColumns.reduce((sum, h) => sum + h.minWidth, 0)
 
       if (tableWidth <= containerWidth) {
@@ -186,11 +187,7 @@ const TableOrCardList = ({
                 >
                   {column.render("Header")}
                   <span>
-                    {column.isSorted
-                      ? column.isSortedDesc
-                        ? " 🔽"
-                        : " 🔼"
-                      : ""}
+                    {column.isSorted && (column.isSortedDesc ? " 🔽" : " 🔼")}
                   </span>
                 </TableCell>
               )
@@ -231,9 +228,7 @@ const TableOrCardList = ({
           prepareRow(row)
           return (
             <Box
-              onClick={
-                onRowClick && (() => onRowClick(row.original.id)) 
-              }
+              onClick={onRowClick && (() => onRowClick(row.original.id))}
               key={row.original.id}
               className={classes.tableRow}
             >

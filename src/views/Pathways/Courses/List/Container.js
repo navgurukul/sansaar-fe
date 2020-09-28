@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { Button, Typography } from "@material-ui/core"
+import { Button, Chip, withStyles, Box} from "@material-ui/core"
 import { useSnackbar } from "notistack"
 import { useDrop } from "react-dnd"
 import update from "immutability-helper"
@@ -10,6 +10,7 @@ import { get } from "lodash"
 import { ngFetch } from "../../../../providers/NGFetch"
 import { ItemTypes } from "./ItemTypes"
 import RenderCard from "./Card"
+import Dustbin from './Dustbin'
 import {
   selectors as layoutSelectors,
   setMainPaneScrollToTopPending,
@@ -17,7 +18,17 @@ import {
 } from "../../../../layouts/TwoColumn/store"
 import { setAllCourses, selectors as userSelectors, addOrRearrangeCourse } from "../../store"
 
-const Container = ({ pathwayId, actions, allCourses }) => {
+const styles=() =>({
+  chip:{
+    width:"100%",
+  },
+  dustbin:{ 
+    overflow: 'hidden', 
+    clear: 'both' 
+  }
+})
+
+const Container = ({ pathwayId, actions, allCourses, classes }) => {
   const [cards, setCards] = useState(null)
   const { enqueueSnackbar } = useSnackbar()
   useEffect(() => {
@@ -26,7 +37,6 @@ const Container = ({ pathwayId, actions, allCourses }) => {
         method: "GET",
       })
       actions.setAllCourses(response.courses)
-
       setCards(response.courses)
     }
     fetchData()
@@ -43,9 +53,22 @@ const Container = ({ pathwayId, actions, allCourses }) => {
     }
   }
 
+  const deleteCard = async id => {
+    const card = cards.filter(c => `${c.id}` !== id)
+    const courseIds = card.map(course => get(course, "id", ""))
+    const courseIdsToSave = {courseIds}
+    const response = await ngFetch(`/pathways/${pathwayId}/courses`, {
+      method: "PUT",
+      body: courseIdsToSave,
+    })
+    actions.addOrRearrangeCourse({
+      pathwaysCourses: response.courses,
+    })
+    enqueueSnackbar("Course deleted.", { variant: "success" })
+  }
 
   const handleSave = async data => {
-    const courseIds = data.map(card => get(card, "course_id", ""))
+    const courseIds = data.map(card => get(card, "id", ""))
     const courseIdsToSave = {courseIds}
     const response = await ngFetch(`/pathways/${pathwayId}/courses`, {
       method: "PUT",
@@ -69,33 +92,44 @@ const Container = ({ pathwayId, actions, allCourses }) => {
     )
   }
   const [, drop] = useDrop({ accept: ItemTypes.CARD })
-
+  console.log(cards,'cardscards');
   const showCards = allCards => {
     return allCards.map(card => (
       <RenderCard
-        key={card.course_id}
-        id={`${card.id}`}
-        text={card.courses[0].name}
-        logo={card.courses[0].logo}
+        key={card.id}
+        id={card.id}
+        text={card.name}
+        logo={card.logo}
         moveCard={moveCard}
         findCard={findCard}
+        deleteCard={deleteCard}
       />
     ))
   }
   return (
     <React.Fragment>
       <div ref={drop}>
-        {cards && showCards(cards)}
+        {cards!== null && cards && showCards(cards)}
         {cards && cards.length === 0 ? (
-          <Typography variant="h6">No courses are added</Typography>
+          <Chip
+            className={classes.chip}
+            label='No courses Created'
+            disabled
+          />
         ) : (
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => handleSave(cards)}
-          >
-            Save
-          </Button>
+          <React.Fragment>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => handleSave(cards)}
+              fullWidth
+            >
+              Save after rearranging
+            </Button>
+            <Box className={classes.dustbin}>
+              <Dustbin />
+            </Box>
+          </React.Fragment>
         )}
       </div>
     </React.Fragment>
@@ -115,4 +149,4 @@ const mapDispatchToProps = dispatch => ({
   ),
 })
 
-export default compose(connect(mapStateToProps, mapDispatchToProps))(Container)
+export default compose(connect(mapStateToProps, mapDispatchToProps),withStyles(styles))(Container)

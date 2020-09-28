@@ -54,7 +54,7 @@ const MentorshipTree = ({ match, actions }) => {
         defaultCollapseIcon={<ExpandMoreIcon />}
         defaultExpandIcon={<ChevronRightIcon />}
       >
-        {tree ? (tree.length === 0 ? "NO data is there" : treeView(tree)) : ""}
+        {tree && (tree.length === 0 ? "No data is there" : treeView(tree))}
       </TreeView>
     </React.Fragment>
   )

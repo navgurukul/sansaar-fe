@@ -20,7 +20,7 @@ const PathwaySectionSlice = createSlice({
       state.allMilestones = fromPairs( action.payload.map(u => [u.id, u]) );
     },
     setAllCourses: (state, action) => {
-      state.allCourses = fromPairs( action.payload.map(u => [u.id, u]) );
+      state.allCourses = fromPairs( action.payload.length ? action.payload.map(u => [u.id, u]) : [] );
     },
     setTrackingForm: (state, action) => {
       state.trackingForm = fromPairs( action.payload.map(u => [u.id, u]) );
